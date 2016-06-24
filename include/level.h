@@ -4,5 +4,6 @@
 ENTITY* skyCube = NULL;
 
 void init_star_cube();
+void uninit_star_cube();
 
 #endif
