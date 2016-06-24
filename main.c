@@ -1,5 +1,6 @@
 #include <acknex.h>
 #include <default.c>
+#include <particles.c>
 
 #define PRAGMA_PATH "include"
 #define PRAGMA_PATH "src"
@@ -10,6 +11,7 @@
 #include "player.h"
 #include "startup.h"
 #include "camera.h"
+#include "items.h"
 
 #include "level.c"
 #include "player.c"
