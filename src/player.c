@@ -7,6 +7,8 @@ void spawn_player() {
 		ent_remove(player);
 	}
 	player = ent_create("ufo.mdl", vector(20,0,0), act_player);
+	set(player, ENABLE_TRIGGER);
+	player.trigger_range = 20;
 }
 
 action act_player() {
@@ -38,9 +40,6 @@ action act_player() {
 			}
 		}
 		
-		//draw_text(str_for_num(NULL, speed.z), 10, 10, COLOR_RED);
-		//draw_text(str_for_num(NULL, speed.y), 10, 30, COLOR_RED);
-		
 		// Calculate player movement
 		vecMoveSpeed.z = (key_w - key_s) * time_step * PLAYER_SPEED_E * speed.z;
 		vecMoveSpeed.y = (key_a - key_d) * time_step * PLAYER_SPEED_E * speed.y;
@@ -58,7 +57,20 @@ action act_player() {
 			vecMoveSpeed.y = 0;
 		}
 		
+		/*var dist = vec_dist(nullvector, vector(0, vecMoveSpeed.y + my.y, vecMoveSpeed.z + my.z));
+		
+		draw_text(str_for_num(NULL, dist), 10, 10, COLOR_RED);
+		
+		var factor = 100 / LEVEL_LIMIT_RADIUS_E * dist;
+		factor = (100 - factor) / 100;
+		
+		draw_text(str_for_num(NULL, factor), 10, 30, COLOR_RED);
+		
+		vec_lerp(vecMoveSpeed.x, nullvector, vecMoveSpeed.x, factor);*/
+		
 		c_move(me, vecMoveSpeed.x, nullvector, IGNORE_PASSABLE | IGNORE_PASSENTS | IGNORE_ME | GLIDE);
+		
+		camera_move();
 		wait(1);
 	}
 }
