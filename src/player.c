@@ -9,7 +9,6 @@ void spawn_player() {
 	}
 	player = ent_create("ufo.mdl", vector(1000,0,0), act_player);
 	entCrosshair = ent_create("textures//crosshair.bmp", vector(1100, 0, 0), NULL);
-	//vec_scale(entCrosshair.scale_x, 1);
 	set(player, ENABLE_TRIGGER);
 	player.trigger_range = 20;
 }
@@ -35,12 +34,11 @@ action act_player() {
 		vForce.y = (key_a - key_d) * PLAYER_SPEED_E;
 		vForce.x = 0;
 		
-		var dist = vec_dist(my.x, nullvector);
+		draw_text(str_for_num(NULL, vSpeed.y), 10, 10, COLOR_RED);
+		draw_text(str_for_num(NULL, vSpeed.z), 10, 30, COLOR_RED);
 		
-		
-		// Keep the player in the middle of the screen
-		if (dist > LEVEL_LIMIT_RADIUS_E / 100 * 70) {
-
+		// Keep ufo in screen range
+		if (abs(my.y) > LEVEL_LIMIT_Y_E / 100 * 80) {
 			if ((my.y < 0) && (vForce.y < 0)) {
 				vForce.y = 0;
 			}
@@ -48,7 +46,9 @@ action act_player() {
 			if ((my.y > 0) && (vForce.y > 0)) {
 				vForce.y = 0;
 			}
-			
+		}
+		
+		if (abs(my.z) > LEVEL_LIMIT_Z_E / 100 * 70) {
 			if ((my.z < 0) && (vForce.z < 0)) {
 				vForce.z = 0;
 			}
@@ -56,8 +56,8 @@ action act_player() {
 			if ((my.z > 0) && (vForce.z > 0)) {
 				vForce.z = 0;
 			}
-			
 		}
+			
 		
 		// Accelerate movement
 		vec_accelerate(vecMoveSpeed, vSpeed, vForce, 0.2);
@@ -65,12 +65,44 @@ action act_player() {
 		c_move(me, vecMoveSpeed.x, nullvector, IGNORE_PASSABLE | IGNORE_PASSENTS | IGNORE_ME | GLIDE | ACTIVATE_TRIGGER);
 		
 		if (entCrosshair != NULL) {
-			c_move(entCrosshair, vecMoveSpeed.x, nullvector, IGNORE_PASSABLE | IGNORE_PASSENTS | GLIDE);
+			entCrosshair.y = my.y * 0.5;
+			entCrosshair.z = my.z * 0.5;
 		}
 		
 		camera_move();
+		
+		if ((key_space) && (shootCooldown == 0)) {
+			shootCooldown = BULLET_COOLDOWN_E;
+			player_fire();
+		}
+		if (shootCooldown > 0) shootCooldown -=1;
 		wait(1);
 	}
+}
+
+action act_bullet() {
+	VECTOR vecTarget;
+	vec_set(vecTarget, entCrosshair.x);
+	vec_sub(vecTarget, player.x);
+	vec_normalize(vecTarget, 1);
+	vec_scale(vecTarget, time_step * BULLET_SPEED_E);
+	
+	int myAge = 0;
+	while(me) {
+		c_move(me, vecTarget, nullvector, IGNORE_PASSABLE | IGNORE_PASSENTS);
+		myAge +=1;
+		if (myAge > BULLET_AGE_E) ptr_remove(me);
+		wait(1);
+	}
+}
+
+void player_fire() {
+	if ((player == NULL) || (entCrosshair == NULL)) return;
+	
+	ENTITY* bullet = ent_create(CUBE_MDL, vector(player.x + 100, player.y, player.z), act_bullet);
+	vec_set(bullet.blue, vector(0,255,0));
+	set(bullet, LIGHT);
+	set(bullet, PASSABLE);
 }
 
 #endif
