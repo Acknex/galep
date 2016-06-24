@@ -4,13 +4,16 @@
 #define PRAGMA_PATH "include"
 #define PRAGMA_PATH "src"
 #define PRAGMA_PATH "models"
+#define PRAGMA_PATH "sounds"
 
 #include "level.h"
 #include "player.h"
 #include "startup.h"
+#include "camera.h"
 
 #include "level.c"
 #include "player.c"
+#include "camera.c"
 
 void main() {
 		
