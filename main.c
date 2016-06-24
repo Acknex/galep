@@ -12,10 +12,12 @@
 #include "startup.h"
 #include "camera.h"
 #include "item_boost.h"
+#include "environment.h"
 
 #include "level.c"
 #include "player.c"
 #include "camera.c"
+#include "environment.c"
 
 void main() {
 		
