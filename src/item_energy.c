@@ -30,6 +30,6 @@ void item_energy__evt()
 {
 	if (item_event() != 0)
 	{
-		error("energy!");
+		//error("energy!");
 	}
 }

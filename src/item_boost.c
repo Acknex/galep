@@ -33,7 +33,7 @@ void item_boost__evt()
 {
 	if (item_event() != 0)
 	{
-		error("boost!");
+		//error("boost!");
 	}
 }
 

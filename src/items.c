@@ -34,23 +34,22 @@ var item_event()
 void item_fade()
 {
 	var vTicks = total_ticks;
-	VECTOR vecDist;
+	var vLerp = 1;
+	VECTOR vecPos;
+	VECTOR vecScale;
 	
-	vec_set(&vecDist, &my->x);
-	vec_sub(&vecDist, &player->x);
-	while (my->scale_x > 0)
+	vec_set(&vecPos, &my->x);
+	vec_set(&vecScale, &my->scale_x);
+	
+	while (vLerp > 0)
 	{
-		//scale down item
-		my->scale_x = maxv(my->scale_x - 0.1 * time_step, 0);
-		my->scale_y = my->scale_x;
-		my->scale_z = my->scale_x;
-		my->pan += (total_ticks - vTicks) * 10 * time_step;
-
 		//move item towards player
-		vec_set(&my->x, &vecDist);
-		vec_scale(&my->x, my->scale_x);
-		vec_add(&my->x, &player->x);
+		vec_lerp(&my->x, &player->x, &vecPos, vLerp);
+		vec_scale(vecScale, vLerp);
+		my->pan += (total_ticks - vTicks) * 10 * time_step;
 		wait(1);
+
+		vLerp -= maxv(0.001, 0.1 * time_step); 
 	}
 	ptr_remove(me);
 }
