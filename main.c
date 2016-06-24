@@ -13,6 +13,7 @@
 #include "camera.h"
 #include "item_boost.h"
 #include "environment.h"
+#include "item_energy.h"
 
 #include "level.c"
 #include "player.c"
@@ -21,6 +22,7 @@
 
 void main() {
 		
+randomize();
 	//TODO: fancy menu
 	level_start();
 	

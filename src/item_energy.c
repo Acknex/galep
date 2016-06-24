@@ -1,16 +1,14 @@
 #include "items.h"
 
-void item_boost__evt();
+void item_energy__evt();
 
-action item_boost()
+action item_energy()
 {
-	item_setup();	
-	my->event = item_boost__evt;
+	item_setup();
+	my->event = item_energy__evt;
 	var vZ = my->z;
 	var vOffset = random(500);
 	var vParticles = 0;
-	//my->material = mtl_specBump;
-	my->pan = random(360);
 	my->roll = random(360);
 	
 	while(!is(me, is_collected))
@@ -22,18 +20,16 @@ action item_boost()
 			vParticles -= 10;
 		}
 		my->z = vZ + 10 * sinv(total_ticks * 20 + vOffset);
-		my->pan -= 5 * time_step;
-		my->tilt = 30 * sinv(total_ticks * 10 + vOffset);
+		my->pan += 20 * time_step;// * sinv(total_ticks * 2 - vOffset);
 		wait(1);
 	}
 	item_fade();
 }
 
-void item_boost__evt()
+void item_energy__evt()
 {
 	if (item_event() != 0)
 	{
-		//error("boost!");
+		//error("energy!");
 	}
 }
-

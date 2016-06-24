@@ -5,62 +5,104 @@ void spawn_player() {
 	
 	if (player != NULL) {
 		ent_remove(player);
+		ent_remove(entCrosshair);
 	}
-	player = ent_create("ufo.mdl", vector(20,0,0), act_player);
+	player = ent_create("ufo.mdl", vector(1000,0,0), act_player);
+	entCrosshair = ent_create("textures//crosshair.bmp", vector(1100, 0, 0), NULL);
+	set(player, ENABLE_TRIGGER);
+	player.trigger_range = 20;
+}
+
+void move_crosshair() {
+	
 }
 
 action act_player() {
 	
 	VECTOR vecMoveSpeed;
-	VECTOR speed;
-	vec_set(speed, vector(0,1,1));
+	
+	VECTOR vSpeed, vMove, vForce;
+	
+	vec_zero(vSpeed);
+	vec_zero(vMove);
+	vec_zero(vForce);
 	
 	while(me) {
 		
-		// Speed up movement - or slow down
-		if (key_w || key_s) {
-			if (speed.z < 1.5) {
-				speed.z +=0.004;
-			}
-		} else {
-			if (speed.z > 1.0) {
-				speed.z -=0.004;
-			}
-		}
-		
-		if (key_a || key_d) {
-			if (speed.y < 1.5) {
-				speed.y +=0.004;
-			}
-		} else {
-			if (speed.y > 1.0) {
-				speed.y -=0.004;
-			}
-		}
-		
-		//draw_text(str_for_num(NULL, speed.z), 10, 10, COLOR_RED);
-		//draw_text(str_for_num(NULL, speed.y), 10, 30, COLOR_RED);
-		
 		// Calculate player movement
-		vecMoveSpeed.z = (key_w - key_s) * time_step * PLAYER_SPEED_E * speed.z;
-		vecMoveSpeed.y = (key_a - key_d) * time_step * PLAYER_SPEED_E * speed.y;
+		vForce.z = (key_w - key_s) * PLAYER_SPEED_E;
+		vForce.y = (key_a - key_d) * PLAYER_SPEED_E;
+		vForce.x = 0;
 		
-		// Dont allow to move forward/backwards
-		vecMoveSpeed.x = 0;
-	
+		draw_text(str_for_num(NULL, vSpeed.y), 10, 10, COLOR_RED);
+		draw_text(str_for_num(NULL, vSpeed.z), 10, 30, COLOR_RED);
 		
-		// Keep player in screen
-		if ((vecMoveSpeed.z + my.z >= LEVEL_LIMIT_Z_E) || (vecMoveSpeed.z + my.z <= -LEVEL_LIMIT_Z_E)) {
-			vecMoveSpeed.z = 0;
+		// Keep ufo in screen range
+		if (abs(my.y) > LEVEL_LIMIT_Y_E / 100 * 80) {
+			if ((my.y < 0) && (vForce.y < 0)) {
+				vForce.y = 0;
+			}
+			
+			if ((my.y > 0) && (vForce.y > 0)) {
+				vForce.y = 0;
+			}
 		}
 		
-		if ((vecMoveSpeed.y + my.y >= LEVEL_LIMIT_Y_E) || (vecMoveSpeed.y + my.y <= -LEVEL_LIMIT_Y_E)) {
-			vecMoveSpeed.y = 0;
+		if (abs(my.z) > LEVEL_LIMIT_Z_E / 100 * 70) {
+			if ((my.z < 0) && (vForce.z < 0)) {
+				vForce.z = 0;
+			}
+			
+			if ((my.z > 0) && (vForce.z > 0)) {
+				vForce.z = 0;
+			}
+		}
+			
+		
+		// Accelerate movement
+		vec_accelerate(vecMoveSpeed, vSpeed, vForce, 0.2);
+		
+		c_move(me, vecMoveSpeed.x, nullvector, IGNORE_PASSABLE | IGNORE_PASSENTS | IGNORE_ME | GLIDE | ACTIVATE_TRIGGER);
+		
+		if (entCrosshair != NULL) {
+			entCrosshair.y = my.y * 0.5;
+			entCrosshair.z = my.z * 0.5;
 		}
 		
-		c_move(me, vecMoveSpeed.x, nullvector, IGNORE_PASSABLE | IGNORE_PASSENTS | IGNORE_ME | GLIDE);
+		camera_move();
+		
+		if ((key_space) && (shootCooldown == 0)) {
+			shootCooldown = BULLET_COOLDOWN_E;
+			player_fire();
+		}
+		if (shootCooldown > 0) shootCooldown -=1;
 		wait(1);
 	}
+}
+
+action act_bullet() {
+	VECTOR vecTarget;
+	vec_set(vecTarget, entCrosshair.x);
+	vec_sub(vecTarget, player.x);
+	vec_normalize(vecTarget, 1);
+	vec_scale(vecTarget, time_step * BULLET_SPEED_E);
+	
+	int myAge = 0;
+	while(me) {
+		c_move(me, vecTarget, nullvector, IGNORE_PASSABLE | IGNORE_PASSENTS);
+		myAge +=1;
+		if (myAge > BULLET_AGE_E) ptr_remove(me);
+		wait(1);
+	}
+}
+
+void player_fire() {
+	if ((player == NULL) || (entCrosshair == NULL)) return;
+	
+	ENTITY* bullet = ent_create(CUBE_MDL, vector(player.x + 100, player.y, player.z), act_bullet);
+	vec_set(bullet.blue, vector(0,255,0));
+	set(bullet, LIGHT);
+	set(bullet, PASSABLE);
 }
 
 #endif
