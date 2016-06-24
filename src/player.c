@@ -21,7 +21,15 @@ action act_player() {
 		vecMoveSpeed.y = clamp(vecMoveSpeed.y, -20, 20);
 		vecMoveSpeed.x = 0;
 		
-		c_move(me, nullvector, vecMoveSpeed.x, IGNORE_PASSABLE | IGNORE_PASSENTS | IGNORE_ME | GLIDE);
+		if ((vecMoveSpeed.z + my.z >= LEVEL_LIMIT_Z_E) || (vecMoveSpeed.z + my.z <= -LEVEL_LIMIT_Z_E)) {
+			vecMoveSpeed.z = 0;
+		}
+		
+		if ((vecMoveSpeed.y + my.y >= LEVEL_LIMIT_Y_E) || (vecMoveSpeed.y + my.y <= -LEVEL_LIMIT_Y_E)) {
+			vecMoveSpeed.y = 0;
+		}
+		
+		c_move(me, vecMoveSpeed.x, nullvector, IGNORE_PASSABLE | IGNORE_PASSENTS | IGNORE_ME | GLIDE);
 		wait(1);
 	}
 }
