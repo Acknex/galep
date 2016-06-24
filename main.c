@@ -7,20 +7,20 @@
 
 #include "level.h"
 #include "player.h"
+#include "startup.h"
 
 #include "level.c"
 #include "player.c"
 
 void main() {
-	
-	level_load(NULL);
-	
-	init_star_cube();
-	
-	spawn_player();
+		
+	//TODO: fancy menu
+	level_start();
 	
 	while(1) {
 		
 		wait(1);
 	}
+	
+	level_stop();
 }
