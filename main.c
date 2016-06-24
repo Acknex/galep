@@ -11,7 +11,7 @@
 #include "player.h"
 #include "startup.h"
 #include "camera.h"
-#include "items.h"
+#include "item_boost.h"
 
 #include "level.c"
 #include "player.c"
