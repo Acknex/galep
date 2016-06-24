@@ -45,7 +45,8 @@ void item_fade()
 	{
 		//move item towards player
 		vec_lerp(&my->x, &player->x, &vecPos, vLerp);
-		vec_scale(vecScale, vLerp);
+		vec_set(&my->scale_x, &vecScale);
+		vec_scale(&my->scale_x, vLerp);
 		my->pan += (total_ticks - vTicks) * 10 * time_step;
 		wait(1);
 

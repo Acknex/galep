@@ -20,6 +20,7 @@
 
 void main() {
 		
+randomize();
 	//TODO: fancy menu
 	level_start();
 	
