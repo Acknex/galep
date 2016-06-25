@@ -151,7 +151,7 @@ action act_player() {
 		
 		// Smoke if ship is broken
 		if (vHudEnergy < 50) {
-			smoke(my.x, 0.25 * ((100 - vHudEnergy) / 100)+random(0.5));
+			smoke(my.x, (50-vHudEnergy)/25);
 		}
 
 		// sparks if ship is on boost
