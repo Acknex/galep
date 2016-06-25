@@ -58,7 +58,7 @@ void drop_items__new()
 	entWalker = ent_create(NULL, vector(1000,0,0), NULL);
 	path_set(entWalker, "path_000");
 	var vLength = path_length(entWalker);
-	printf("%f %f", (double)vDistance, (double)vLength);
+	//printf("%f %f", (double)vDistance, (double)vLength);
 	while (vDistance < vLength)
 	{
 		vec_set(&vLastPos, &vSplinePos);
