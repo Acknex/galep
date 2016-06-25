@@ -169,8 +169,12 @@ void startIntro() {
 	}
 }
 
+action actMenuDummyKill() {
+	stopIntro();
+}
 action actMenuUFO() {
 	int firstTime = 1;
+	var hnd_transmission = NULL;
 	if(intro_is_finished)
 		return;
 	media_play("media//priority_juan.ogg", NULL, 100);
@@ -184,9 +188,15 @@ action actMenuUFO() {
 		vec_scale(vecDir.x, time_step*24.);
 		vec_add(my->x, vecDir);
 		time_passed += time_step/16.;
+		if(hnd_transmission != NULL && !media_playing(hnd_transmission)) {
+			hnd_transmission = NULL;
+			my->skill4 = 1;
+			ent_create(NULL, vector(0,0,0), actMenuDummyKill);
+		}
 		if(time_passed > 4)
 		{
 			if(firstTime == 1) {
+				hnd_transmission = media_play("media//intro_transmission.ogg", NULL, 100);
 				vecDir.x = 1.80696;
 				vecDir.y = -1.04042;
 				vecDir.z = -0.83887;
@@ -194,13 +204,15 @@ action actMenuUFO() {
 				vec_add(my->x, vecDir);
 				firstTime = 0;
 			}
-			camera->x = 200*2;
-			camera->y = 60*2;
-			camera->z = 40*2;
-			camera->pan = 185;
-			camera->tilt = -11;
-			camera->roll = 0;
-			vec_add(camera->x, my->x);
+			if(my->skill4 != 1) {
+				camera->x = 200*2;
+				camera->y = 60*2;
+				camera->z = 40*2;
+				camera->pan = 185;
+				camera->tilt = -11;
+				camera->roll = 0;
+				vec_add(camera->x, my->x);
+			}
 		}
 		wait(1);
 	}
