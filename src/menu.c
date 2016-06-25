@@ -28,10 +28,32 @@ void resizeMenu() {
 void keyMenu() {
 	closeMenu();
 }
+
+void menu_magic_startup() {
+	// stop everything, start level
+	while(!stop_intro) {
+		wait(4);
+	}
+	
+	on_anykey = NULL;
+	float volume = 100;
+	while(volume > 0) {
+		volume -= 5.*time_step;
+		menu_pan_fade->alpha = 100-volume;
+		wait(1);
+	}
+	menu_pan_fade->flags &= ~SHOW;
+	menu_txt->flags &= ~SHOW;
+	media_stop(volume);
+	uninit_star_cube();
+	level_start();
+}
+
 void showMenu()
 {
 	menu_is_closed = false;
 	menu_show_button = false;
+	stop_intro = false;
 	on_anykey = keyMenu;
 	camera.arc = 60;
 	sky_color.red = 0;
@@ -102,42 +124,18 @@ void showMenu()
 		menu_txt.alpha = aleph*100;
 		wait(1);
 	}
+	
 }
 
 void closeMenu() {
 	on_anykey = NULL;
 	menu_is_closed = true;
 	startIntro();
-	/*
-	var volume = 100;
-	menu_pan_fade->flags |= SHOW;
-	
-	while(volume > 0) {
-		volume -= 5.*time_step;
-		media_tune(menu_hnd_music, volume, 100, 0);
-		menu_pan_fade->alpha = 100-volume;
-		wait(1);
-	}
-	media_stop(volume);
-	level_start();
-	menu_pan_fade->flags &= ~SHOW;
-	menu_txt->flags &= ~SHOW;
-	*/
 }
 
 void stopIntro() {
+	stop_intro = true;
 	on_anykey = NULL;
-	float volume = 100;
-	while(volume > 0) {
-		volume -= 5.*time_step;
-		menu_pan_fade->alpha = 100-volume;
-		wait(1);
-	}
-	media_stop(volume);
-	uninit_star_cube();
-	level_start();
-	menu_pan_fade->flags &= ~SHOW;
-	menu_txt->flags &= ~SHOW;
 }
 
 void startIntro() {
@@ -169,9 +167,6 @@ void startIntro() {
 	}
 }
 
-action actMenuDummyKill() {
-	stopIntro();
-}
 action actMenuUFO() {
 	int firstTime = 1;
 	var hnd_transmission = NULL;
@@ -191,9 +186,9 @@ action actMenuUFO() {
 		if(hnd_transmission != NULL && !media_playing(hnd_transmission)) {
 			hnd_transmission = NULL;
 			my->skill4 = 1;
-			ent_create(NULL, vector(0,0,0), actMenuDummyKill);
+			stopIntro();
 		}
-		if(time_passed > 4)
+		if(time_passed > 4 && !stop_intro)
 		{
 			if(firstTime == 1) {
 				hnd_transmission = media_play("media//intro_transmission.ogg", NULL, 100);
