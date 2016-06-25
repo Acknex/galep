@@ -8,6 +8,7 @@
 #define PRAGMA_PATH "sounds"
 #define PRAGMA_PATH "textures"
 
+#include "menu.h"
 #include "level.h"
 #include "player.h"
 #include "startup.h"
@@ -42,6 +43,7 @@ void main() {
 	randomize();
 
 	//TODO: fancy menu
+	//showMenu();
 	level_start();
 	
 	while(1) {
