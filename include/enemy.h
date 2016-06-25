@@ -7,4 +7,6 @@
 
 void spawn_enemies();
 
+SOUND* sndLaser = "BEAMER.WAV";
+
 #endif //ACKON16_ENEMY_H
