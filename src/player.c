@@ -76,6 +76,8 @@ action act_player() {
 	splineDistance = 0;
 	
 	while(me && (vHudEnergy > 0)) {
+		
+		DEBUG_VAR(splineDistance, 50);
 
 /*		var blubb = 0;
 		while(blubb < path_length(my))
@@ -87,7 +89,7 @@ action act_player() {
 
 		// Move camera
 		path_spline(me, vSplinePos, splineDistance);
-		splineDistance +=30  * time_step + vHudSpeed / 100 + player_boost / 100;
+		splineDistance +=30  * time_step + vHudSpeed / 100 + player_boost * 5 * time_step;
 		
 		// Turn camera towards path
 		vec_diff(vDir, vSplinePos, vLastPos);
@@ -157,7 +159,7 @@ action act_player() {
 			
 			// Boost
 			if (boost_cooldown > 0) {
-				if (camera.arc < 160) {
+				if (camera.arc < 120) {
 					camera.arc +=5 * time_step;
 				}
 				boost_cooldown -=20 * time_step;
@@ -215,10 +217,10 @@ action act_player() {
 			my.pan +=i * time_step;
 			wait(1);
 		}*/
-		}
+	}
 		while(key_enter) wait(1);
 		hud_hide();
-		level_restart()
+		level_restart();
 		
 		// TODO restart
 	}
