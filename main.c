@@ -30,7 +30,6 @@
 #include "enemy.c"
 
 
-
 void main_exit()
 {
 	hud_close();

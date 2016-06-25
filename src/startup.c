@@ -4,6 +4,7 @@
 #include "environment.h"
 #include "camera.h"
 #include "enemy.h"
+#include "itemdropper.h"
 
 void level_start()
 {
@@ -17,6 +18,7 @@ void level_start()
 	populate_space(100, 200);
 	camera_init();
 	spawn_enemies();
+	drop_items();
 
 	sun_light = 0;
 	vec_set(d3d_pointlightfalloff, vector(0, 0, 1));

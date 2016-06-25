@@ -1,3 +1,5 @@
+#include "obstacle.h"
+
 #define CLOUD_PENALTY_SPEED 6
 #define CLOUD_PENALTY_TIME 5
 #define CLOUD_PENALTY_TICK 8
@@ -22,11 +24,12 @@ action obstacle_cloud()
 	vec_set (&vPos, &my->x);
 	var vOffset = random(500);
 	var vParticles = 0;
+	while(!player) wait(1);
 	
 	while(1)
 	{
 		vParticles += time_step;
-		if (vParticles > 10)
+		if (vParticles > 10 && vec_dist (player.x, my.x) < 5000)
 		{
 			effect(obstacle_cloud__particle, 10, &my->x, vector(1,0,0));
 			vParticles -= 10;
