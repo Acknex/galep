@@ -8,15 +8,19 @@ void spawn_player() {
 	if (player != NULL) {
 		ent_remove(player);
 		ent_remove(entCrosshair);
+		ent_remove(entCrosshair2);
 	}
 	player = ent_create("ufo.mdl", vector(1000,0,0), act_player);
 	entCrosshair = ent_create("textures//crosshair.bmp", vector(1100, 0, 0), NULL);
+	entCrosshair2 = ent_create("textures//crosshair.bmp", vector(1100, 0, 0), NULL);
 	entEngineFx = ent_create("models/ufo_engine_fx.mdl", vector(1000,0,0), act_engine_fx);
 	entEngineFx->skill1 = player;
 	
 	set(player, ENABLE_TRIGGER);
 	set(entCrosshair, PASSABLE | LIGHT);
+	set(entCrosshair2, PASSABLE | LIGHT);
 	vec_scale(entCrosshair.scale_x, 3.0);
+	vec_scale(entCrosshair2.scale_x, 3.0);
 	player.trigger_range = 20;
 	player.alpha = 100;
 	player.flags &= ~TRANSLUCENT;
@@ -101,8 +105,8 @@ action act_player() {
 		// Move crosshair
 		if (entCrosshair != NULL) {
 			
-			vCrosshair.x += ((key_d || key_cur) - (key_a || key_cul)) * time_step * 50;
-			vCrosshair.y += ((key_w || key_cuu) - (key_s || key_cud)) * time_step * 50;
+			vCrosshair.x += ((key_d || key_cur) - (key_a || key_cul)) * time_step * 25;
+			vCrosshair.y += ((key_w || key_cuu) - (key_s || key_cud)) * time_step * 25;
 			
 			if ((((key_d || key_cur) - (key_a || key_cul)) == 0) && (((key_w || key_cuu) - (key_s || key_cud)) == 0)) {
 				vec_lerp(vCrosshair, vCrosshair, vector(screen_size.x / 2, screen_size.y / 2, 0), 0.1 * time_step);
@@ -124,6 +128,7 @@ action act_player() {
 			vec_to_angle(vCamAngle.x, vCam.x);
 
 			vec_set(entCrosshair.pan, vCamAngle.x);
+			vec_set(entCrosshair2.pan, vCamAngle.x);
 			
 			VECTOR temp;
 			ang_diff(temp, vCamAngle, camera.pan);
@@ -143,6 +148,9 @@ action act_player() {
 			vec_for_screen(vScreenUfo, camera);
 
 			vec_lerp(my.x, my.x, vScreenUfo, minv(time_step*0.5, 1.0));
+
+			//Place second crosshair
+			vec_lerp(entCrosshair2.x, my.x, entCrosshair.x, 0.7);
 			
 			// Rotate player
 			vec_set(temp, entCrosshair.x);
