@@ -91,7 +91,15 @@ action act_player() {
 			shootCooldown = BULLET_COOLDOWN_E;
 			player_fire();
 		}
+
+		if(key_e && shootCooldown == 0)
+		{
+			shootCooldown = BULLET_COOLDOWN_E;
+			start_explosion(my.x);
+		}
+
 		if (shootCooldown > 0) shootCooldown -=1;
+
 		wait(1);
 	}
 }
