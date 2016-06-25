@@ -8,9 +8,6 @@
 #define BULLET_COOLDOWN_E 100
 #define BULLET_AGE_E 800
 
-#define MAX_CROSSHAIR_X_E 800
-#define MAX_CROSSHAIR_Y_E 600
-
 #define BOOST_COOLDOWN_E 1000
 
 void spawn_player();
