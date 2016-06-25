@@ -6,6 +6,7 @@
 #define PRAGMA_PATH "src"
 #define PRAGMA_PATH "models"
 #define PRAGMA_PATH "sounds"
+#define PRAGMA_PATH "textures"
 
 #include "level.h"
 #include "player.h"
@@ -18,6 +19,8 @@
 #include "player.c"
 #include "camera.c"
 
+
+
 void main() {
 		
 randomize();
@@ -25,7 +28,6 @@ randomize();
 	level_start();
 	
 	while(1) {
-		
 		wait(1);
 	}
 	
