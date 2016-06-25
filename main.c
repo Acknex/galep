@@ -19,12 +19,14 @@
 #include "obstacle_asteroid.h"
 #include "environment.h"
 #include "explosion.h"
+#include "enemy.h"
 
 #include "level.c"
 #include "player.c"
 #include "camera.c"
 #include "environment.c"
 #include "explosion.c"
+#include "enemy.c"
 
 
 
