@@ -1,6 +1,7 @@
 #ifndef PLAYER_C_
 #define PLAYER_C_
 
+
 void spawn_player() {
 	
 	if (player != NULL) {
@@ -119,6 +120,11 @@ action act_player() {
 		// sparks if ship is on boost
 		if (player_boost > 0) {
 			sparks(my.x, 0.25+random(0.5));
+		}
+		
+		// Check player energy
+		if (vHudEnergy <= 0) {
+			printf("Player died");
 		}
 
 		wait(1);
