@@ -1,6 +1,6 @@
 #define ITEM_PARTICLE_COLOR vector(0, 255, 255)
 
-SOUND* sndCollect = "collect.wav";
+SOUND* sndCollect = "collect.ogg";
 
 void item__particleFader(PARTICLE *p);
 

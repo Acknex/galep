@@ -16,6 +16,7 @@ action obstacle_asteroid()
 {
 	obstacle_setup();	
 	my->event = obstacle_asteroid__evt;
+	my->emask |= ENABLE_SHOOT; 
 	VECTOR vPos;
 	vec_set (&vPos, &my->x);
 	var vOffset = random(500);
@@ -24,19 +25,24 @@ action obstacle_asteroid()
 	my->pan = random(360);
 	my->roll = random(360);
 	
+	while(!player) wait(1);
+	
 	while(!is(me, is_collided))
 	{
-		vParticles += time_step;
-		if (vParticles > 5)
+		if (vec_dist(player.x, my.x) < 5000)
 		{
-			effect(obstacle_particle, 10, &my->x, nullvector);
-			vParticles -= 5;
+			vParticles += time_step;
+			if (vParticles > 5)
+			{
+				effect(obstacle_particle, 10, &my->x, nullvector);
+				vParticles -= 5;
+			}
+			my->x = vPos.x + 25 * sinv(total_ticks * 5 + vOffset);
+			my->y = vPos.y + 25 * sinv(total_ticks * 5 + vOffset * 0.33);
+			my->z = vPos.z + 25 * sinv(total_ticks * 5 + vOffset * 0.66);
+			my->pan = 30 * sinv(total_ticks * 5 + vOffset * 0.5);
+			my->tilt = 30 * sinv(total_ticks * 5 + vOffset);
 		}
-		my->x = vPos.x + 25 * sinv(total_ticks * 5 + vOffset);
-		my->y = vPos.y + 25 * sinv(total_ticks * 5 + vOffset * 0.33);
-		my->z = vPos.z + 25 * sinv(total_ticks * 5 + vOffset * 0.66);
-		my->pan = 30 * sinv(total_ticks * 5 + vOffset * 0.5);
-		my->tilt = 30 * sinv(total_ticks * 5 + vOffset);
 		wait(1);
 	}
 	obstacle_asteroid__destroy();

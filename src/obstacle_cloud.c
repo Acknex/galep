@@ -28,13 +28,16 @@ action obstacle_cloud()
 	
 	while(1)
 	{
-		vParticles += time_step;
-		if (vParticles > 10 && vec_dist (player.x, my.x) < 5000)
+		if (vec_dist (player.x, my.x) < 5000)
 		{
-			effect(obstacle_cloud__particle, 10, &my->x, vector(1,0,0));
-			vParticles -= 10;
+			vParticles += time_step;
+			if (vParticles > 10)
+			{
+				effect(obstacle_cloud__particle, 10, &my->x, vector(1,0,0));
+				vParticles -= 10;
+			}
 		}
-
+		
 		if (is(me, is_locked))
 		{
 			if (my->lockTimer > 0)	

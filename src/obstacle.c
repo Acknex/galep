@@ -9,7 +9,7 @@ void obstacle__particleFader(PARTICLE *p);
 void obstacle_setup()
 {
 	my->emask |= ENABLE_SCAN; 
-	set (me, PASSABLE);
+	//set (me, PASSABLE);
 	my->event = obstacle_event;
 }
 
@@ -26,10 +26,16 @@ var obstacle_event(var range)
 		{
 			my->event = NULL;
 			set (me, is_collided);
-//			ent_playsound(me, sndCollide, 1000);
 			return 1;
 		}
 		return 0;
+	}
+	
+	if (event_type == EVENT_SHOOT)
+	{
+		my->event = NULL;
+		set (me, is_collided);
+		return 1;
 	}
 	
 	return 0;	
