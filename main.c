@@ -56,10 +56,10 @@ void main() {
 
 	showMenu();
 	
-	while(1) {
+/*	while(1) {
 		wait(1);
 	}
 	
-	level_stop();
+	level_stop();*/
 }
 

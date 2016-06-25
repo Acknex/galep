@@ -134,6 +134,7 @@ void stopIntro() {
 		wait(1);
 	}
 	media_stop(volume);
+	uninit_star_cube();
 	level_start();
 	menu_pan_fade->flags &= ~SHOW;
 	menu_txt->flags &= ~SHOW;

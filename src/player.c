@@ -169,7 +169,7 @@ action act_player() {
 		
 		// Check player energy
 		if (vHudEnergy <= 0) {
-			printf("Player died");
+			//printf("Player died");
 		}
 
 		wait(1);
