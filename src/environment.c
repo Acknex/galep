@@ -12,7 +12,7 @@ void space_particle_event(PARTICLE *particle)
 //	particle.alpha = minv(maxv(vec_dist(particle.x, player.x) - 50, 0)/100, 1)*100;
 	VECTOR temp;
 	vec_set(temp, particle.x);
-	if(abs(particle.x-camera.x) > 1000 || abs(particle.y-camera.y) > 1000 || abs(particle.z-camera.z) > 1000 || !vec_to_screen(temp, camera))
+	if(abs(particle.x-camera.x) > 2000 || abs(particle.y-camera.y) > 2000 || abs(particle.z-camera.z) > 2000 || !vec_to_screen(temp, camera))
 	{
 		spaceParticleCount -= 1;
 		particle.lifespan = 0;
@@ -29,7 +29,7 @@ void space_particle_event(PARTICLE *particle)
 void space_particle(PARTICLE* particle)
 {
 	vec_set(particle.x, camera.x);
-	vec_add(particle.x, vector(random(2000) - 1000, random(2000) - 1000, random(2000) - 1000));
+	vec_add(particle.x, vector(random(4000) - 2000, random(4000) - 2000, random(4000) - 2000));
 	vec_set(particle.blue, vector(255, 150, 150));
 	set(particle, BRIGHT | TRANSLUCENT | BEAM);
 	particle.alpha = 100;

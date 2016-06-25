@@ -98,7 +98,22 @@ action act_player() {
 	
 			if (shootCooldown > 0) shootCooldown -=1;
 		}
-		
+
+		// TODO delete
+		if(key_r && shootCooldown == 0)
+		{
+			shootCooldown = BULLET_COOLDOWN_E;
+			smoke(my.x, 0.25+random(0.5));
+		}
+
+		if(key_q && shootCooldown == 0)
+		{
+			shootCooldown = BULLET_COOLDOWN_E;
+			sparks(my.x, 0.25+random(0.5));
+		}
+
+		if (shootCooldown > 0) shootCooldown -=1;
+
 		wait(1);
 	}
 }
