@@ -38,7 +38,9 @@ void main_close()
 }
 
 void main() {
-		
+
+//video_mode=	12;
+//video_screen	= 1;
 	on_exit = main_exit;
 	on_close = main_close;
 	randomize();
