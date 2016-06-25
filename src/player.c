@@ -50,7 +50,7 @@ action act_player() {
 	
 	my.trigger_range = 20;
 	
-	vec_set(vCrosshair, vector(MAX_CROSSHAIR_X_E / 2, MAX_CROSSHAIR_Y_E / 2, 0));
+	vec_set(vCrosshair, vector(screen_size.x / 2, screen_size.y / 2, 0));
 	
 	path_set(me, "path_000");
 	var dist = 0;
@@ -83,11 +83,11 @@ action act_player() {
 			vCrosshair.y += (key_s - key_w) * time_step * 50;
 			
 			if (((key_d - key_a) == 0) && ((key_s - key_w) == 0)) {
-				vec_lerp(vCrosshair, vCrosshair, vector(MAX_CROSSHAIR_X_E / 2, MAX_CROSSHAIR_Y_E / 2, 0), 0.1 * time_step);
+				vec_lerp(vCrosshair, vCrosshair, vector(screen_size.x / 2, screen_size.y / 2, 0), 0.1 * time_step);
 			}
 			
-			vCrosshair.x = clamp(vCrosshair.x, 0, MAX_CROSSHAIR_X_E);
-			vCrosshair.y = clamp(vCrosshair.y, 0, MAX_CROSSHAIR_Y_E);
+			vCrosshair.x = clamp(vCrosshair.x, 0, screen_size.x);
+			vCrosshair.y = clamp(vCrosshair.y, 0, screen_size.y);
 			
 			vScreen.x = vCrosshair.x;
 			vScreen.y = vCrosshair.y;
