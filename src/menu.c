@@ -28,8 +28,11 @@ void showMenu()
 	menu_hnd_music = media_loop("media\\theme.mp3", NULL, 100);
 	menu_txt->pos_x = screen_size.x / 2;
 	menu_txt->pos_y = screen_size.y / 2;
+	menu_txt->flags |= SHOW;
+	menu_txt->alpha = 0;
 	menu_pan_fade->alpha = 0;
-	float aleph = 0;
+	
+	float aleph = 0;	
 	while(aleph < 1) {
 		if(menu_is_closed)
 			return;
@@ -100,6 +103,7 @@ void closeMenu() {
 	media_stop(volume);
 	level_start();
 	menu_pan_fade->flags &= ~SHOW;
+	menu_txt->flags &= ~SHOW;
 }
 
 action titleEntity() {
