@@ -5,8 +5,22 @@
 #include "startup.h"
 
 void resizeMenu() {
-	menu_txt->pos_x = screen_size.x / 2;
-	menu_txt->pos_y = screen_size.y / 2;
+	if(menu_show_button) {
+		VECTOR vv;
+		vv.x = 536;
+		vv.y = 0;
+		vv.z = -100;
+		if (vec_to_screen(vv,camera)) // if visible on screen
+		{
+		  menu_txt->pos_y = vv.y;
+		}
+		menu_txt->pos_x = screen_size.x / 2;
+	}
+	else {
+		menu_txt->pos_x = screen_size.x / 2;
+		menu_txt->pos_y = screen_size.y / 2;
+	}
+	
 	menu_pan_fade->scale_x = screen_size.x*2;
 	menu_pan_fade->scale_y = screen_size.y*2;
 }
@@ -17,6 +31,7 @@ void keyMenu() {
 void showMenu()
 {
 	menu_is_closed = false;
+	menu_show_button = false;
 	on_anykey = keyMenu;
 	camera.arc = 60;
 	sky_color.red = 0;
@@ -70,6 +85,7 @@ void showMenu()
 	if(menu_is_closed)
 			return;
 	str_cpy((menu_txt->pstring)[0], "Press button to start");
+	menu_show_button = true;
 	VECTOR vv;
 	vv.x = 536;
 	vv.y = 0;
@@ -135,6 +151,7 @@ action titleEntity() {
 }
 
 action menuStarFlare() {
+	my->flags &= ~INVISIBLE;
 	my->scale_x = my->scale_y = 0;
 	my->skill1 = 0;
 	wait(-(random(8)+9));

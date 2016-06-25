@@ -23,6 +23,7 @@ TEXT* menu_txt =
 
 var menu_hnd_music;
 var menu_is_closed;
+var menu_show_button;
 void showMenu();
 void closeMenu();
 
