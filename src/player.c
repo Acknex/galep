@@ -174,7 +174,8 @@ action act_bullet() {
 	
 	int myAge = 0;
 	while(me) {
-		c_move(me, vecTarget, nullvector, IGNORE_PASSABLE | IGNORE_PASSENTS);
+		you = player;
+		c_move(me, vecTarget, nullvector, IGNORE_PASSABLE | IGNORE_PASSENTS | ACTIVATE_SHOOT | IGNORE_YOU);
 		myAge +=1;
 		if (myAge > BULLET_AGE_E) ptr_remove(me);
 		wait(1);
@@ -193,7 +194,7 @@ void player_fire() {
 	
 	ENTITY* bullet = ent_create(CUBE_MDL, vector(player.x + 100, player.y, player.z), act_bullet);
 	vec_set(bullet.blue, vector(0,255,0));
-	set(bullet, LIGHT | PASSABLE);
+	set(bullet, LIGHT);
 }
 
 void boost_player() {
