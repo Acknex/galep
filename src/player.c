@@ -108,7 +108,7 @@ action act_player() {
 			}
 			
 			// Enable events
-			c_scan(my.x, my.pan, vector(360, 0, 0), IGNORE_ME | IGNORE_WORLD | SCAN_ENTS);
+			c_scan(my.x, my.pan, vector(360, 0, 200), IGNORE_ME | IGNORE_WORLD | SCAN_ENTS);
 		}
 		
 		// Smoke if ship is broken
