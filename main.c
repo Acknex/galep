@@ -14,8 +14,9 @@
 #include "startup.h"
 #include "camera.h"
 #include "item_boost.h"
-#include "environment.h"
 #include "item_energy.h"
+#include "item_speed.h"
+#include "environment.h"
 #include "explosion.h"
 
 #include "level.c"

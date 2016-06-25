@@ -5,6 +5,6 @@
 #ifndef ACKON16_EXPLOSION_H
 #define ACKON16_EXPLOSION_H
 
-void start_explosion(VECTOR *position);
+void start_explosion(VECTOR *position, var size);
 
 #endif //ACKON16_EXPLOSION_H
