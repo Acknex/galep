@@ -28,7 +28,9 @@ action act_player() {
 	vec_zero(vLerp);
 	vec_zero(vScreenUfo);
 	
-	vec_set(vCrosshair, vector(screen_size.x / 2, screen_size.y / 2, 0));
+	my.trigger_range = 20;
+	
+	vec_set(vCrosshair, vector(MAX_CROSSHAIR_X_E / 2, MAX_CROSSHAIR_Y_E / 2, 0));
 	
 	path_set(me, "path_000");
 	var dist = 0;
@@ -37,7 +39,7 @@ action act_player() {
 		
 		// Move camera
 		path_spline(me, vSplinePos, dist);
-		dist +=30 * time_step;
+		dist +=30  * time_step + vHudSpeed / 100 + player_boost / 100;
 		
 		// Turn camera towards path
 		vec_diff(vDir, vSplinePos, vLastPos);
@@ -53,11 +55,11 @@ action act_player() {
 			vCrosshair.y += (key_s - key_w) * time_step * 50;
 			
 			if (((key_d - key_a) == 0) && ((key_s - key_w) == 0)) {
-				vec_lerp(vCrosshair, vCrosshair, vector(screen_size.x / 2, screen_size.y / 2, 0), 0.4 * time_step);
+				vec_lerp(vCrosshair, vCrosshair, vector(MAX_CROSSHAIR_X_E / 2, MAX_CROSSHAIR_Y_E / 2, 0), 0.4 * time_step);
 			}
 			
-			vCrosshair.x = clamp(vCrosshair.x, 0, screen_size.x);
-			vCrosshair.y = clamp(vCrosshair.y, 0, screen_size.y);
+			vCrosshair.x = clamp(vCrosshair.x, 0, MAX_CROSSHAIR_X_E);
+			vCrosshair.y = clamp(vCrosshair.y, 0, MAX_CROSSHAIR_Y_E);
 			
 			vScreen.x = vCrosshair.x;
 			vScreen.y = vCrosshair.y;
@@ -71,7 +73,6 @@ action act_player() {
 			vec_sub(vCam, camera.x);
 			vec_to_angle(vCamAngle.x, vCam.x);
 			vec_lerp(camera.pan, camera.pan, vCamAngle.x, 0.8);
-			
 			
 			// Move player
 			vScreenUfo.x = vCrosshair.x * 0.8;
@@ -96,7 +97,18 @@ action act_player() {
 				start_explosion(my.x, 0.5+random(3));
 			}
 	
-			if (shootCooldown > 0) shootCooldown -=1;
+			if (shootCooldown > 0) shootCooldown -=1 * time_step;
+			
+			// Boost
+			if (boost_cooldown > 0) {
+				boost_cooldown -=1 * time_step;
+			} else {
+				player_boost = 0;
+				boost_cooldown = 0;
+			}
+			
+			// Enable events
+			c_move(me, nullvector, nullvector, IGNORE_ME | IGNORE_PASSENTS | IGNORE_PASSABLE | ACTIVATE_TRIGGER | GLIDE);
 		}
 
 		// TODO delete
@@ -141,6 +153,12 @@ void player_fire() {
 	vec_set(bullet.blue, vector(0,255,0));
 	set(bullet, LIGHT);
 	set(bullet, PASSABLE);
+}
+
+void boost_player() {
+	if (boost_cooldown > 0) return;
+	boost_cooldown = BOOST_COOLDOWN_E;
+	player_boost = 5;
 }
 
 #endif
