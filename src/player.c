@@ -21,9 +21,9 @@ void spawn_player() {
 
 	set(entCrosshair, PASSABLE | LIGHT | ZNEAR);
 	set(entCrosshair2, PASSABLE | LIGHT | ZNEAR);
-		set(player, ENABLE_TRIGGER | ZNEAR);
-	vec_scale(entCrosshair.scale_x, 3.0);
-	vec_scale(entCrosshair2.scale_x, 3.0);
+	set(player, ENABLE_TRIGGER | ZNEAR);
+	vec_scale(entCrosshair.scale_x, 2.0);
+	vec_scale(entCrosshair2.scale_x, 2.0);
 	player.trigger_range = 20;
 	player.alpha = 100;
 	player.flags &= ~TRANSLUCENT;
@@ -106,8 +106,8 @@ action act_player() {
 		// Move crosshair
 		if (entCrosshair != NULL) {
 			
-			vCrosshair.x += ((key_d || key_cur) - (key_a || key_cul)) * time_step * 25;
-			vCrosshair.y += ((key_w || key_cuu) - (key_s || key_cud)) * time_step * 25;
+			vCrosshair.x += ((key_d || key_cur) - (key_a || key_cul)) * time_step * 35;
+			vCrosshair.y += ((key_w || key_cuu) - (key_s || key_cud)) * time_step * 35;
 			
 			if ((((key_d || key_cur) - (key_a || key_cul)) == 0) && (((key_w || key_cuu) - (key_s || key_cud)) == 0)) {
 				vec_lerp(vCrosshair, vCrosshair, vector(screen_size.x / 2, screen_size.y / 2, 0), 0.1 * time_step);
@@ -118,7 +118,7 @@ action act_player() {
 			
 			vScreen.x = vCrosshair.x;
 			vScreen.y = vCrosshair.y;
-			vScreen.z = 2000;
+			vScreen.z = 1200;
 			vec_for_screen(vScreen, camera);
 			
 			vec_set(entCrosshair.x, vScreen);
