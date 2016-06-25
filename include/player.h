@@ -19,6 +19,7 @@ void move_crosshair(VECTOR* vMoveSpeed, VECTOR* vMoveDir);
 
 BMAP* bmapCrosshair = "textures//crosshair.bmp";
 ENTITY* entCrosshair = NULL;
+ENTITY* entCrosshair2 = NULL;
 ENTITY* entEngineFx = NULL;
 
 SOUND* sndAiaiaiai = "aiaiaiai.ogg";
