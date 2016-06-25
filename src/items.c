@@ -7,8 +7,9 @@ void item__particleFader(PARTICLE *p);
 
 void item_setup()
 {
-	my->emask |= ENABLE_TRIGGER; 
-	my->trigger_range = 20;
+	my->emask |= ENABLE_DETECT; 
+//	my->emask |= ENABLE_TRIGGER; 
+//	my->trigger_range = 20;
 	set (me, PASSABLE);
 	my->event = item_event;
 }
@@ -20,7 +21,8 @@ var item_event()
 		return 0;
 	}
 	
-	if (event_type == EVENT_TRIGGER && you == player)
+//	if (event_type == EVENT_TRIGGER && you == player)
+	if (event_type == EVENT_DETECT && you == player)
 	{
 		my->event = NULL;
 		set (me, is_collected);

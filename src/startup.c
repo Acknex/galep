@@ -2,6 +2,7 @@
 #include "player.h"
 #include "hud.h"
 #include "environment.h"
+#include "camera.h"
 
 void level_start()
 {
@@ -12,6 +13,7 @@ void level_start()
 	hud_init();
 	hud_show();
 	populate_space(100);
+	camera_init();
 
 	sun_light = 0;
 	vec_set(d3d_pointlightfalloff, vector(0, 0, 1));
