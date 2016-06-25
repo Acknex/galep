@@ -3,6 +3,7 @@
 //
 
 int spaceParticleCount = 0;
+int spaceJunkCount = 0;
 
 void space_particle_event(PARTICLE *particle)
 {
@@ -38,17 +39,55 @@ void space_particle(PARTICLE* particle)
 	particle.event = space_particle_event;
 }
 
-void populate_space(int maxParticles)
+void space_junk()
 {
+	vec_set(my.x, player.x);
+	vec_add(my.x, vector(random(8000) - 4000, random(8000) - 4000, random(8000) - 4000));
+	vec_scale(my.scale_x, 3+random(5));
+	vec_set(my.pan, vector(random(360), random(360), random(360)));
+	set(my, TRANSLUCENT);
+	my.alpha = 0;
+	while(my)
+	{
+		my.alpha += time_step*5;
+		if(my.alpha >= 100)
+		{
+			my.alpha = 100;
+			reset(my, TRANSLUCENT);
+		}
+		if(abs(my.x-player.x) > 4000 || abs(my.y-player.y) > 4000 || abs(my.z-player.z) > 4000)
+		{
+			spaceJunkCount -= 1;
+			ent_remove(my);
+			my = NULL;
+		}
+		wait(1);
+	}
+}
+
+void populate_space(int maxParticles, int maxSpaceJunk)
+{
+	STRING *junkModels[3];
+	junkModels[0] = "asteroid0.mdl";
+	junkModels[1] = "asteroid1.mdl";
+	junkModels[2] = "asteroid2.mdl";
+
 	wait(1);
-	while(1)
+	while(player)
 	{
 		if(spaceParticleCount < maxParticles)
 		{
 			effect(space_particle, maxParticles - spaceParticleCount, nullvector, nullvector);
+			spaceParticleCount = maxParticles;
 		}
 
-		spaceParticleCount = maxParticles;
+		while(spaceJunkCount < maxSpaceJunk)
+		{
+			int object = (int)random(3);
+			ent_create(junkModels[object], nullvector, space_junk);
+			spaceJunkCount += 1;
+		}
+
 		wait(1);
 	}
 }
