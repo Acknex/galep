@@ -3,6 +3,7 @@
 
 var vLevelSounds = 0;
 SOUND* sndLevelSounds[5];
+var hndMusicInGame = NULL;
 
 void init_star_cube() {
 	skyCube = ent_createlayer("textures\\cubemaps\\uni2+6.bmp", SKY | CUBE | SHOW, 2);
@@ -28,6 +29,7 @@ void init_levelSounds()
 		wait(-vWait);
 		snd_play(sndLevelSounds[vSound], 30 + random(20), random(100) - 50);
 	}
+
 }
 
 void uninit_levelSounds()

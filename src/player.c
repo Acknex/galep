@@ -5,18 +5,24 @@
 
 void spawn_player() {
 	
-	if (player != NULL) {
+	/*if (player != NULL) {
 		ent_remove(player);
-		ent_remove(entCrosshair);
 	}
+	if (entCrosshair != NULL) {
+		ent_remove(entCrosshair);
+		ent_remove(entCrosshair2);
+	}*/
 	player = ent_create("ufo.mdl", vector(1000,0,0), act_player);
 	entCrosshair = ent_create("textures//crosshair.bmp", vector(1100, 0, 0), NULL);
+	entCrosshair2 = ent_create("textures//crosshair.bmp", vector(1100, 0, 0), NULL);
 	entEngineFx = ent_create("models/ufo_engine_fx.mdl", vector(1000,0,0), act_engine_fx);
 	entEngineFx->skill1 = player;
 	
 	set(player, ENABLE_TRIGGER);
 	set(entCrosshair, PASSABLE | LIGHT);
+	set(entCrosshair2, PASSABLE | LIGHT);
 	vec_scale(entCrosshair.scale_x, 3.0);
+	vec_scale(entCrosshair2.scale_x, 3.0);
 	player.trigger_range = 20;
 	player.alpha = 100;
 	player.flags &= ~TRANSLUCENT;
@@ -27,7 +33,7 @@ action act_engine_fx() {
 	vec_scale(my->scale_x, 14.);
 	var time_passed;
 	wait(1);
-	while(1) {
+	while(me) {
 		my->x = -2.4;
 		my->y = 2.3;
 		my->z = -50;
@@ -41,7 +47,8 @@ action act_engine_fx() {
 void playerEvent() {
 	if (event_type == EVENT_SHOOT) {
 		if (player_hit_cooldown <= 0) {
-			vHudEnergy -=10;
+			snd_play(sndDie, 100, 0);
+			vHudEnergy -=ENEMY_DAMAGE;
 			player_hit_cooldown = 100;
 		}
 	}
@@ -74,7 +81,7 @@ action act_player() {
 	path_set(me, "path_000");
 	splineDistance = 0;
 	
-	while(me) {
+	while(me && (vHudEnergy > 0)) {
 
 /*		var blubb = 0;
 		while(blubb < path_length(my))
@@ -86,7 +93,7 @@ action act_player() {
 
 		// Move camera
 		path_spline(me, vSplinePos, splineDistance);
-		splineDistance +=30  * time_step + vHudSpeed / 100 + player_boost / 100;
+		splineDistance +=30  * time_step + vHudSpeed / 100 + player_boost * 5 * time_step;
 		
 		// Turn camera towards path
 		vec_diff(vDir, vSplinePos, vLastPos);
@@ -98,8 +105,8 @@ action act_player() {
 		// Move crosshair
 		if (entCrosshair != NULL) {
 			
-			vCrosshair.x += ((key_d || key_cur) - (key_a || key_cul)) * time_step * 50;
-			vCrosshair.y += ((key_w || key_cuu) - (key_s || key_cud)) * time_step * 50;
+			vCrosshair.x += ((key_d || key_cur) - (key_a || key_cul)) * time_step * 25;
+			vCrosshair.y += ((key_w || key_cuu) - (key_s || key_cud)) * time_step * 25;
 			
 			if ((((key_d || key_cur) - (key_a || key_cul)) == 0) && (((key_w || key_cuu) - (key_s || key_cud)) == 0)) {
 				vec_lerp(vCrosshair, vCrosshair, vector(screen_size.x / 2, screen_size.y / 2, 0), 0.1 * time_step);
@@ -121,6 +128,7 @@ action act_player() {
 			vec_to_angle(vCamAngle.x, vCam.x);
 
 			vec_set(entCrosshair.pan, vCamAngle.x);
+			vec_set(entCrosshair2.pan, vCamAngle.x);
 			
 			VECTOR temp;
 			ang_diff(temp, vCamAngle, camera.pan);
@@ -140,6 +148,9 @@ action act_player() {
 			vec_for_screen(vScreenUfo, camera);
 
 			vec_lerp(my.x, my.x, vScreenUfo, minv(time_step*0.5, 1.0));
+
+			//Place second crosshair
+			vec_lerp(entCrosshair2.x, my.x, entCrosshair.x, 0.7);
 			
 			// Rotate player
 			vec_set(temp, entCrosshair.x);
@@ -147,7 +158,7 @@ action act_player() {
 			vec_to_angle(my.pan, temp);
 			
 			// Shoot
-			if ((key_space) && (shootCooldown <= 0)) {
+			if ((key_space || mouse_left) && (shootCooldown <= 0)) {
 				shootCooldown = BULLET_COOLDOWN_E;
 				player_fire();
 			}
@@ -157,12 +168,12 @@ action act_player() {
 			// Boost
 			if (boost_cooldown > 0) {
 				if (camera.arc < 120) {
-					camera.arc +=1 * time_step;
+					camera.arc +=5 * time_step;
 				}
-				boost_cooldown -=80 * time_step;
+				boost_cooldown -=20 * time_step;
 			} else {
 				if (camera.arc > 90) {
-					camera.arc -=1 * time_step;
+					camera.arc -=5 * time_step;
 				}
 				player_boost = 0;
 				boost_cooldown = 0;
@@ -187,11 +198,6 @@ action act_player() {
 			//sparks(my.x, 0.25+random(0.5));
 		}
 		
-		// Check player energy
-		if (vHudEnergy <= 0) {
-			//printf("Player died");
-		}
-		
 		if (player_hit_cooldown > 0) {
 			set(me, TRANSLUCENT);
 			my.alpha = 40 + 25 * cos(player_hit_cooldown * 50);
@@ -203,6 +209,23 @@ action act_player() {
 		}
 
 		wait(1);
+	}
+	
+	if (vHudEnergy <= 0) {
+		snd_play(sndAiaiaiai, 100, 0);
+		
+		// TODO SEt camera next to player
+		while(!key_enter) {
+			var textWidth = str_width("Press ENTER to restart", NULL);
+			draw_text("Press ENTER to restart", (screen_size.x / 2) - (textWidth / 2), screen_size.y / 2, COLOR_WHITE);
+			my.pan +=4 * time_step;
+			wait(1);
+	}
+		while(key_enter) wait(1);
+		hud_hide();
+		hud_reinit();
+		level_stop();
+		level_start();
 	}
 }
 
@@ -226,6 +249,8 @@ action act_bullet() {
 void player_fire() {
 	if ((player == NULL) || (entCrosshair == NULL)) return;
 	
+	snd_play(sndLaser, 20, 0);
+	
 	VECTOR vStartPos;
 	vec_set(vStartPos, vector(100,0,0));
 	vec_rotate(vStartPos, player.pan);
@@ -238,6 +263,7 @@ void player_fire() {
 
 void boost_player() {
 	if (boost_cooldown > 0) return;
+	snd_play(sndInfinity, 100, 0);
 	boost_cooldown = BOOST_COOLDOWN_E;
 	player_boost = 5;
 }

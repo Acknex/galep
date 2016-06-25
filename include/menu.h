@@ -24,6 +24,7 @@ TEXT* menu_txt =
 var menu_hnd_music;
 var menu_is_closed;
 var intro_is_finished;
+var stop_intro;
 var menu_show_button;
 void actMenuUFO();
 void startIntro();

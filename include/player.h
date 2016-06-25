@@ -10,6 +10,8 @@
 
 #define BOOST_COOLDOWN_E 1000
 
+#define ENEMY_DAMAGE 40
+
 void spawn_player();
 void act_player();
 void act_engine_fx();
@@ -19,7 +21,13 @@ void move_crosshair(VECTOR* vMoveSpeed, VECTOR* vMoveDir);
 
 BMAP* bmapCrosshair = "textures//crosshair.bmp";
 ENTITY* entCrosshair = NULL;
+ENTITY* entCrosshair2 = NULL;
 ENTITY* entEngineFx = NULL;
+
+SOUND* sndAiaiaiai = "aiaiaiai.ogg";
+SOUND* sndInfinity = "infinity.wav";
+SOUND* sndDie = "die.wav";
+SOUND* sndLaser = "hit.wav";
 
 int shootCooldown;
 var smokeCooldown;
