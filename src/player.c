@@ -84,10 +84,10 @@ action act_player() {
 		// Move crosshair
 		if (entCrosshair != NULL) {
 			
-			vCrosshair.x += (key_d - key_a) * time_step * 50;
-			vCrosshair.y += (key_s - key_w) * time_step * 50;
+			vCrosshair.x += ((key_d || key_cur) - (key_a || key_cul)) * time_step * 50;
+			vCrosshair.y += ((key_w || key_cuu) - (key_s || key_cud)) * time_step * 50;
 			
-			if (((key_d - key_a) == 0) && ((key_s - key_w) == 0)) {
+			if ((((key_d || key_cur) - (key_a || key_cul)) == 0) && (((key_w || key_cuu) - (key_s || key_cud)) == 0)) {
 				vec_lerp(vCrosshair, vCrosshair, vector(screen_size.x / 2, screen_size.y / 2, 0), 0.1 * time_step);
 			}
 			
