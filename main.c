@@ -37,15 +37,21 @@ void main_close()
 	sys_exit("");
 }
 
+void main_resize()
+{
+	resizeMenu();
+}
+
 void main() {
 		
 	on_exit = main_exit;
 	on_close = main_close;
+	on_resize = main_resize;
 	randomize();
 
 	//TODO: fancy menu
-	//showMenu();
-	level_start();
+	showMenu();
+	//level_start();
 	
 	while(1) {
 		wait(1);
