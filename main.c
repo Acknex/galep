@@ -14,11 +14,13 @@
 #include "item_boost.h"
 #include "environment.h"
 #include "item_energy.h"
+#include "explosion.h"
 
 #include "level.c"
 #include "player.c"
 #include "camera.c"
 #include "environment.c"
+#include "explosion.c"
 
 void main() {
 		

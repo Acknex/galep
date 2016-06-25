@@ -2,23 +2,9 @@
 // Created by Slin on 24.06.2016.
 //
 
-void populate_space(int maxParticles)
-{
-	spaceParticleCount = 0;
-	wait(1);
-	while(1)
-	{
-		if(spaceParticleCount < maxParticles)
-		{
-			effect(particle_space, maxParticles - spaceParticleCount, nullvector, nullvector);
-		}
+int spaceParticleCount = 0;
 
-		spaceParticleCount = maxParticles;
-		wait(1);
-	}
-}
-
-void particle_space_event(PARTICLE *particle)
+void space_particle_event(PARTICLE *particle)
 {
 	particle.vel_x = -20;
 	particle.lifespan = 100;
@@ -32,7 +18,7 @@ void particle_space_event(PARTICLE *particle)
 	}
 }
 
-void particle_space(PARTICLE* particle)
+void space_particle(PARTICLE* particle)
 {
 	vec_set(particle.x, camera.x);
 	vec_add(particle.x, vector(random(1000) - 500, random(1000) - 500, random(1000) - 500));
@@ -41,5 +27,20 @@ void particle_space(PARTICLE* particle)
 	particle.alpha = 100;
 	particle.size = 0.7 + random(0.5);
 	particle.lifespan = 100;
-	particle.event = particle_space_event;
+	particle.event = space_particle_event;
+}
+
+void populate_space(int maxParticles)
+{
+	wait(1);
+	while(1)
+	{
+		if(spaceParticleCount < maxParticles)
+		{
+			effect(space_particle, maxParticles - spaceParticleCount, nullvector, nullvector);
+		}
+
+		spaceParticleCount = maxParticles;
+		wait(1);
+	}
 }
