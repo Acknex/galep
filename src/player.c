@@ -14,7 +14,7 @@ void spawn_player() {
 	entEngineFx = ent_create("models/ufo_engine_fx.mdl", vector(1000,0,0), act_engine_fx);
 	entEngineFx->skill1 = player;
 	
-	set(player, ENABLE_TRIGGER | PASSABLE);
+	set(player, ENABLE_TRIGGER);
 	set(entCrosshair, PASSABLE | LIGHT);
 	vec_scale(entCrosshair.scale_x, 3.0);
 	player.trigger_range = 20;
@@ -38,6 +38,15 @@ action act_engine_fx() {
 	}
 }
 
+void playerEvent() {
+	if (event_type == EVENT_SHOOT) {
+		if (player_hit_cooldown <= 0) {
+			vHudEnergy -=10;
+			player_hit_cooldown = 100;
+		}
+	}
+}
+
 action act_player() {
 	VECTOR vSplinePos, vLastPos, vDir, vScreen, vCam, vCrosshair, vCamAngle, vLerp, vScreenUfo, vCrossAngle, vNewCamAng, vOldScreenBorder;
 	
@@ -55,6 +64,9 @@ action act_player() {
 	vec_set(vOldScreenBorder, vector(-screen_size.x*0.5, -screen_size.y*0.5, 0));
 	
 	my.trigger_range = 20;
+	my.emask |= ENABLE_SHOOT;
+	
+	my.event = playerEvent;
 	smokeCooldown = 0;
 	
 	vec_set(vCrosshair, vector(screen_size.x / 2, screen_size.y / 2, 0));
@@ -178,6 +190,16 @@ action act_player() {
 		// Check player energy
 		if (vHudEnergy <= 0) {
 			//printf("Player died");
+		}
+		
+		if (player_hit_cooldown > 0) {
+			set(me, TRANSLUCENT);
+			my.alpha = 40 + 25 * cos(player_hit_cooldown * 50);
+			player_hit_cooldown -=time_step;
+			if (player_hit_cooldown <= 0) {
+				reset(me, TRANSLUCENT);
+				my.alpha = 50;
+			}
 		}
 
 		wait(1);

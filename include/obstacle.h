@@ -4,7 +4,7 @@
 #define is_collided  FLAG4
 
 void obstacle_setup();
-var obstacle_event();
+var obstacle_event(var range);
 void obstacle_particle (PARTICLE *p);
 
 #include "obstacle.c"

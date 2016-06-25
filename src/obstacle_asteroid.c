@@ -3,6 +3,7 @@
 #define ASTEROID_PENALTY_SPEED 2
 #define ASTEROID_PENALTY_ENERGY 10
 #define ASTEROID_SHARD_LIFETIME 32
+#define OBSTACLE_ASTEROID_SCANRANGE 90
 
 SOUND* sndCollide = "collide.ogg";
 
@@ -26,10 +27,10 @@ action obstacle_asteroid()
 	while(!is(me, is_collided))
 	{
 		vParticles += time_step;
-		if (vParticles > 10)
+		if (vParticles > 5)
 		{
-			effect(obstacle_particle, 20, &my->x, nullvector);
-			vParticles -= 10;
+			effect(obstacle_particle, 10, &my->x, nullvector);
+			vParticles -= 5;
 		}
 		my->x = vPos.x + 25 * sinv(total_ticks * 5 + vOffset);
 		my->y = vPos.y + 25 * sinv(total_ticks * 5 + vOffset * 0.33);
@@ -43,7 +44,7 @@ action obstacle_asteroid()
 
 void obstacle_asteroid__evt()
 {
-	if (obstacle_event() != 0)
+	if (obstacle_event(OBSTACLE_ASTEROID_SCANRANGE) != 0)
 	{
 		hud_addEnergy(-ASTEROID_PENALTY_ENERGY);	
 		hud_addSpeed(-ASTEROID_PENALTY_SPEED);	

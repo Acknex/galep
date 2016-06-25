@@ -56,6 +56,7 @@ var vHudTimeInt;
 var vHudMaxEnergy;
 var vHudMaxSpeed;
 var vHudMaxTime;
+VECTOR vHudTimeColor;
 
 void hud_show()
 {
@@ -126,7 +127,37 @@ void hud_addSpeed(var value)
 
 void hud_addTime(var value)
 {
-	vHudTime = clamp (vHudTime + value, 0, vHudMaxTime);
+	var vCnt = 0;
+	var vOldTime = vHudTime;
+	var vHudTimeTarget = clamp (vHudTime + value, 0, vHudMaxTime);
+
+	if (vHudTimeTarget < vOldTime)
+	{
+		pan_setcolor(hud_pan, 1, 1, COLOR_RED);
+		wait(-0.5);		
+		while (vCnt < 1)
+		{
+			vCnt = minv(1, vCnt + 0.5 * time_step);
+			vHudTime = (1 - vCnt) * vHudTime + vCnt * vHudTimeTarget;	
+			wait(1);
+		}
+		wait(-1);		
+		pan_setcolor(hud_pan, 1, 1, &vHudTimeColor);
+	}
+	else if (vHudTimeTarget > vOldTime)
+	{
+		pan_setcolor(hud_pan, 1, 1, COLOR_GREEN);
+		wait(-0.5);		
+		while (vCnt < 1)
+		{
+			vCnt = minv(1, vCnt + 0.5 * time_step);
+			vHudTime = (1 - vCnt) * vHudTime + vCnt * vHudTimeTarget;	
+			wait(1);
+		}
+		wait(-1);		
+		pan_setcolor(hud_pan, 1, 1, &vHudTimeColor);
+	}
+	
 }
 
 
@@ -159,17 +190,21 @@ void hud__update()
 	hud_right_gauge_pan->pos_y = screen_size.y * 0.01;
 
 	//timer
-	var vHudTimeLeft = clamp(vHudTime - (timer_getMinutes() * 60 + timer_getSeconds()), 0, vHudMaxTime);
+	var vPassed = (timer_getMinutes() * 60 + timer_getSeconds());
+	vHudMaxTime = HUD_MAX_TIME + vPassed;
+	var vHudTimeLeft = clamp(vHudTime - vPassed, 0, vHudMaxTime);
 	var vOldTime = vHudTimeInt;
 	vHudTimeInt = integer(vHudTimeLeft);
 	if (vOldTime > 10 && vHudTimeInt <= 10)
 	{
 		pan_setcolor(hud_pan, 1, 1, COLOR_RED);
+		vec_set (&vHudTimeColor, COLOR_RED);
 	}
 
 	if (vHudTimeInt > 10 && vOldTime <= 10)
 	{
 		pan_setcolor(hud_pan, 1, 1, COLOR_WHITE);
+		vec_set (&vHudTimeColor, COLOR_WHITE);
 	}
 
 	if (vOldTime > vHudTimeInt && vHudTimeInt <= 5)
