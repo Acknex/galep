@@ -107,6 +107,8 @@ void showMenu()
 void closeMenu() {
 	on_anykey = NULL;
 	menu_is_closed = true;
+	startIntro();
+	/*
 	var volume = 100;
 	menu_pan_fade->flags |= SHOW;
 	
@@ -120,12 +122,87 @@ void closeMenu() {
 	level_start();
 	menu_pan_fade->flags &= ~SHOW;
 	menu_txt->flags &= ~SHOW;
+	*/
 }
 
+void stopIntro() {
+	on_anykey = NULL;
+	float volume = 100;
+	while(volume > 0) {
+		volume -= 5.*time_step;
+		menu_pan_fade->alpha = 100-volume;
+		wait(1);
+	}
+	media_stop(volume);
+	level_start();
+	menu_pan_fade->flags &= ~SHOW;
+	menu_txt->flags &= ~SHOW;
+}
+
+void startIntro() {
+	intro_is_finished = false;
+	float volume = 100;
+	float start = camera.tilt;
+	on_anykey = stopIntro;
+	while(volume > 0) {
+		menu_txt->alpha -= 30.*time_step;
+		volume -= 2.*time_step;
+		media_tune(menu_hnd_music, volume, 100, 0);
+		camera.tilt = start - (100-volume)/100.0*(start+45);
+		wait(1);
+	}
+	ENTITY* ufo = ent_create("models/ufo.mdl", vector(-530, 806, 058), actMenuUFO);
+	ENTITY* entEngineFx = ent_create("models/ufo_engine_fx.mdl", vector(1000,0,0), act_engine_fx);
+	entEngineFx->skill1 = ufo;
+	
+	str_cpy((menu_txt->pstring)[0], "Press button to skip");
+	menu_txt->flags &= ~(CENTER_X | CENTER_Y);
+	menu_txt->pos_x = 0;
+	menu_txt->pos_y = screen_size.y-20;
+	volume = 0;
+	menu_txt->alpha = 0;
+	menu_txt->flags |= SHOW;
+	while(volume < 1) {
+		volume = clamp(volume+time_step*.05, 0, 1);
+		menu_txt->alpha = volume*100;
+	}
+}
+
+action actMenuUFO() {
+	if(intro_is_finished)
+		return;
+	media_play("media//priority_juan.ogg", NULL, 100);
+	VECTOR* vecDir = vector(20,-40, -40);
+	float time_passed = 0;
+	while(my) {
+		my->roll = sin(total_ticks*.04)*5;
+		vecDir.x = 1.80696;
+		vecDir.y = -1.04042;
+		vecDir.z = -0.83887;
+		vec_scale(vecDir.x, time_step*24.);
+		vec_add(my->x, vecDir);
+		time_passed += time_step/16.;
+		if(time_passed > 4)
+		{
+			camera->x = 200*2;
+			camera->y = 60*2;
+			camera->z = 40*2;
+			camera->pan = 185;
+			camera->tilt = -11;
+			camera->roll = 0;
+			vec_add(camera->x, my->x);
+		}
+		wait(1);
+	}
+}
 action titleEntity() {
 	float aleph = 0;
 	while(aleph < 100) {
 		aleph = clamp(aleph+time_step/(16.*9./100.), 0, 100);
+		if(menu_is_closed) {
+			//my->flags |= INVISIBLE;
+			return;
+		}
 		camera->tilt = 40 - pow(aleph/100.0, 0.5)*40;
 		wait(1);
 	}
@@ -133,6 +210,10 @@ action titleEntity() {
 	
 	// 9 seconds
 	while(aleph < 1) {
+		if(menu_is_closed) {
+			//my->flags |= INVISIBLE;
+			return;
+		}
 		aleph = clamp(aleph+time_step*.1, 0, 1);
 		float alpha = pow(aleph,4);
 		my->x = -20 + alpha*(536+20);
@@ -144,6 +225,10 @@ action titleEntity() {
 	}
 	aleph = 0;
 	while(1) {
+		if(menu_is_closed) {
+			//my->flags |= INVISIBLE;
+			return;
+		}
 		aleph += time_step*.15;
 		my->pan = -90 + sin(aleph)*5.;
 		wait(1);

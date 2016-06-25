@@ -10,6 +10,7 @@ void spawn_player() {
 	player = ent_create("ufo.mdl", vector(1000,0,0), act_player);
 	entCrosshair = ent_create("textures//crosshair.bmp", vector(1100, 0, 0), NULL);
 	entEngineFx = ent_create("models/ufo_engine_fx.mdl", vector(1000,0,0), act_engine_fx);
+	entEngineFx->skill1 = player;
 	
 	set(player, ENABLE_TRIGGER | PASSABLE);
 	set(entCrosshair, PASSABLE);
@@ -21,13 +22,15 @@ void spawn_player() {
 action act_engine_fx() {
 	my->flags |= BRIGHT;
 	vec_scale(my->scale_x, 14.);
+	var time_passed;
+	wait(1);
 	while(1) {
 		my->x = -2.4;
 		my->y = 2.3;
 		my->z = -50;
-		vec_rotate(my->x, player->pan);
-		vec_add(my->x, player->x);
-		vec_set(my->pan, player->pan);
+		vec_rotate(my->x, ((ENTITY*)my->skill1)->pan);
+		vec_add(my->x, ((ENTITY*)my->skill1)->x);
+		vec_set(my->pan, ((ENTITY*)my->skill1)->pan);
 		wait(1);
 	}
 }
