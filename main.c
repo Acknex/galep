@@ -17,6 +17,7 @@
 #include "item_energy.h"
 #include "item_speed.h"
 #include "obstacle_asteroid.h"
+#include "obstacle_cloud.h"
 #include "environment.h"
 #include "explosion.h"
 #include "enemy.h"

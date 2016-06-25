@@ -1,7 +1,7 @@
 #include "explosion.h"
 
 #define OBSTACLE_PARTICLE_COLOR vector(0, 0, 255)
-#define OBSTACLE_SCANRANGE 90
+#define OBSTACLE_ASTEROID_SCANRANGE 90
 
 void obstacle__particleFader(PARTICLE *p);
 
@@ -13,7 +13,7 @@ void obstacle_setup()
 	my->event = obstacle_event;
 }
 
-var obstacle_event()
+var obstacle_event(var range)
 {
 	if (!player || !you)
 	{
@@ -22,7 +22,7 @@ var obstacle_event()
 	
 	if (event_type == EVENT_SCAN && you == player)
 	{
-		if (vec_dist(&your->x, &my->x) < OBSTACLE_SCANRANGE)
+		if (vec_dist(&your->x, &my->x) < range)
 		{
 			my->event = NULL;
 			set (me, is_collided);
