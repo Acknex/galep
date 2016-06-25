@@ -15,7 +15,8 @@ void spawn_player() {
 	entEngineFx->skill1 = player;
 	
 	set(player, ENABLE_TRIGGER | PASSABLE);
-	set(entCrosshair, PASSABLE);
+	set(entCrosshair, PASSABLE | LIGHT);
+	vec_scale(entCrosshair.scale_x, 3.0);
 	player.trigger_range = 20;
 	player.alpha = 100;
 	player.flags &= ~TRANSLUCENT;
@@ -61,13 +62,13 @@ action act_player() {
 	
 	while(me) {
 
-		var blubb = 0;
+/*		var blubb = 0;
 		while(blubb < path_length(my))
 		{
 			path_spline(me, vSplinePos, blubb);
 			blubb += 20;
 			draw_line3d(vSplinePos, vector(255, 200, 200), 100);
-		}
+		}*/
 
 		// Move camera
 		path_spline(me, vSplinePos, splineDistance);
@@ -95,7 +96,7 @@ action act_player() {
 			
 			vScreen.x = vCrosshair.x;
 			vScreen.y = vCrosshair.y;
-			vScreen.z = 1000;
+			vScreen.z = 2000;
 			vec_for_screen(vScreen, camera);
 			
 			vec_set(entCrosshair.x, vScreen);
@@ -104,10 +105,12 @@ action act_player() {
 			vec_set(vCam, entCrosshair.x);
 			vec_sub(vCam, camera.x);
 			vec_to_angle(vCamAngle.x, vCam.x);
+
+			vec_set(entCrosshair.pan, vCamAngle.x);
 			
 			VECTOR temp;
 			ang_diff(temp, vCamAngle, camera.pan);
-			vec_scale(temp, 0.9);
+			vec_scale(temp, minv(time_step*5, 1.0));
 			ang_add(camera.pan, temp);
 			
 			// Move player
@@ -115,21 +118,17 @@ action act_player() {
 			vScreenUfo.y = vCrosshair.y;
 			vScreenUfo.z = 500;
 			vec_for_screen(vScreenUfo, camera);
-			vec_lerp(my.x, vScreenUfo, my.x, 0.9);
+			vec_lerp(my.x, my.x, vScreenUfo, minv(time_step*0.5, 1.0));
 			
 			// Rotate player
-			vec_set(my.pan, vCamAngle.x);
+			vec_set(temp, entCrosshair.x);
+			vec_sub(temp, my.x);
+			vec_to_angle(my.pan, temp);
 			
 			// Shoot
 			if ((key_space) && (shootCooldown <= 0)) {
 				shootCooldown = BULLET_COOLDOWN_E;
 				player_fire();
-			}
-	
-			if(key_e && shootCooldown == 0)
-			{
-				shootCooldown = BULLET_COOLDOWN_E;
-				start_explosion(my.x, 0.5+random(3));
 			}
 	
 			if (shootCooldown > 0) shootCooldown -=80 * time_step;
@@ -197,13 +196,11 @@ void player_fire() {
 	if ((player == NULL) || (entCrosshair == NULL)) return;
 	
 	VECTOR vStartPos;
-	vec_zero(vStartPos);
-	
-	vec_set(vStartPos, player.x);
+	vec_set(vStartPos, vector(100,0,0));
 	vec_rotate(vStartPos, player.pan);
-	vec_add(vStartPos, vector(100,0,0));
+	vec_add(vStartPos, player.x);
 	
-	ENTITY* bullet = ent_create(CUBE_MDL, vector(player.x + 100, player.y, player.z), act_bullet);
+	ENTITY* bullet = ent_create(CUBE_MDL, vStartPos, act_bullet);
 	vec_set(bullet.blue, vector(0,255,0));
 	set(bullet, LIGHT);
 }
