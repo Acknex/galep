@@ -2,7 +2,7 @@
 #define CAMERA_C_
 
 void camera_init() {
-	camera.arc = 90;
+	camera.arc = 100;
 }
 
 #endif

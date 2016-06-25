@@ -1,6 +1,8 @@
 #ifndef PLAYER_C_
 #define PLAYER_C_
 
+#include <entmove.c>
+
 
 void spawn_player() {
 	
@@ -37,7 +39,7 @@ action act_engine_fx() {
 }
 
 action act_player() {
-	VECTOR vSplinePos, vLastPos, vDir, vScreen, vCam, vCrosshair, vCamAngle, vLerp, vScreenUfo;
+	VECTOR vSplinePos, vLastPos, vDir, vScreen, vCam, vCrosshair, vCamAngle, vLerp, vScreenUfo, vCrossAngle;
 	
 	vec_zero(vSplinePos);
 	vec_zero(vLastPos);
@@ -47,13 +49,14 @@ action act_player() {
 	vec_zero(vCamAngle);
 	vec_zero(vLerp);
 	vec_zero(vScreenUfo);
+	vec_zero(vCrossAngle);
 	
 	my.trigger_range = 20;
 	
-	vec_set(vCrosshair, vector(MAX_CROSSHAIR_X_E / 2, MAX_CROSSHAIR_Y_E / 2, 0));
+	vec_set(vCrosshair, vector(screen_size.x / 2, screen_size.y / 2, 0));
 	
 	path_set(me, "path_000");
-	var dist = 0;
+	splineDistance = 0;
 	
 	while(me) {
 
@@ -66,8 +69,8 @@ action act_player() {
 		}
 
 		// Move camera
-		path_spline(me, vSplinePos, dist);
-		dist +=30  * time_step + vHudSpeed / 100 + player_boost / 100;
+		path_spline(me, vSplinePos, splineDistance);
+		splineDistance +=30  * time_step + vHudSpeed / 100 + player_boost / 100;
 		
 		// Turn camera towards path
 		vec_diff(vDir, vSplinePos, vLastPos);
@@ -83,15 +86,15 @@ action act_player() {
 			vCrosshair.y += (key_s - key_w) * time_step * 50;
 			
 			if (((key_d - key_a) == 0) && ((key_s - key_w) == 0)) {
-				vec_lerp(vCrosshair, vCrosshair, vector(MAX_CROSSHAIR_X_E / 2, MAX_CROSSHAIR_Y_E / 2, 0), 0.4 * time_step);
+				vec_lerp(vCrosshair, vCrosshair, vector(screen_size.x / 2, screen_size.y / 2, 0), 0.1 * time_step);
 			}
 			
-			vCrosshair.x = clamp(vCrosshair.x, 0, MAX_CROSSHAIR_X_E);
-			vCrosshair.y = clamp(vCrosshair.y, 0, MAX_CROSSHAIR_Y_E);
+			vCrosshair.x = clamp(vCrosshair.x, 0, screen_size.x);
+			vCrosshair.y = clamp(vCrosshair.y, 0, screen_size.y);
 			
 			vScreen.x = vCrosshair.x;
 			vScreen.y = vCrosshair.y;
-			vScreen.z = 500;
+			vScreen.z = 1000;
 			vec_for_screen(vScreen, camera);
 			
 			vec_set(entCrosshair.x, vScreen);
@@ -103,12 +106,11 @@ action act_player() {
 			vec_lerp(camera.pan, camera.pan, vCamAngle.x, 0.8);
 			
 			// Move player
-			vScreenUfo.x = vCrosshair.x * 0.8;
-			vScreenUfo.y = vCrosshair.y * 0.8;
+			vScreenUfo.x = vCrosshair.x;
+			vScreenUfo.y = vCrosshair.y;
 			vScreenUfo.z = 500;
 			vec_for_screen(vScreenUfo, camera);
-			vec_lerp(vLerp, camera.x, vScreenUfo.x, 0.8);
-			vec_set(player.x, vLerp);
+			vec_lerp(my.x, vScreenUfo, my.x, 0.9);
 			
 			// Rotate player
 			vec_set(my.pan, vCamAngle.x);
@@ -141,7 +143,7 @@ action act_player() {
 		
 		// Smoke if ship is broken
 		if (vHudEnergy < 50) {
-			smoke(my.x, 0.25+random(0.5));
+			smoke(my.x, 0.25 * ((100 - vHudEnergy) / 100)+random(0.5));
 		}
 
 		// sparks if ship is on boost

@@ -8,9 +8,6 @@
 #define BULLET_COOLDOWN_E 100
 #define BULLET_AGE_E 800
 
-#define MAX_CROSSHAIR_X_E 800
-#define MAX_CROSSHAIR_Y_E 600
-
 #define BOOST_COOLDOWN_E 1000
 
 void spawn_player();
@@ -33,6 +30,7 @@ int sBottom = 0;
 
 var width = 0;
 var height = 0;
+var splineDistance = 0;
 
 var player_speed = PLAYER_SPEED_E;
 var player_boost = 10;
