@@ -8,7 +8,7 @@
 #define HUD_MAX_TIME 999
 #define HUD_DEF_ENERGY 100
 #define HUD_DEF_SPEED 0
-#define HUD_DEF_TIME 23
+#define HUD_DEF_TIME 999
 
 
 void (*HUD__resizeEv)();
