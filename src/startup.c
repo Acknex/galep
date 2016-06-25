@@ -8,9 +8,10 @@
 void level_start()
 {
 	//level_load(NULL);
-	//level_load("testlevel.wmb");
-	level_load("testbed.wmb");
+	level_load("testlevel.wmb");
+	//level_load("testbed.wmb");
 	init_star_cube();
+	init_levelSounds();
 	hud_init();
 	spawn_player();
 	hud_show();
@@ -34,12 +35,14 @@ void level_start()
 
 void level_restart()
 {
+	init_levelSounds();
 	hud_reinit();
 	hud_show();
 }
 
 void level_stop()
 {
+	uninit_levelSounds();
 	uninit_star_cube();
 	hud_hide();
 }

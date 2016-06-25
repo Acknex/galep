@@ -1,4 +1,7 @@
+#include "explosion.h"
+
 #define OBSTACLE_PARTICLE_COLOR vector(0, 0, 255)
+#define OBSTACLE_SCANRANGE 90
 
 SOUND* sndCollide = "collide.ogg";
 
@@ -21,59 +24,37 @@ var obstacle_event()
 	
 	if (event_type == EVENT_SCAN && you == player)
 	{
-		my->event = NULL;
-		set (me, is_collided);
-		ent_playsound(me, sndCollide, 1000);
-		return 1;
+		if (vec_dist(&your->x, &my->x) < OBSTACLE_SCANRANGE)
+		{
+			my->event = NULL;
+			set (me, is_collided);
+			ent_playsound(me, sndCollide, 1000);
+			sparks(&my->x, 1);
+			return 1;
+		}
+		return 0;
 	}
 	
 	return 0;	
 }
 
-void obstacle_fade()
-{
-/*
-	var vTicks = total_ticks;
-	var vLerp = 1;
-	VECTOR vecPos;
-	VECTOR vecScale;
-	
-	vec_set(&vecPos, &my->x);
-	vec_set(&vecScale, &my->scale_x);
-	
-	while (vLerp > 0)
-	{
-		//move item towards player
-		vec_lerp(&my->x, &player->x, &vecPos, vLerp);
-		vec_set(&my->scale_x, &vecScale);
-		vec_scale(&my->scale_x, vLerp);
-		my->pan += (total_ticks - vTicks) * 10 * time_step;
-		wait(1);
-
-		vLerp -= maxv(0.001, 0.1 * time_step); 
-	}
-	*/
-	ptr_remove(me);
-}
-
 void obstacle_particle (PARTICLE *p) 
 {
 	VECTOR vecTemp;
-	vec_randomize(&vecTemp, 10);
-	vec_normalize(&vecTemp, 4);
-	vec_add (&p->vel_x, &vecTemp);
-	p->vel_y = 0;
+	vec_randomize(&vecTemp, 100);
+	vec_normalize(&vecTemp, 40);
+	vec_add (&p->x, &vecTemp);
 	vec_set(&p->blue, OBSTACLE_PARTICLE_COLOR);
-	set(p, /*MOVE |*/ TRANSLUCENT | BRIGHT);
+	set(p, TRANSLUCENT | BRIGHT);
 	p->lifespan = 80;
-	p->size  = 30 + random(5);
+	p->size  = 20 + random(15);
 	p->event = obstacle__particleFader;
 }
 
 void obstacle__particleFader(PARTICLE *p) 
 {
 	p->alpha -= 5 * time_step;
-	p->size += time_step;
+	p->size += 7*time_step;
 	if (p->alpha <= 0) 
 	{
 		p->lifespan = 0;

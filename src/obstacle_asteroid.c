@@ -25,7 +25,7 @@ action obstacle_asteroid()
 		vParticles += time_step;
 		if (vParticles > 10)
 		{
-			effect(obstacle_particle, 10, &my->x, nullvector);
+			effect(obstacle_particle, 20, &my->x, nullvector);
 			vParticles -= 10;
 		}
 		my->x = vPos.x + 25 * sinv(total_ticks * 5 + vOffset);

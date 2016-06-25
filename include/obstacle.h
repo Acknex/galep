@@ -5,7 +5,6 @@
 
 void obstacle_setup();
 var obstacle_event();
-void obstacle_fade();
 void obstacle_particle (PARTICLE *p);
 
 #include "obstacle.c"

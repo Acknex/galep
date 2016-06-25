@@ -36,7 +36,7 @@ action act_engine_fx() {
 }
 
 action act_player() {
-	VECTOR vSplinePos, vLastPos, vDir, vScreen, vCam, vCrosshair, vCamAngle, vLerp, vScreenUfo, vCrossAngle;
+	VECTOR vSplinePos, vLastPos, vDir, vScreen, vCam, vCrosshair, vCamAngle, vLerp, vScreenUfo, vCrossAngle, vNewCamAng;
 	
 	vec_zero(vSplinePos);
 	vec_zero(vLastPos);
@@ -47,6 +47,7 @@ action act_player() {
 	vec_zero(vLerp);
 	vec_zero(vScreenUfo);
 	vec_zero(vCrossAngle);
+	vec_zero(vNewCamAng);
 	
 	my.trigger_range = 20;
 	
@@ -101,8 +102,10 @@ action act_player() {
 			vec_sub(vCam, camera.x);
 			vec_to_angle(vCamAngle.x, vCam.x);
 			
-			// TODO: Remove in case of cam error
-			//vec_lerp(camera.pan, camera.pan, vCamAngle.x, 0.8);
+			VECTOR temp;
+			ang_diff(temp, vCamAngle, camera.pan);
+			vec_scale(temp, 0.9);
+			ang_add(camera.pan, temp);
 			
 			// Move player
 			vScreenUfo.x = vCrosshair.x;

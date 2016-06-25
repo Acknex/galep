@@ -5,5 +5,7 @@ ENTITY* skyCube = NULL;
 
 void init_star_cube();
 void uninit_star_cube();
+void init_levelSounds();
+void uninit_levelSounds();
 
 #endif
