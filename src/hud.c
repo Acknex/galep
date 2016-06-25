@@ -1,9 +1,15 @@
 
 #include <windows.h>
+#include "timer.h"
 
 #define HUD_FONT_SIZE 100
 #define HUD_MAX_ENERGY 100
 #define HUD_MAX_SPEED 16
+#define HUD_MAX_TIME 2000
+#define HUD_DEF_ENERGY 100
+#define HUD_DEF_SPEED 100
+#define HUD_DEF_TIME 23
+
 
 void (*HUD__resizeEv)();
 void hud__update();
@@ -13,16 +19,13 @@ void HUD__resize();
 BMAP* left_gauge_bmap = "gauge_blue.tga";
 BMAP* right_gauge_bmap = "gauge_yellow.tga";
 FONT* HUD__font = "Digital-7#30";
+SOUND* HUD__sndTimeout = "timeout.wav";
 
 PANEL* hud_pan = 
 {
-	pos_x = 0;
-	pos_y = 0;
-	size_x = 1024;
-	size_y = 256; 
 	layer = 3;
-//	alpha = 70;
-//	flags = LIGHT | TRANSLUCENT;
+	alpha = 70;
+	flags = /*LIGHT | TRANSLUCENT |*/ CENTER_X | SHADOW;
 }
 
 PANEL* hud_left_gauge_pan = 
@@ -46,11 +49,13 @@ PANEL* hud_right_gauge_pan =
 }
 
 var vHudInitialized = 0;
-var vHudEnergy = 0;
-var vHudMaxEnergy = HUD_MAX_ENERGY;
-var vHudSpeed = 0;
-var vHudMaxSpeed = HUD_MAX_SPEED;
-var vHudTime = 1337;
+var vHudEnergy;
+var vHudSpeed;
+var vHudTime;
+var vHudTimeInt;
+var vHudMaxEnergy;
+var vHudMaxSpeed;
+var vHudMaxTime;
 
 void hud_show()
 {
@@ -81,22 +86,26 @@ void hud_init()
 {
 	if (!vHudInitialized)
 	{
+		hud_reinit();
 		HUD__resizeEv = on_resize;
 		on_resize = HUD__resize;
 		AddFontResource("media//digital-7.ttf");
-		pan_setdigits(hud_pan, 0, 0, 0, "%1.0f", "*", 1, &vHudTime);
+		pan_setdigits(hud_pan, 0, 0, 0, "%1.0f", "*", 1, &vHudTimeInt);
 		HUD__resize();
 		vHudInitialized = 1;
 	}
 	
-	while(1)
-	{
-		//temp
-		//vHudEnergy = cycle(vHudEnergy + 5* time_step,0,vHudMaxEnergy);
-		//vHudSpeed = cycle(vHudSpeed + 3* time_step,0,vHudMaxSpeed);
-		wait(1);
-	}
+}
 
+void hud_reinit()
+{
+	reset_timer();
+	vHudEnergy = HUD_DEF_ENERGY;
+	vHudSpeed = HUD_DEF_SPEED;
+	vHudTime = HUD_DEF_TIME;
+	vHudMaxEnergy = HUD_MAX_ENERGY;
+	vHudMaxSpeed = HUD_MAX_SPEED;
+	vHudMaxTime = HUD_MAX_TIME;
 }
 
 void hud_close()
@@ -114,6 +123,11 @@ void hud_addSpeed(var value)
 	vHudSpeed = clamp (vHudSpeed + value, 0, vHudMaxSpeed);
 }
 
+void hud_addTime(var value)
+{
+	vHudTime = clamp (vHudTime + value, 0, vHudMaxTime);
+}
+
 
 void hud__update()
 {
@@ -121,23 +135,48 @@ void hud__update()
 	var height;
 	var value;
 
+	//left gauge
 	width = bmap_width(hud_left_gauge_pan->bmap);
 	height = bmap_height(hud_left_gauge_pan->bmap);
 	value = width * vHudEnergy / vHudMaxEnergy;
 	hud_left_gauge_pan->scale_x = screen_size.x / width * 0.4;
 	hud_left_gauge_pan->scale_y = hud_left_gauge_pan->scale_x * 0.6;
 	hud_left_gauge_pan->size_y = height;
-	hud_left_gauge_pan->size_x = clamp(value, 0, width);
+	hud_left_gauge_pan->size_x = clamp(value, 1, width);
 	
+	//right gauge
 	width = bmap_width(hud_right_gauge_pan->bmap);
 	height = bmap_height(hud_right_gauge_pan->bmap);
 	value = width * vHudSpeed / vHudMaxSpeed;
 	hud_right_gauge_pan->scale_x = screen_size.x / width * -0.4;
 	hud_right_gauge_pan->scale_y = -hud_right_gauge_pan->scale_x * 0.6;
 	hud_right_gauge_pan->size_y = height;
-	hud_right_gauge_pan->size_x = clamp(value, 0, width);
+	hud_right_gauge_pan->size_x = clamp(value, 1, width);
 	hud_right_gauge_pan->pos_x = screen_size.x * 0.6 + ((width - hud_right_gauge_pan->size_x) / width * screen_size.x * 0.4);//BÄH
 	
+	//timer
+	var vHudTimeLeft = clamp(vHudTime - timer_getSeconds(), 0, vHudMaxTime);
+	var vOldTime = vHudTimeInt;
+	vHudTimeInt = integer(vHudTimeLeft);
+	if (vOldTime > 10 && vHudTimeInt <= 10)
+	{
+		pan_setcolor(hud_pan, 1, 1, COLOR_RED);
+	}
+
+	if (vHudTimeInt > 10 && vOldTime <= 10)
+	{
+		pan_setcolor(hud_pan, 1, 1, COLOR_WHITE);
+	}
+
+	if (vOldTime > vHudTimeInt && vHudTimeInt <= 5)
+	{
+		snd_play(HUD__sndTimeout, 100, 0);
+	}
+	
+	if (/*vOldTime > 0 &&*/ vHudTimeInt == 0)
+	{
+		draw_text("timeout",screen_size.x * 0.45,screen_size.y * 0.5, COLOR_WHITE);
+	}
 }
 
 void HUD__resize()
@@ -153,7 +192,7 @@ void HUD__resize()
 	hud_pan->size_y = screen_size.y * 0.1;
 	hud_pan->pos_x = screen_size.x * 0.45;
 	hud_pan->pos_y = screen_size.y * 0.01;
-	pan_setdigits(hud_pan, 1, 0, 0, "%1.0f", HUD__font, 1, &vHudTime);
+	pan_setdigits(hud_pan, 1, hud_pan->size_x * 0.5, 0, "%03.0f", HUD__font, 1, &vHudTimeInt);
 
 	//trigger any chained resize event
 	if (HUD__resizeEv != NULL)

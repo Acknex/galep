@@ -18,6 +18,7 @@ void level_start()
 
 void level_restart()
 {
+	hud_reinit();
 	hud_show();
 }
 
