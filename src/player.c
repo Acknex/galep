@@ -18,9 +18,10 @@ void spawn_player() {
 	entEngineFx = ent_create("models/ufo_engine_fx.mdl", vector(1000,0,0), act_engine_fx);
 	entEngineFx->skill1 = player;
 	
-	set(player, ENABLE_TRIGGER);
-	set(entCrosshair, PASSABLE | LIGHT);
-	set(entCrosshair2, PASSABLE | LIGHT);
+
+	set(entCrosshair, PASSABLE | LIGHT | ZNEAR);
+	set(entCrosshair2, PASSABLE | LIGHT | ZNEAR);
+		set(player, ENABLE_TRIGGER | ZNEAR);
 	vec_scale(entCrosshair.scale_x, 3.0);
 	vec_scale(entCrosshair2.scale_x, 3.0);
 	player.trigger_range = 20;
