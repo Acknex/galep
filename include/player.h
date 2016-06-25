@@ -10,6 +10,7 @@
 
 void spawn_player();
 void act_player();
+void act_player2();
 void player_fire();
 void move_crosshair(VECTOR* vMoveSpeed, VECTOR* vMoveDir);
 

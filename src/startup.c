@@ -11,7 +11,16 @@ void level_start()
 	spawn_player();
 	hud_init();
 	hud_show();
-	populate_space(50);
+	populate_space(100);
+
+	sun_light = 0;
+	vec_set(d3d_pointlightfalloff, vector(100.0, 50, 0));
+
+	you = ent_create("sun.mdl", vector(-10000, 0, 0), NULL);
+	vec_set(you.blue, vector(50, 60, 65));
+	you.lightrange = 1000000;
+	vec_set(you.scale_x, vector(50, 50, 50));
+
 	you = ent_create("planet0.mdl", vector(10000, 0, 0), NULL);
 	vec_set(you.scale_x, vector(50, 50, 50));
 }
