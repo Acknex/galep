@@ -6,10 +6,13 @@
 #include "enemy.h"
 #include "itemdropper.h"
 
+var hndMusicInGame = NULL;
+
 void level_start()
 {
 	//level_load("testlevel.wmb");
 	level_load("space.wmb");
+	hndMusicInGame = media_loop("media\\DeathStone.ogg", NULL, 80);
 	init_star_cube();
 	init_levelSounds();
 	hud_init();
@@ -26,6 +29,9 @@ void level_start()
 
 void level_restart()
 {
+	if(hndMusicInGame != NULL)
+		media_stop(hndMusicInGame);
+	hndMusicInGame = media_loop("media\\DeathStone.ogg", NULL, 80);
 	init_levelSounds();
 	hud_reinit();
 	hud_show();
@@ -33,6 +39,9 @@ void level_restart()
 
 void level_stop()
 {
+	if(hndMusicInGame != NULL)
+		media_stop(hndMusicInGame);
+	hndMusicInGame = NULL;
 	uninit_levelSounds();
 	uninit_star_cube();
 	hud_hide();

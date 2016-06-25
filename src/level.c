@@ -3,7 +3,7 @@
 
 var vLevelSounds = 0;
 SOUND* sndLevelSounds[5];
-var hndMusicInGame;
+var hndMusicInGame = NULL;
 
 void init_star_cube() {
 	skyCube = ent_createlayer("textures\\cubemaps\\uni2+6.bmp", SKY | CUBE | SHOW, 2);
@@ -29,16 +29,12 @@ void init_levelSounds()
 		wait(-vWait);
 		snd_play(sndLevelSounds[vSound], 50 + random(50), random(100) - 50);
 	}
-	hndMusicInGame = media_loop("media\\DeathStone.ogg", NULL, 80);
-	
+
 }
 
 void uninit_levelSounds()
 {
 	vLevelSounds = 0;
-	if(hndMusicInGame != NULL)
-		media_stop(hndMusicInGame);
-		hndMusicInGame = NULL;
 }
 
 void levelSounds_startup()
