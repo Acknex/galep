@@ -10,11 +10,27 @@ void spawn_player() {
 	}
 	player = ent_create("ufo.mdl", vector(1000,0,0), act_player);
 	entCrosshair = ent_create("textures//crosshair.bmp", vector(1100, 0, 0), NULL);
+	entEngineFx = ent_create("models/ufo_engine_fx.mdl", vector(1000,0,0), act_engine_fx);
+	
 	set(player, ENABLE_TRIGGER | PASSABLE);
 	set(entCrosshair, PASSABLE);
 	player.trigger_range = 20;
 	player.alpha = 100;
 	player.flags &= ~TRANSLUCENT;
+}
+
+action act_engine_fx() {
+	my->flags |= BRIGHT;
+	vec_scale(my->scale_x, 14.);
+	while(1) {
+		my->x = -2.4;
+		my->y = 2.3;
+		my->z = -50;
+		vec_rotate(my->x, player->pan);
+		vec_add(my->x, player->x);
+		vec_set(my->pan, player->pan);
+		wait(1);
+	}
 }
 
 action act_player() {
@@ -37,7 +53,15 @@ action act_player() {
 	var dist = 0;
 	
 	while(me) {
-		
+
+		var blubb = 0;
+		while(blubb < path_length(my))
+		{
+			path_spline(me, vSplinePos, blubb);
+			blubb += 20;
+			draw_line3d(vSplinePos, vector(255, 200, 200), 100);
+		}
+
 		// Move camera
 		path_spline(me, vSplinePos, dist);
 		dist +=30  * time_step + vHudSpeed / 100 + player_boost / 100;

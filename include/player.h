@@ -15,12 +15,14 @@
 
 void spawn_player();
 void act_player();
+void act_engine_fx();
 void player_fire();
 void boost_player();
 void move_crosshair(VECTOR* vMoveSpeed, VECTOR* vMoveDir);
 
 BMAP* bmapCrosshair = "textures//crosshair.bmp";
 ENTITY* entCrosshair = NULL;
+ENTITY* entEngineFx = NULL;
 
 int shootCooldown;
 
