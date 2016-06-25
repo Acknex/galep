@@ -55,7 +55,6 @@ void main() {
 
 	//showMenu();
 	level_start();
-	camera_init();
 	
 	while(1) {
 		wait(1);

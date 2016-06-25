@@ -2,6 +2,7 @@
 #include "player.h"
 #include "hud.h"
 #include "environment.h"
+#include "camera.h"
 
 void level_start()
 {
@@ -23,6 +24,8 @@ void level_start()
 
 	you = ent_create("planet0.mdl", vector(10000, 0, 0), NULL);
 	vec_set(you.scale_x, vector(50, 50, 50));
+	
+	camera_init();
 }
 
 void level_restart()
