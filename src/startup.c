@@ -10,8 +10,8 @@ void level_start()
 	//level_load("testlevel.wmb");
 	level_load("testbed.wmb");
 	init_star_cube();
-	spawn_player();
 	hud_init();
+	spawn_player();
 	hud_show();
 	populate_space(100, 200);
 	camera_init();
