@@ -1,35 +1,17 @@
 
 #include <windows.h>
 
-#define HUD_FONT_SIZE 80
+#define HUD_FONT_SIZE 100
 
-FONT* HUD__font = "Advanced Pixel LCD-7#30";
 void (*HUD__resizeEv)();
-
-TEXT* HUD_DescriptionTxt = 
-{
-	font = HUD__font;
-	layer = 1;	
-	pos_x = 0;
-	pos_y = 0;
-	red = 255;
-	green = 255;
-	blue = 255;
-	flags |= LIGHT | FILTER | TRANSLUCENT | WWRAP | SHADOW | CENTER_X;
-	alpha = 0;
-	string ("");
-}
-
-
-
-
-
 void hud__update();
 void HUD__resize();
 
 
 BMAP* left_gauge_bmap = "gauge_blue.tga";
 BMAP* right_gauge_bmap = "gauge_yellow.tga";
+FONT* HUD__font = "Digital-7#30";
+
 PANEL* hud_pan = 
 {
 	pos_x = 0;
@@ -99,7 +81,7 @@ void hud_init()
 	{
 		HUD__resizeEv = on_resize;
 		on_resize = HUD__resize;
-		AddFontResource("media//advanced_pixel_lcd-7.ttf");
+		AddFontResource("media//digital-7.ttf");
 		pan_setdigits(hud_pan, 0, 0, 0, "%1.0f", "*", 1, &vHudTime);
 		HUD__resize();
 		vHudInitialized = 1;
@@ -117,7 +99,7 @@ void hud_init()
 
 void hud_close()
 {
-	RemoveFontResource("media//advanced_pixel_lcd-7.ttf");
+	RemoveFontResource("media//digital-7.ttf");
 }
 
 void hud__update()
@@ -149,11 +131,11 @@ void HUD__resize()
 {
 	var scale = screen_size.y / 1200;
 	STRING* strTemp = "#64";	
-	str_printf(strTemp, "Advanced Pixel LCD-7#%i", (int)(HUD_FONT_SIZE * scale));
+	str_printf(strTemp, "Digital-7#%i", (int)(HUD_FONT_SIZE * scale));
 	ptr_remove(HUD__font);
 	HUD__font = font_create(strTemp);
 
-	draw_textmode("Advanced Pixel LCD-7", 0, 70, 90);
+	draw_textmode("Digital-7", 0, 70, 90);
 	hud_pan->size_x = screen_size.x * 0.1;
 	hud_pan->size_y = screen_size.y * 0.1;
 	hud_pan->pos_x = screen_size.x * 0.45;
