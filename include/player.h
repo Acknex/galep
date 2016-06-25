@@ -30,6 +30,7 @@ int sBottom = 0;
 
 var width = 0;
 var height = 0;
+var splineDistance = 0;
 
 var player_speed = PLAYER_SPEED_E;
 var player_boost = 10;

@@ -53,7 +53,7 @@ action act_player() {
 	vec_set(vCrosshair, vector(screen_size.x / 2, screen_size.y / 2, 0));
 	
 	path_set(me, "path_000");
-	var dist = 0;
+	splineDistance = 0;
 	
 	while(me) {
 
@@ -66,8 +66,8 @@ action act_player() {
 		}
 
 		// Move camera
-		path_spline(me, vSplinePos, dist);
-		dist +=30  * time_step + vHudSpeed / 100 + player_boost / 100;
+		path_spline(me, vSplinePos, splineDistance);
+		splineDistance +=30  * time_step + vHudSpeed / 100 + player_boost / 100;
 		
 		// Turn camera towards path
 		vec_diff(vDir, vSplinePos, vLastPos);
