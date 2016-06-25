@@ -16,6 +16,7 @@ action obstacle_asteroid()
 {
 	obstacle_setup();	
 	my->event = obstacle_asteroid__evt;
+	my->emask |= ENABLE_SHOOT; 
 	VECTOR vPos;
 	vec_set (&vPos, &my->x);
 	var vOffset = random(500);
