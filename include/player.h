@@ -17,5 +17,13 @@ ENTITY* entCrosshair = NULL;
 
 int shootCooldown;
 
+int sLeft = 0;
+int sRight = 0;
+int sTop = 0;
+int sBottom = 0;
+
+var width = 0;
+var height = 0;
+
 
 #endif
