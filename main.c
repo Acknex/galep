@@ -16,6 +16,7 @@
 #include "item_boost.h"
 #include "item_energy.h"
 #include "item_speed.h"
+#include "item_checkpoint.h"
 #include "obstacle_asteroid.h"
 #include "obstacle_cloud.h"
 #include "environment.h"

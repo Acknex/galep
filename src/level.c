@@ -26,7 +26,7 @@ void init_levelSounds()
 		var vWait = random(10) + 5;
 		var vSound = integer(random(5));
 		wait(-vWait);
-		snd_play(sndLevelSounds[vSound], 50 + random(50), random(100) - 50);
+		snd_play(sndLevelSounds[vSound], 30 + random(20), random(100) - 50);
 	}
 }
 
