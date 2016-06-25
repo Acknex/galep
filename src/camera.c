@@ -3,6 +3,7 @@
 
 void camera_init() {
 	camera.arc = 100;
+	camera.clip_far = 75000;
 }
 
 #endif

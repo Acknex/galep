@@ -52,13 +52,14 @@ void main() {
 	on_close = main_close;
 	on_resize = main_resize;
 	randomize();
+	fps_max = 60;
 
 	showMenu();
 	
-	while(1) {
+/*	while(1) {
 		wait(1);
 	}
 	
-	level_stop();
+	level_stop();*/
 }
 
