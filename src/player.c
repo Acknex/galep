@@ -41,6 +41,7 @@ action act_engine_fx() {
 void playerEvent() {
 	if (event_type == EVENT_SHOOT) {
 		if (player_hit_cooldown <= 0) {
+			snd_play(sndDie, 100, 0);
 			vHudEnergy -=10;
 			player_hit_cooldown = 100;
 		}
@@ -72,7 +73,7 @@ action act_player() {
 	path_set(me, "path_000");
 	splineDistance = 0;
 	
-	while(me) {
+	while(me && (vHudEnergy > 0)) {
 
 /*		var blubb = 0;
 		while(blubb < path_length(my))
@@ -147,13 +148,13 @@ action act_player() {
 			
 			// Boost
 			if (boost_cooldown > 0) {
-				if (camera.arc < 120) {
-					camera.arc +=1 * time_step;
+				if (camera.arc < 160) {
+					camera.arc +=5 * time_step;
 				}
-				boost_cooldown -=80 * time_step;
+				boost_cooldown -=20 * time_step;
 			} else {
 				if (camera.arc > 90) {
-					camera.arc -=1 * time_step;
+					camera.arc -=5 * time_step;
 				}
 				player_boost = 0;
 				boost_cooldown = 0;
@@ -178,11 +179,6 @@ action act_player() {
 			//sparks(my.x, 0.25+random(0.5));
 		}
 		
-		// Check player energy
-		if (vHudEnergy <= 0) {
-			//printf("Player died");
-		}
-		
 		if (player_hit_cooldown > 0) {
 			set(me, TRANSLUCENT);
 			my.alpha = 40 + 25 * cos(player_hit_cooldown * 50);
@@ -194,6 +190,28 @@ action act_player() {
 		}
 
 		wait(1);
+	}
+	
+	if (vHudEnergy <= 0) {
+		snd_play(sndAiaiaiai, 100, 0);
+		while(!key_enter) {
+			var textWidth = str_width("Press ENTER to restart", NULL);
+			draw_text("Press ENTER to restart", (screen_size.x / 2) - (textWidth / 2), screen_size.y / 2, COLOR_WHITE);
+			my.pan +=4 * time_step;
+			wait(1);
+			
+		/*int i=0;
+		for(i=0; i<100; i++) {
+			my.z -=i * time_step;
+			my.pan +=i * time_step;
+			wait(1);
+		}*/
+		}
+		while(key_enter) wait(1);
+		hud_hide();
+		level_restart()
+		
+		// TODO restart
 	}
 }
 
@@ -229,6 +247,7 @@ void player_fire() {
 
 void boost_player() {
 	if (boost_cooldown > 0) return;
+	snd_play(sndInfinity, 100, 0);
 	boost_cooldown = BOOST_COOLDOWN_E;
 	player_boost = 5;
 }

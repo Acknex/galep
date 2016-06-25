@@ -21,6 +21,10 @@ BMAP* bmapCrosshair = "textures//crosshair.bmp";
 ENTITY* entCrosshair = NULL;
 ENTITY* entEngineFx = NULL;
 
+SOUND* sndAiaiaiai = "aiaiaiai.ogg";
+SOUND* sndInfinity = "infinity.wav";
+SOUND* sndDie = "die.wav";
+
 int shootCooldown;
 var smokeCooldown;
 

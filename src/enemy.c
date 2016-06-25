@@ -10,6 +10,7 @@
 
 void enemy_shot()
 {
+	snd_play(sndExplosion, 100, 0);
 	start_explosion(my.x, 2);
 	wait(1);
 	ptr_remove(my);
@@ -94,6 +95,7 @@ void enemy()
 action barrel_enemy() {
 	var cooldown = 0;
 	var shotsFired = 0;
+	vec_scale(my.scale_x, 1.4);
 
 	while(my)
 	{		
