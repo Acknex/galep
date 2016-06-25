@@ -23,9 +23,22 @@
 
 
 
+void main_exit()
+{
+	hud_close();
+}
+
+void main_close()
+{
+	sys_exit("");
+}
+
 void main() {
 		
-randomize();
+	on_exit = main_exit;
+	on_close = main_close;
+	randomize();
+
 	//TODO: fancy menu
 	level_start();
 	
@@ -35,3 +48,4 @@ randomize();
 	
 	level_stop();
 }
+
