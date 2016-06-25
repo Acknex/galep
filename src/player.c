@@ -36,7 +36,7 @@ action act_engine_fx() {
 }
 
 action act_player() {
-	VECTOR vSplinePos, vLastPos, vDir, vScreen, vCam, vCrosshair, vCamAngle, vLerp, vScreenUfo, vCrossAngle;
+	VECTOR vSplinePos, vLastPos, vDir, vScreen, vCam, vCrosshair, vCamAngle, vLerp, vScreenUfo, vCrossAngle, vNewCamAng;
 	
 	vec_zero(vSplinePos);
 	vec_zero(vLastPos);
@@ -47,6 +47,7 @@ action act_player() {
 	vec_zero(vLerp);
 	vec_zero(vScreenUfo);
 	vec_zero(vCrossAngle);
+	vec_zero(vNewCamAng);
 	
 	my.trigger_range = 20;
 	
@@ -100,7 +101,11 @@ action act_player() {
 			vec_set(vCam, entCrosshair.x);
 			vec_sub(vCam, camera.x);
 			vec_to_angle(vCamAngle.x, vCam.x);
-			vec_lerp(camera.pan, camera.pan, vCamAngle.x, 0.8);
+			
+			VECTOR temp;
+			ang_diff(temp, vCamAngle, camera.pan);
+			vec_scale(temp, 0.9);
+			ang_add(camera.pan, temp);
 			
 			// Move player
 			vScreenUfo.x = vCrosshair.x;
@@ -128,8 +133,14 @@ action act_player() {
 			
 			// Boost
 			if (boost_cooldown > 0) {
+				if (camera.arc < 120) {
+					camera.arc +=1 * time_step;
+				}
 				boost_cooldown -=80 * time_step;
 			} else {
+				if (camera.arc > 90) {
+					camera.arc -=1 * time_step;
+				}
 				player_boost = 0;
 				boost_cooldown = 0;
 			}
@@ -140,7 +151,7 @@ action act_player() {
 		
 		// Smoke if ship is broken
 		if (vHudEnergy < 50) {
-			smoke(my.x, 0.25 * ((100 - vHudEnergy) / 100)+random(0.5));
+			smoke(my.x, (50-vHudEnergy)/25);
 		}
 
 		// sparks if ship is on boost
