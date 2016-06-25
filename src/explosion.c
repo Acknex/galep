@@ -78,4 +78,13 @@ void start_explosion(VECTOR *position)
 	effect(explosion_fire_particle, 20+random(10), position, nullvector);
 	effect(explosion_sparks_particle, 20+random(10), position, nullvector);
 	effect(explosion_smoke_particle, 20+random(10), position, nullvector);
+
+	float timer = 0.0;
+	while(timer < 4)
+	{
+		timer += time_step;
+		camera.roll = random(10)-5;
+		wait(1);
+	}
+	camera.roll = 0;
 }
