@@ -7,6 +7,8 @@ void spawn_player() {
 	
 	if (player != NULL) {
 		ent_remove(player);
+	}
+	if (entCrosshair != NULL) {
 		ent_remove(entCrosshair);
 	}
 	player = ent_create("ufo.mdl", vector(1000,0,0), act_player);
@@ -42,7 +44,7 @@ void playerEvent() {
 	if (event_type == EVENT_SHOOT) {
 		if (player_hit_cooldown <= 0) {
 			snd_play(sndDie, 100, 0);
-			vHudEnergy -=10;
+			vHudEnergy -=ENEMY_DAMAGE;
 			player_hit_cooldown = 100;
 		}
 	}
@@ -150,7 +152,7 @@ action act_player() {
 			vec_to_angle(my.pan, temp);
 			
 			// Shoot
-			if ((key_space) && (shootCooldown <= 0)) {
+			if ((key_space || mouse_left) && (shootCooldown <= 0)) {
 				shootCooldown = BULLET_COOLDOWN_E;
 				player_fire();
 			}
@@ -220,7 +222,8 @@ action act_player() {
 	}
 		while(key_enter) wait(1);
 		hud_hide();
-		level_restart();
+		level_stop();
+		level_start();
 		
 		// TODO restart
 	}
@@ -245,6 +248,8 @@ action act_bullet() {
 
 void player_fire() {
 	if ((player == NULL) || (entCrosshair == NULL)) return;
+	
+	snd_play(sndLaser, 20, 0);
 	
 	VECTOR vStartPos;
 	vec_set(vStartPos, vector(100,0,0));
