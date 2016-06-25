@@ -5,13 +5,13 @@
 
 void spawn_player() {
 	
-	if (player != NULL) {
+	/*if (player != NULL) {
 		ent_remove(player);
 	}
 	if (entCrosshair != NULL) {
 		ent_remove(entCrosshair);
 		ent_remove(entCrosshair2);
-	}
+	}*/
 	player = ent_create("ufo.mdl", vector(1000,0,0), act_player);
 	entCrosshair = ent_create("textures//crosshair.bmp", vector(1100, 0, 0), NULL);
 	entCrosshair2 = ent_create("textures//crosshair.bmp", vector(1100, 0, 0), NULL);
@@ -33,7 +33,7 @@ action act_engine_fx() {
 	vec_scale(my->scale_x, 14.);
 	var time_passed;
 	wait(1);
-	while(1) {
+	while(me) {
 		my->x = -2.4;
 		my->y = 2.3;
 		my->z = -50;
@@ -213,25 +213,19 @@ action act_player() {
 	
 	if (vHudEnergy <= 0) {
 		snd_play(sndAiaiaiai, 100, 0);
+		
+		// TODO SEt camera next to player
 		while(!key_enter) {
 			var textWidth = str_width("Press ENTER to restart", NULL);
 			draw_text("Press ENTER to restart", (screen_size.x / 2) - (textWidth / 2), screen_size.y / 2, COLOR_WHITE);
 			my.pan +=4 * time_step;
 			wait(1);
-			
-		/*int i=0;
-		for(i=0; i<100; i++) {
-			my.z -=i * time_step;
-			my.pan +=i * time_step;
-			wait(1);
-		}*/
 	}
 		while(key_enter) wait(1);
 		hud_hide();
+		hud_reinit();
 		level_stop();
 		level_start();
-		
-		// TODO restart
 	}
 }
 
