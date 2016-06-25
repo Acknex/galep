@@ -18,8 +18,11 @@ void camera_move() {
 		
 	vec_set(camRotateTemp, player.x);
 	vec_sub(camRotateTemp, camera.x);
-	
-	vec_to_angle(camera.pan, camRotateTemp.x);
+
+	VECTOR temp;
+	vec_to_angle(temp, camRotateTemp.x);
+	camera.pan = temp.x;
+	camera.tilt = temp.y;
 	
 	//vec_to_angle(angTempRotate, camRotateTemp.x);
 	
