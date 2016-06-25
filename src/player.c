@@ -19,26 +19,40 @@ void move_crosshair() {
 
 action act_player() {
 	
-	VECTOR vecMoveSpeed;
-	
-	VECTOR vSpeed, vMove, vForce;
+	VECTOR vSpeed, vecMoveSpeed, vForce, vLastPos, vDir, vSplinePos;
 	
 	vec_zero(vSpeed);
-	vec_zero(vMove);
+	vec_zero(vecMoveSpeed);
 	vec_zero(vForce);
+	vec_zero(vLastPos);
+	vec_zero(vDir);
+	vec_zero(vSplinePos);
+	
+	path_set(me, "path_000");
+	var dist = 0;
+	
 	
 	while(me) {
 		
-		// Calculate player movement
-		vForce.z = (key_w - key_s) * PLAYER_SPEED_E;
-		vForce.y = (key_a - key_d) * PLAYER_SPEED_E;
-		vForce.x = 0;
+		path_spline(me, my.x, dist);
+		dist +=30 * time_step;
 		
-		draw_text(str_for_num(NULL, vSpeed.y), 10, 10, COLOR_RED);
-		draw_text(str_for_num(NULL, vSpeed.z), 10, 30, COLOR_RED);
+		// Turn towards path
+		vec_diff(vDir, my.x, vLastPos);
+		vec_to_angle(my.pan, vDir);
+		vec_set(vLastPos, my.x);
+		
+		// Calculate player movement
+		vForce.z += (key_w - key_s) * PLAYER_SPEED_E;
+		vForce.y += (key_a - key_d) * PLAYER_SPEED_E;
+		vForce.x += 0;
 		
 		// Keep ufo in screen range
-		if (abs(my.y) > LEVEL_LIMIT_Y_E / 100 * 80) {
+		//var dist_y = vec_dist(my.x, 
+		
+		
+		
+		/*if (abs(my.y) > LEVEL_LIMIT_Y_E / 100 * 80) {
 			if ((my.y < 0) && (vForce.y < 0)) {
 				vForce.y = 0;
 			}
@@ -48,7 +62,7 @@ action act_player() {
 			}
 		}
 		
-		if (abs(my.z) > LEVEL_LIMIT_Z_E / 100 * 70) {
+		if (abs(my.z) > LEVEL_LIMIT_Z_E / 100 * 80) {
 			if ((my.z < 0) && (vForce.z < 0)) {
 				vForce.z = 0;
 			}
@@ -56,7 +70,7 @@ action act_player() {
 			if ((my.z > 0) && (vForce.z > 0)) {
 				vForce.z = 0;
 			}
-		}
+		}*/
 			
 		
 		// Accelerate movement

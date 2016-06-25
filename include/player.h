@@ -8,8 +8,6 @@
 #define BULLET_COOLDOWN_E 100
 #define BULLET_AGE_E 800
 
-//#define LEVEL_LIMIT_RADIUS_E 1600
-
 void spawn_player();
 void act_player();
 void player_fire();
