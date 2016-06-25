@@ -43,19 +43,15 @@ void main_resize()
 }
 
 void main() {
-		
 	on_exit = main_exit;
 	on_close = main_close;
 	on_resize = main_resize;
 	randomize();
 
 	//TODO: fancy menu
-	//showMenu();
-	level_start();
-
-	//showMenu();
-	level_start();
-	camera_init();
+	showMenu();
+	//level_start();
+	//camera_init();
 	
 	while(1) {
 		wait(1);

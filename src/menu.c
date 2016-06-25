@@ -7,6 +7,8 @@
 void resizeMenu() {
 	menu_txt->pos_x = screen_size.x / 2;
 	menu_txt->pos_y = screen_size.y / 2;
+	menu_pan_fade->scale_x = screen_size.x*2;
+	menu_pan_fade->scale_y = screen_size.y*2;
 }
 
 void keyMenu() {
@@ -16,6 +18,7 @@ void showMenu()
 {
 	menu_is_closed = false;
 	on_anykey = keyMenu;
+	camera.arc = 60;
 	sky_color.red = 0;
 	sky_color.green = 0;
 	sky_color.blue = 0;
@@ -23,21 +26,9 @@ void showMenu()
 	level_load("menu.wmb");
 	init_star_cube();
 	menu_hnd_music = media_loop("media\\theme.mp3", NULL, 100);
-	TEXT* welcome_txt =	
-	{
-	  layer = 1;
-	  pos_x = 10;
-	  pos_y = 10;
-	  font = "Arial#20bi";
-	  string ("Team AckCon presents");
-	  flags = CENTER_X | CENTER_Y  | TRANSLUCENT | SHOW;
-	  alpha = 0;
-	} 
-	menu_txt = welcome_txt;
-	
 	menu_txt->pos_x = screen_size.x / 2;
 	menu_txt->pos_y = screen_size.y / 2;
-	
+	menu_pan_fade->alpha = 0;
 	float aleph = 0;
 	while(aleph < 1) {
 		if(menu_is_closed)
@@ -98,14 +89,17 @@ void closeMenu() {
 	on_anykey = NULL;
 	menu_is_closed = true;
 	var volume = 100;
+	menu_pan_fade->flags |= SHOW;
+	
 	while(volume > 0) {
 		volume -= 5.*time_step;
 		media_tune(menu_hnd_music, volume, 100, 0);
+		menu_pan_fade->alpha = 100-volume;
 		wait(1);
 	}
 	media_stop(volume);
-	ptr_remove(menu_txt);
 	level_start();
+	menu_pan_fade->flags &= ~SHOW;
 }
 
 action titleEntity() {
