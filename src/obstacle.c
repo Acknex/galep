@@ -3,8 +3,6 @@
 #define OBSTACLE_PARTICLE_COLOR vector(0, 0, 255)
 #define OBSTACLE_SCANRANGE 90
 
-SOUND* sndCollide = "collide.ogg";
-
 void obstacle__particleFader(PARTICLE *p);
 
 
@@ -28,8 +26,7 @@ var obstacle_event()
 		{
 			my->event = NULL;
 			set (me, is_collided);
-			ent_playsound(me, sndCollide, 1000);
-			sparks(&my->x, 1);
+//			ent_playsound(me, sndCollide, 1000);
 			return 1;
 		}
 		return 0;
