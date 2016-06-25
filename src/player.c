@@ -20,28 +20,6 @@ void move_crosshair() {
 	
 }
 
-action act_player2() {
-	
-	VECTOR vDir, vLastPos
-	
-	path_set(me, "path_000");
-	var dist = 0;
-	
-	while(me) {
-		
-		path_spline(me, my.x, dist);
-		dist +=30 * time_step;
-		
-		// Turn towards path
-		vec_diff(vDir, my.x, vLastPos);
-		vec_to_angle(my.pan, vDir);
-		vec_set(vLastPos, my.x);
-		
-		wait(1);
-	}
-	
-}
-
 action act_player() {
 	
 	VECTOR vSpeed, vecMoveSpeed, vForce, vLastPos, vDir, vSplinePos, vNewDir;
@@ -86,9 +64,6 @@ action act_player() {
 		if (height < -200) height = -200;
 		if (height > 200) height = 200;
 		
-		draw_text(str_for_num(NULL, width), 10, 50, COLOR_RED);
-		draw_text(str_for_num(NULL, height), 10, 70, COLOR_RED);
-
 		var dist = vec_dist(vSplinePos, my.x);
 		dist = (100 / LEVEL_LIMIT_Y_E) * dist;
 		
