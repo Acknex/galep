@@ -36,7 +36,15 @@ action act_player() {
 	var dist = 0;
 	
 	while(me) {
-		
+
+		var blubb = 0;
+		while(blubb < path_length(my))
+		{
+			path_spline(me, vSplinePos, blubb);
+			blubb += 20;
+			draw_line3d(vSplinePos, vector(255, 200, 200), 100);
+		}
+
 		// Move camera
 		path_spline(me, vSplinePos, dist);
 		dist +=30  * time_step + vHudSpeed / 100 + player_boost / 100;
