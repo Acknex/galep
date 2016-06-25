@@ -99,7 +99,7 @@ action act_player() {
 		if(key_e && shootCooldown == 0)
 		{
 			shootCooldown = BULLET_COOLDOWN_E;
-			start_explosion(my.x);
+			start_explosion(my.x, 0.5+random(3));
 		}
 
 		if (shootCooldown > 0) shootCooldown -=1;
