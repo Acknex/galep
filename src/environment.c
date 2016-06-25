@@ -92,8 +92,8 @@ void populate_space(int maxParticles, int maxSpaceJunk)
 	}
 }
 
-action environment_sun
+action environment_sun()
 {
 	vec_set(my.blue, vector(70, 80, 90));
 	my.lightrange = 1000000;
-};
+}
