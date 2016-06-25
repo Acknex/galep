@@ -6,7 +6,7 @@
 void level_start()
 {
 	//level_load(NULL);
-	level_load("testlevel.wmb");
+	level_load("testbed.wmb");
 	init_star_cube();
 	spawn_player();
 	hud_init();
