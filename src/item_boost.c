@@ -1,4 +1,5 @@
 #include "items.h"
+#include "player.h"
 
 void item_boost__evt();
 
@@ -33,7 +34,7 @@ void item_boost__evt()
 {
 	if (item_event() != 0)
 	{
-		//error("boost!");
+		boost_player();
 	}
 }
 
