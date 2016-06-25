@@ -1,9 +1,6 @@
 #ifndef PLAYER_C_
 #define PLAYER_C_
 
-#include <entmove.c>
-
-
 void spawn_player() {
 	
 	if (player != NULL) {
