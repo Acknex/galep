@@ -170,6 +170,7 @@ void startIntro() {
 }
 
 action actMenuUFO() {
+	int firstTime = 1;
 	if(intro_is_finished)
 		return;
 	media_play("media//priority_juan.ogg", NULL, 100);
@@ -185,6 +186,14 @@ action actMenuUFO() {
 		time_passed += time_step/16.;
 		if(time_passed > 4)
 		{
+			if(firstTime == 1) {
+				vecDir.x = 1.80696;
+				vecDir.y = -1.04042;
+				vecDir.z = -0.83887;
+				vec_scale(vecDir.x, 24.*80.);
+				vec_add(my->x, vecDir);
+				firstTime = 0;
+			}
 			camera->x = 200*2;
 			camera->y = 60*2;
 			camera->z = 40*2;

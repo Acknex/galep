@@ -1,8 +1,11 @@
 #include "obstacle.h"
 
-#define ASTEROID_PENALTY_SPEED 3
+#define ASTEROID_PENALTY_SPEED 2
 #define ASTEROID_PENALTY_ENERGY 10
 #define ASTEROID_SHARD_LIFETIME 32
+
+SOUND* sndCollide = "collide.ogg";
+
 
 void obstacle_asteroid__evt();
 void obstacle_asteroid__destroy();
@@ -44,6 +47,7 @@ void obstacle_asteroid__evt()
 	{
 		hud_addEnergy(-ASTEROID_PENALTY_ENERGY);	
 		hud_addSpeed(-ASTEROID_PENALTY_SPEED);	
+		ent_playsound(me, sndCollide, 1000);
 	}
 }
 
