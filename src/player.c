@@ -19,8 +19,50 @@ void spawn_player() {
 void move_crosshair(VECTOR* vMoveSpeed, VECTOR* vMoveDir) {
 	if (entCrosshair != NULL) {
 		
-		c_move(entCrosshair, vMoveSpeed, vMoveDir, GLIDE | IGNORE_ME | IGNORE_PASSENTS | IGNORE_WORLD);
+		VECTOR vecTemp1;
+		vec_set(vecTemp1, player.x);
+		vec_sub(vecTemp1, camera.x);
+		vec_normalize(vecTemp1, 1100);
 		
+		vec_set(entCrosshair.x, vecTemp1);
+		
+		//c_move(entCrosshair, vMoveSpeed, vMoveDir, GLIDE | IGNORE_ME | IGNORE_PASSENTS | IGNORE_WORLD);
+		
+	}
+}
+
+action act_player2() {
+	VECTOR vSplinePos, vLastPos, vDir;
+	
+	vec_zero(vSplinePos);
+	vec_zero(vLastPos);
+	vec_zero(vDir);
+	
+	path_set(me, "path_000");
+	var dist = 0;
+	
+	
+	while(me) {
+		
+		// Move camera
+		path_spline(me, vSplinePos, dist);
+		dist +=30 * time_step;
+		
+		// Turn camera towards path
+		vec_diff(vDir, vSplinePos, vLastPos);
+		vec_to_angle(camera.pan, vDir);
+		vec_set(vLastPos, vSplinePos);
+		
+		vec_set(camera.x, vSplinePos);
+		
+		// Move crosshair
+		if (entCrosshair != NULL) {
+			path_spline(me, vSplinePos, dist);
+			vec_set(entCrosshair, vSplinePos);
+		}
+		
+		
+		wait(1);
 	}
 }
 
@@ -41,6 +83,8 @@ action act_player() {
 	
 	
 	while(me) {
+		
+		player_speed = PLAYER_SPEED_E + vHudSpeed;
 		
 		path_spline(me, vSplinePos, dist);
 		dist +=30 * time_step;
