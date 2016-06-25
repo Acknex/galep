@@ -11,6 +11,8 @@ void spawn_player() {
 	entCrosshair = ent_create("textures//crosshair.bmp", vector(1100, 0, 0), NULL);
 	set(player, ENABLE_TRIGGER);
 	player.trigger_range = 20;
+	player.alpha = 100;
+	player.flags &= ~TRANSLUCENT;
 }
 
 void move_crosshair() {
