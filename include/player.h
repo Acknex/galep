@@ -11,6 +11,7 @@
 void spawn_player();
 void act_player();
 void player_fire();
+void move_crosshair(VECTOR* vMoveSpeed, VECTOR* vMoveDir);
 
 BMAP* bmapCrosshair = "textures//crosshair.bmp";
 ENTITY* entCrosshair = NULL;
@@ -24,6 +25,8 @@ int sBottom = 0;
 
 var width = 0;
 var height = 0;
+
+var player_speed = PLAYER_SPEED_E;
 
 
 #endif

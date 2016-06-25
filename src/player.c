@@ -16,8 +16,12 @@ void spawn_player() {
 	player.flags &= ~TRANSLUCENT;
 }
 
-void move_crosshair() {
-	
+void move_crosshair(VECTOR* vMoveSpeed, VECTOR* vMoveDir) {
+	if (entCrosshair != NULL) {
+		
+		c_move(entCrosshair, vMoveSpeed, vMoveDir, GLIDE | IGNORE_ME | IGNORE_PASSENTS | IGNORE_WORLD);
+		
+	}
 }
 
 action act_player() {
@@ -52,8 +56,8 @@ action act_player() {
 		var facY = 0;
 		if (abs(height) < 200) facY = 1;
 		
-		vForce.z += (key_w - key_s) * PLAYER_SPEED_E * facZ;
-		vForce.y += (key_a - key_d) * PLAYER_SPEED_E * facY;
+		vForce.z += (key_w - key_s) * player_speed * facZ;
+		vForce.y += (key_a - key_d) * player_speed * facY;
 		vForce.x += 0;
 		
 		width += (key_w - key_s);
@@ -72,24 +76,20 @@ action act_player() {
 		
 		vec_set(vNewDir, vSplinePos);
 		vec_sub(vNewDir, my.x);
-		//vec_sub(vSplinePos, my.x);
 		
 		c_move(me, vecMoveSpeed, vNewDir, IGNORE_PASSABLE | IGNORE_PASSENTS | IGNORE_ME | GLIDE | ACTIVATE_TRIGGER | IGNORE_WORLD);
 		
 		/*if (entCrosshair != NULL) {
-			entCrosshair.y = my.y * 0.5;
-			entCrosshair.z = my.z * 0.5;
-		}*/
-		
-		if (entCrosshair != NULL) {
 			vec_set(vNewDir, my.x);
 			vec_rotate(vNewDir, camera.pan);
 			vec_add(vNewDir, vector(1100, 0, 0));
 			vec_set(entCrosshair.x, vNewDir);
 			//entCrosshair.pan = player.pan;
-		}
+		}*/
 		
 		camera_move();
+		
+		move_crosshair(vecMoveSpeed, vNewDir);
 		
 		if ((key_space) && (shootCooldown == 0)) {
 			shootCooldown = BULLET_COOLDOWN_E;
