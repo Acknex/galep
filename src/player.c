@@ -72,7 +72,6 @@ action act_player() {
 			vec_to_angle(vCamAngle.x, vCam.x);
 			vec_lerp(camera.pan, camera.pan, vCamAngle.x, 0.8);
 			
-			
 			// Move player
 			vScreenUfo.x = vCrosshair.x * 0.8;
 			vScreenUfo.y = vCrosshair.y * 0.8;
