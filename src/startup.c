@@ -8,8 +8,9 @@
 void level_start()
 {
 	//level_load(NULL);
-	level_load("testlevel.wmb");
+	//level_load("testlevel.wmb");
 	//level_load("testbed.wmb");
+	level_load("space.wmb");
 	init_star_cube();
 	init_levelSounds();
 	hud_init();
