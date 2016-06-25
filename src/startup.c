@@ -9,6 +9,8 @@ void level_start()
 	init_star_cube();
 	spawn_player();
 	populate_space(200);
+	you = ent_create("planet0.mdl", vector(10000, 0, 0), NULL);
+	vec_set(you.scale_x, vector(50, 50, 50));
 }
 
 void level_restart()
