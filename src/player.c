@@ -48,7 +48,7 @@ void playerEvent() {
 }
 
 action act_player() {
-	VECTOR vSplinePos, vLastPos, vDir, vScreen, vCam, vCrosshair, vCamAngle, vLerp, vScreenUfo, vCrossAngle, vNewCamAng;
+	VECTOR vSplinePos, vLastPos, vDir, vScreen, vCam, vCrosshair, vCamAngle, vLerp, vScreenUfo, vCrossAngle, vNewCamAng, vOldScreenBorder;
 	
 	vec_zero(vSplinePos);
 	vec_zero(vLastPos);
@@ -60,6 +60,8 @@ action act_player() {
 	vec_zero(vScreenUfo);
 	vec_zero(vCrossAngle);
 	vec_zero(vNewCamAng);
+
+	vec_set(vOldScreenBorder, vector(-screen_size.x*0.5, -screen_size.y*0.5, 0));
 	
 	my.trigger_range = 20;
 	my.emask |= ENABLE_SHOOT;
@@ -129,7 +131,14 @@ action act_player() {
 			vScreenUfo.x = vCrosshair.x;
 			vScreenUfo.y = vCrosshair.y;
 			vScreenUfo.z = 500;
+
+			vec_set(temp, my.x);
+			vec_to_screen(temp, camera);
+			temp.z = 500;
+			var factor = minv(maxv(vec_dist(temp, vScreenUfo)-screen_size.x*0.2, 0)/(screen_size.x*0.1), 1);
+			vec_lerp(vScreenUfo, temp, vScreenUfo, factor);
 			vec_for_screen(vScreenUfo, camera);
+
 			vec_lerp(my.x, my.x, vScreenUfo, minv(time_step*0.5, 1.0));
 			
 			// Rotate player

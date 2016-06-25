@@ -2,6 +2,12 @@
 // Created by Slin on 25.06.2016.
 //
 
+
+
+// ----------------------------------------------------------------------------------
+// UFO enemy
+// ----------------------------------------------------------------------------------
+
 void enemy_shot()
 {
 	start_explosion(my.x, 2);
@@ -80,6 +86,71 @@ void enemy()
 		wait(1);
 	}
 }
+
+// ----------------------------------------------------------------------------------
+// Laser enemy
+// ----------------------------------------------------------------------------------
+
+action barrel_enemy() {
+	var cooldown = 0;
+	var shotsFired = 0;
+
+	while(my)
+	{		
+		my.tilt +=time_step * 4;
+		
+		if (cooldown <= 0) {
+			
+			ent_playsound(me, sndLaser, 100);
+			
+			VECTOR vTemp1, vTemp2;
+			vec_for_vertex(vTemp1, me, 57);
+			vec_for_vertex(vTemp2, me, 33);
+			
+			draw_line3d(vTemp1, NULL, 100);
+			draw_line3d(vTemp2, COLOR_RED, 100);
+			
+			c_trace(vTemp1, vTemp2, IGNORE_ME | ACTIVATE_SHOOT);
+			
+			vec_for_vertex(vTemp1, me, 63);
+			vec_for_vertex(vTemp2, me, 39);
+			
+			draw_line3d(vTemp1, NULL, 100);
+			draw_line3d(vTemp2, COLOR_RED, 100);
+			
+			c_trace(vTemp1, vTemp2, IGNORE_ME | ACTIVATE_SHOOT);
+			
+			vec_for_vertex(vTemp1, me, 69);
+			vec_for_vertex(vTemp2, me, 45);
+			
+			draw_line3d(vTemp1, NULL, 100);
+			draw_line3d(vTemp2, COLOR_RED, 100);
+			
+			c_trace(vTemp1, vTemp2, IGNORE_ME | ACTIVATE_SHOOT);
+			
+			vec_for_vertex(vTemp1, me, 75);
+			vec_for_vertex(vTemp2, me, 51);
+			
+			draw_line3d(vTemp1, NULL, 100);
+			draw_line3d(vTemp2, COLOR_RED, 100);
+			
+			c_trace(vTemp1, vTemp2, IGNORE_ME | ACTIVATE_SHOOT);
+			
+			
+			
+			shotsFired +=8 * time_step;
+			if (shotsFired >= 50) {
+				cooldown = 100;
+				shotsFired = 0;
+			}
+		} else {
+			cooldown -=8 * time_step;
+		}
+
+		wait(1);
+	}	
+}
+
 
 void spawn_enemies()
 {
