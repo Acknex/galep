@@ -33,9 +33,9 @@ void item_weighting_startup()
 {
 	sItemWeigths[0].from = 0;
 	sItemWeigths[0].to = 0;
-	sItemWeigths[0].weight[ITEM_SPEED] = 3;
-	sItemWeigths[0].weight[ITEM_BOOST] = 10;
-	sItemWeigths[0].weight[ITEM_ENERGY] = 1;
+	sItemWeigths[0].weight[ITEM_SPEED] = 4;
+	sItemWeigths[0].weight[ITEM_BOOST] = 6;
+	sItemWeigths[0].weight[ITEM_ENERGY] = 3;
 	sItemWeigths[0].weight[OBSTACLE_CLOUD] = 5;
 	sItemWeigths[0].weight[OBSTACLE_ASTEROID] = 3;	
 }
