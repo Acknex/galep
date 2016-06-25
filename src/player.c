@@ -1,6 +1,8 @@
 #ifndef PLAYER_C_
 #define PLAYER_C_
 
+#include <entmove.c>
+
 
 void spawn_player() {
 	
@@ -34,7 +36,7 @@ action act_engine_fx() {
 }
 
 action act_player() {
-	VECTOR vSplinePos, vLastPos, vDir, vScreen, vCam, vCrosshair, vCamAngle, vLerp, vScreenUfo;
+	VECTOR vSplinePos, vLastPos, vDir, vScreen, vCam, vCrosshair, vCamAngle, vLerp, vScreenUfo, vCrossAngle;
 	
 	vec_zero(vSplinePos);
 	vec_zero(vLastPos);
@@ -44,6 +46,7 @@ action act_player() {
 	vec_zero(vCamAngle);
 	vec_zero(vLerp);
 	vec_zero(vScreenUfo);
+	vec_zero(vCrossAngle);
 	
 	my.trigger_range = 20;
 	
@@ -80,7 +83,7 @@ action act_player() {
 			vCrosshair.y += (key_s - key_w) * time_step * 50;
 			
 			if (((key_d - key_a) == 0) && ((key_s - key_w) == 0)) {
-				vec_lerp(vCrosshair, vCrosshair, vector(MAX_CROSSHAIR_X_E / 2, MAX_CROSSHAIR_Y_E / 2, 0), 0.4 * time_step);
+				vec_lerp(vCrosshair, vCrosshair, vector(MAX_CROSSHAIR_X_E / 2, MAX_CROSSHAIR_Y_E / 2, 0), 0.1 * time_step);
 			}
 			
 			vCrosshair.x = clamp(vCrosshair.x, 0, MAX_CROSSHAIR_X_E);
@@ -88,7 +91,7 @@ action act_player() {
 			
 			vScreen.x = vCrosshair.x;
 			vScreen.y = vCrosshair.y;
-			vScreen.z = 500;
+			vScreen.z = 1000;
 			vec_for_screen(vScreen, camera);
 			
 			vec_set(entCrosshair.x, vScreen);
@@ -100,12 +103,11 @@ action act_player() {
 			vec_lerp(camera.pan, camera.pan, vCamAngle.x, 0.8);
 			
 			// Move player
-			vScreenUfo.x = vCrosshair.x * 0.8;
-			vScreenUfo.y = vCrosshair.y * 0.8;
+			vScreenUfo.x = vCrosshair.x;
+			vScreenUfo.y = vCrosshair.y;
 			vScreenUfo.z = 500;
 			vec_for_screen(vScreenUfo, camera);
-			vec_lerp(vLerp, camera.x, vScreenUfo.x, 0.8);
-			vec_set(player.x, vLerp);
+			vec_lerp(my.x, vScreenUfo, my.x, 0.9);
 			
 			// Rotate player
 			vec_set(my.pan, vCamAngle.x);
