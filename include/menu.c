@@ -8,7 +8,7 @@ void showMenu()
 	sky_color.blue = 0;
 	wait(1);
 	level_load("menu.wmb");
-	var handle = media_loop("music/theme.mp3", NULL, 100);
+	var handle = media_loop("media\\theme.mp3", NULL, 100);
 }
 
 action titleEntity() {
