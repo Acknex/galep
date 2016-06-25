@@ -52,6 +52,7 @@ void main() {
 	on_close = main_close;
 	on_resize = main_resize;
 	randomize();
+	fps_max = 60;
 
 	showMenu();
 	

@@ -22,6 +22,7 @@ ENTITY* entCrosshair = NULL;
 ENTITY* entEngineFx = NULL;
 
 int shootCooldown;
+var smokeCooldown;
 
 int sLeft = 0;
 int sRight = 0;

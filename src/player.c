@@ -1,6 +1,8 @@
 #ifndef PLAYER_C_
 #define PLAYER_C_
 
+#include "../include/player.h"
+
 void spawn_player() {
 	
 	if (player != NULL) {
@@ -50,6 +52,7 @@ action act_player() {
 	vec_zero(vNewCamAng);
 	
 	my.trigger_range = 20;
+	smokeCooldown = 0;
 	
 	vec_set(vCrosshair, vector(screen_size.x / 2, screen_size.y / 2, 0));
 	
@@ -150,13 +153,18 @@ action act_player() {
 		}
 		
 		// Smoke if ship is broken
-		if (vHudEnergy < 50) {
-			smoke(my.x, (50-vHudEnergy)/25);
+		if (vHudEnergy < 50 && smokeCooldown <= 0) {
+			smoke(my.x, 0.25+(50.0-vHudEnergy)/100.0);
+			smokeCooldown = (1.0-(50.0-vHudEnergy)/50.0)*5.0;
+		}
+		else
+		{
+			smokeCooldown -= time_step;
 		}
 
 		// sparks if ship is on boost
 		if (player_boost > 0) {
-			sparks(my.x, 0.25+random(0.5));
+			//sparks(my.x, 0.25+random(0.5));
 		}
 		
 		// Check player energy
@@ -178,9 +186,9 @@ action act_bullet() {
 	int myAge = 0;
 	while(me) {
 		you = player;
-		c_move(me, vecTarget, nullvector, IGNORE_PASSABLE | IGNORE_PASSENTS | ACTIVATE_SHOOT | IGNORE_YOU);
+		var dist = c_move(me, vecTarget, nullvector, IGNORE_PASSABLE | IGNORE_PASSENTS | ACTIVATE_SHOOT | IGNORE_YOU);
 		myAge +=1;
-		if (myAge > BULLET_AGE_E) ptr_remove(me);
+		if (myAge > BULLET_AGE_E || dist < vec_length(vecTarget)*0.8) ptr_remove(me);
 		wait(1);
 	}
 }
