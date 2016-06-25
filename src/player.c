@@ -146,6 +146,18 @@ action act_player() {
 			start_explosion(my.x, 0.5+random(3));
 		}
 
+		if(key_r && shootCooldown == 0)
+		{
+			shootCooldown = BULLET_COOLDOWN_E;
+			smoke(my.x, 0.25+random(0.5));
+		}
+
+		if(key_q && shootCooldown == 0)
+		{
+			shootCooldown = BULLET_COOLDOWN_E;
+			sparks(my.x, 0.25+random(0.5));
+		}
+
 		if (shootCooldown > 0) shootCooldown -=1;
 
 		wait(1);

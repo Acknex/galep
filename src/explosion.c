@@ -94,3 +94,13 @@ void start_explosion(VECTOR *position, var size)
 	}
 	camera.roll = 0;
 }
+
+void smoke(VECTOR *position, var size)
+{
+	effect(explosion_smoke_particle, (20+random(10))*size, position, vector(size, 0, 0));
+}
+
+void sparks(VECTOR *position, var size)
+{
+	effect(explosion_sparks_particle, (20+random(10))*size, position, vector(size, 0, 0));
+}
