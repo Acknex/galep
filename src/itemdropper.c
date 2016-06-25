@@ -4,7 +4,7 @@
 #include "item_energy.h"
 #include "item_speed.h"
 
-#define ITEMDROPPER_DROPDIST 400
+#define ITEMDROPPER_DROPDIST 1400
 //#define ITEMDROPPER_ACTIVE 1
 
 #define ITEM_SPEED 0
