@@ -1,6 +1,7 @@
 #ifndef PLAYER_C_
 #define PLAYER_C_
 
+
 void spawn_player() {
 	
 	if (player != NULL) {
@@ -52,7 +53,15 @@ action act_player() {
 	var dist = 0;
 	
 	while(me) {
-		
+
+		var blubb = 0;
+		while(blubb < path_length(my))
+		{
+			path_spline(me, vSplinePos, blubb);
+			blubb += 20;
+			draw_line3d(vSplinePos, vector(255, 200, 200), 100);
+		}
+
 		// Move camera
 		path_spline(me, vSplinePos, dist);
 		dist +=30  * time_step + vHudSpeed / 100 + player_boost / 100;
@@ -135,6 +144,11 @@ action act_player() {
 		// sparks if ship is on boost
 		if (player_boost > 0) {
 			sparks(my.x, 0.25+random(0.5));
+		}
+		
+		// Check player energy
+		if (vHudEnergy <= 0) {
+			printf("Player died");
 		}
 
 		wait(1);
