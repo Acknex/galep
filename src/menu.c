@@ -114,7 +114,7 @@ action menuStarFlare() {
 action menuFlyThrough() {
 	my->scale_x = 0.5;
 	my->scale_y = 0.1;
-	wait(-(random(4)+9));
+	wait(-(random(4)+10));
 	while(my) {
 		my->y = -500;
 		while(my->y < 500) {
