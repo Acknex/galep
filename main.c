@@ -50,8 +50,12 @@ void main() {
 	randomize();
 
 	//TODO: fancy menu
-	showMenu();
-	//level_start();
+	//showMenu();
+	level_start();
+
+	//showMenu();
+	level_start();
+	camera_init();
 	
 	while(1) {
 		wait(1);

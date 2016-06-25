@@ -8,10 +8,15 @@
 #define BULLET_COOLDOWN_E 100
 #define BULLET_AGE_E 800
 
+#define MAX_CROSSHAIR_X_E 800
+#define MAX_CROSSHAIR_Y_E 600
+
+#define BOOST_COOLDOWN_E 1000
+
 void spawn_player();
 void act_player();
-void act_player2();
 void player_fire();
+void boost_player();
 void move_crosshair(VECTOR* vMoveSpeed, VECTOR* vMoveDir);
 
 BMAP* bmapCrosshair = "textures//crosshair.bmp";
@@ -28,6 +33,8 @@ var width = 0;
 var height = 0;
 
 var player_speed = PLAYER_SPEED_E;
+var player_boost = 10;
+var boost_cooldown = 0;
 
 
 #endif
