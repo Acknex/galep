@@ -1,6 +1,7 @@
 #include "level.h"
 #include "player.h"
 #include "hud.h"
+#include "environment.h"
 
 void level_start()
 {
@@ -10,6 +11,9 @@ void level_start()
 	spawn_player();
 	hud_init();
 	hud_show();
+	populate_space(200);
+	you = ent_create("planet0.mdl", vector(10000, 0, 0), NULL);
+	vec_set(you.scale_x, vector(50, 50, 50));
 }
 
 void level_restart()
