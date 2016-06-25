@@ -16,31 +16,22 @@ void spawn_player() {
 	player.flags &= ~TRANSLUCENT;
 }
 
-void move_crosshair(VECTOR* vMoveSpeed, VECTOR* vMoveDir) {
-	if (entCrosshair != NULL) {
-		
-		VECTOR vecTemp1;
-		vec_set(vecTemp1, player.x);
-		vec_sub(vecTemp1, camera.x);
-		vec_normalize(vecTemp1, 1100);
-		
-		vec_set(entCrosshair.x, vecTemp1);
-		
-		//c_move(entCrosshair, vMoveSpeed, vMoveDir, GLIDE | IGNORE_ME | IGNORE_PASSENTS | IGNORE_WORLD);
-		
-	}
-}
-
-action act_player2() {
-	VECTOR vSplinePos, vLastPos, vDir;
+action act_player() {
+	VECTOR vSplinePos, vLastPos, vDir, vScreen, vCam, vCrosshair, vCamAngle, vLerp, vScreenUfo;
 	
 	vec_zero(vSplinePos);
 	vec_zero(vLastPos);
 	vec_zero(vDir);
+	vec_zero(vScreen);
+	vec_zero(vCam);
+	vec_zero(vCamAngle);
+	vec_zero(vLerp);
+	vec_zero(vScreenUfo);
+	
+	vec_set(vCrosshair, vector(screen_size.x / 2, screen_size.y / 2, 0));
 	
 	path_set(me, "path_000");
 	var dist = 0;
-	
 	
 	while(me) {
 		
@@ -57,97 +48,57 @@ action act_player2() {
 		
 		// Move crosshair
 		if (entCrosshair != NULL) {
-			path_spline(me, vSplinePos, dist);
-			vec_set(entCrosshair, vSplinePos);
+			
+			vCrosshair.x += (key_d - key_a) * time_step * 50;
+			vCrosshair.y += (key_s - key_w) * time_step * 50;
+			
+			if (((key_d - key_a) == 0) && ((key_s - key_w) == 0)) {
+				vec_lerp(vCrosshair, vCrosshair, vector(screen_size.x / 2, screen_size.y / 2, 0), 0.4 * time_step);
+			}
+			
+			vCrosshair.x = clamp(vCrosshair.x, 0, screen_size.x);
+			vCrosshair.y = clamp(vCrosshair.y, 0, screen_size.y);
+			
+			vScreen.x = vCrosshair.x;
+			vScreen.y = vCrosshair.y;
+			vScreen.z = 500;
+			vec_for_screen(vScreen, camera);
+			
+			vec_set(entCrosshair.x, vScreen);
+			
+			// Camera point to crosshair
+			vec_set(vCam, entCrosshair.x);
+			vec_sub(vCam, camera.x);
+			vec_to_angle(vCamAngle.x, vCam.x);
+			vec_lerp(camera.pan, camera.pan, vCamAngle.x, 0.8);
+			
+			
+			// Move player
+			vScreenUfo.x = vCrosshair.x * 0.8;
+			vScreenUfo.y = vCrosshair.y * 0.8;
+			vScreenUfo.z = 500;
+			vec_for_screen(vScreenUfo, camera);
+			vec_lerp(vLerp, camera.x, vScreenUfo.x, 0.8);
+			vec_set(player.x, vLerp);
+			
+			// Rotate player
+			vec_set(my.pan, vCamAngle.x);
+			
+			// Shoot
+			if ((key_space) && (shootCooldown == 0)) {
+				shootCooldown = BULLET_COOLDOWN_E;
+				player_fire();
+			}
+	
+			if(key_e && shootCooldown == 0)
+			{
+				shootCooldown = BULLET_COOLDOWN_E;
+				start_explosion(my.x, 0.5+random(3));
+			}
+	
+			if (shootCooldown > 0) shootCooldown -=1;
 		}
 		
-		
-		wait(1);
-	}
-}
-
-action act_player() {
-	
-	VECTOR vSpeed, vecMoveSpeed, vForce, vLastPos, vDir, vSplinePos, vNewDir;
-	
-	vec_zero(vSpeed);
-	vec_zero(vecMoveSpeed);
-	vec_zero(vForce);
-	vec_zero(vLastPos);
-	vec_zero(vDir);
-	vec_zero(vSplinePos);
-	vec_zero(vNewDir);
-	
-	path_set(me, "path_000");
-	var dist = 0;
-	
-	
-	while(me) {
-		
-		player_speed = PLAYER_SPEED_E + vHudSpeed;
-		
-		path_spline(me, vSplinePos, dist);
-		dist +=30 * time_step;
-		
-		// Turn towards path
-		vec_diff(vDir, vSplinePos, vLastPos);
-		vec_to_angle(my.pan, vDir);
-		vec_set(vLastPos, vSplinePos);
-		
-		// Calculate player movement
-		var facZ = 0;
-		if (abs(width) < 200) facZ = 1;
-		var facY = 0;
-		if (abs(height) < 200) facY = 1;
-		
-		vForce.z += (key_w - key_s) * player_speed * facZ;
-		vForce.y += (key_a - key_d) * player_speed * facY;
-		vForce.x += 0;
-		
-		width += (key_w - key_s);
-		height += (key_a - key_d);
-	
-		if (width < -200) width = -200;
-		if (width > 200) width = 200;
-		if (height < -200) height = -200;
-		if (height > 200) height = 200;
-		
-		var dist = vec_dist(vSplinePos, my.x);
-		dist = (100 / LEVEL_LIMIT_Y_E) * dist;
-		
-		// Accelerate movement
-		vec_accelerate(vecMoveSpeed, vSpeed, vForce, 1.0 - dist / 100);
-		
-		vec_set(vNewDir, vSplinePos);
-		vec_sub(vNewDir, my.x);
-		
-		c_move(me, vecMoveSpeed, vNewDir, IGNORE_PASSABLE | IGNORE_PASSENTS | IGNORE_ME | GLIDE | ACTIVATE_TRIGGER | IGNORE_WORLD);
-		
-		/*if (entCrosshair != NULL) {
-			vec_set(vNewDir, my.x);
-			vec_rotate(vNewDir, camera.pan);
-			vec_add(vNewDir, vector(1100, 0, 0));
-			vec_set(entCrosshair.x, vNewDir);
-			//entCrosshair.pan = player.pan;
-		}*/
-		
-		camera_move();
-		
-		move_crosshair(vecMoveSpeed, vNewDir);
-		
-		if ((key_space) && (shootCooldown == 0)) {
-			shootCooldown = BULLET_COOLDOWN_E;
-			player_fire();
-		}
-
-		if(key_e && shootCooldown == 0)
-		{
-			shootCooldown = BULLET_COOLDOWN_E;
-			start_explosion(my.x, 0.5+random(3));
-		}
-
-		if (shootCooldown > 0) shootCooldown -=1;
-
 		wait(1);
 	}
 }
