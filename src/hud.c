@@ -5,7 +5,7 @@
 #define HUD_FONT_SIZE 100
 #define HUD_MAX_ENERGY 100
 #define HUD_MAX_SPEED 16
-#define HUD_MAX_TIME 2000
+#define HUD_MAX_TIME 999
 #define HUD_DEF_ENERGY 100
 #define HUD_DEF_SPEED 100
 #define HUD_DEF_TIME 23
@@ -24,8 +24,8 @@ SOUND* HUD__sndTimeout = "timeout.wav";
 PANEL* hud_pan = 
 {
 	layer = 3;
-	alpha = 70;
-	flags = /*LIGHT | TRANSLUCENT |*/ CENTER_X | SHADOW;
+	alpha = 90;
+	flags = /*LIGHT |*/ TRANSLUCENT | CENTER_X | SHADOW;
 }
 
 PANEL* hud_left_gauge_pan = 
@@ -34,8 +34,8 @@ PANEL* hud_left_gauge_pan =
 	pos_y = 0;
 	layer = 3;
 	bmap = left_gauge_bmap;
-	alpha = 30;
-	flags = LIGHT | FILTER | TRANSLUCENT;
+	alpha = 70;
+	flags = /*LIGHT |*/ FILTER | TRANSLUCENT;
 }
 
 PANEL* hud_right_gauge_pan = 
@@ -44,8 +44,8 @@ PANEL* hud_right_gauge_pan =
 	pos_y = 0;
 	layer = 3;
 	bmap = right_gauge_bmap;
-	alpha = 30;
-	flags = LIGHT | FILTER | TRANSLUCENT;
+	alpha = 70;
+	flags = /*LIGHT |*/ FILTER | TRANSLUCENT;
 }
 
 var vHudInitialized = 0;
@@ -100,6 +100,7 @@ void hud_init()
 void hud_reinit()
 {
 	reset_timer();
+	unpause_timer();
 	vHudEnergy = HUD_DEF_ENERGY;
 	vHudSpeed = HUD_DEF_SPEED;
 	vHudTime = HUD_DEF_TIME;
@@ -143,6 +144,8 @@ void hud__update()
 	hud_left_gauge_pan->scale_y = hud_left_gauge_pan->scale_x * 0.6;
 	hud_left_gauge_pan->size_y = height;
 	hud_left_gauge_pan->size_x = clamp(value, 1, width);
+	hud_left_gauge_pan->pos_x = screen_size.x * 0.01;
+	hud_left_gauge_pan->pos_y = screen_size.y * 0.01;
 	
 	//right gauge
 	width = bmap_width(hud_right_gauge_pan->bmap);
@@ -152,10 +155,11 @@ void hud__update()
 	hud_right_gauge_pan->scale_y = -hud_right_gauge_pan->scale_x * 0.6;
 	hud_right_gauge_pan->size_y = height;
 	hud_right_gauge_pan->size_x = clamp(value, 1, width);
-	hud_right_gauge_pan->pos_x = screen_size.x * 0.6 + ((width - hud_right_gauge_pan->size_x) / width * screen_size.x * 0.4);//BÄH
-	
+	hud_right_gauge_pan->pos_x = screen_size.x * 0.59 + ((width - hud_right_gauge_pan->size_x) / width * screen_size.x * 0.4);//BÄH
+	hud_right_gauge_pan->pos_y = screen_size.y * 0.01;
+
 	//timer
-	var vHudTimeLeft = clamp(vHudTime - timer_getSeconds(), 0, vHudMaxTime);
+	var vHudTimeLeft = clamp(vHudTime - (timer_getMinutes() * 60 + timer_getSeconds()), 0, vHudMaxTime);
 	var vOldTime = vHudTimeInt;
 	vHudTimeInt = integer(vHudTimeLeft);
 	if (vOldTime > 10 && vHudTimeInt <= 10)
@@ -176,6 +180,7 @@ void hud__update()
 	if (/*vOldTime > 0 &&*/ vHudTimeInt == 0)
 	{
 		draw_text("timeout",screen_size.x * 0.45,screen_size.y * 0.5, COLOR_WHITE);
+		pause_timer();
 	}
 }
 
@@ -191,7 +196,7 @@ void HUD__resize()
 	hud_pan->size_x = screen_size.x * 0.1;
 	hud_pan->size_y = screen_size.y * 0.1;
 	hud_pan->pos_x = screen_size.x * 0.45;
-	hud_pan->pos_y = screen_size.y * 0.01;
+	hud_pan->pos_y = 0;//screen_size.y * 0.01;
 	pan_setdigits(hud_pan, 1, hud_pan->size_x * 0.5, 0, "%03.0f", HUD__font, 1, &vHudTimeInt);
 
 	//trigger any chained resize event
