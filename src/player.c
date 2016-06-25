@@ -100,7 +100,9 @@ action act_player() {
 			vec_set(vCam, entCrosshair.x);
 			vec_sub(vCam, camera.x);
 			vec_to_angle(vCamAngle.x, vCam.x);
-			vec_lerp(camera.pan, camera.pan, vCamAngle.x, 0.8);
+			
+			// TODO: Remove in case of cam error
+			//vec_lerp(camera.pan, camera.pan, vCamAngle.x, 0.8);
 			
 			// Move player
 			vScreenUfo.x = vCrosshair.x;
@@ -128,8 +130,14 @@ action act_player() {
 			
 			// Boost
 			if (boost_cooldown > 0) {
+				if (camera.arc < 120) {
+					camera.arc +=1 * time_step;
+				}
 				boost_cooldown -=80 * time_step;
 			} else {
+				if (camera.arc > 90) {
+					camera.arc -=1 * time_step;
+				}
 				player_boost = 0;
 				boost_cooldown = 0;
 			}
