@@ -37,5 +37,7 @@ var player_speed = PLAYER_SPEED_E;
 var player_boost = 10;
 var boost_cooldown = 0;
 
+var player_hit_cooldown = 0;
+
 
 #endif
