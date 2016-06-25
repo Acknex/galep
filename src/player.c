@@ -9,11 +9,27 @@ void spawn_player() {
 	}
 	player = ent_create("ufo.mdl", vector(1000,0,0), act_player);
 	entCrosshair = ent_create("textures//crosshair.bmp", vector(1100, 0, 0), NULL);
+	entEngineFx = ent_create("models/ufo_engine_fx.mdl", vector(1000,0,0), act_engine_fx);
+	
 	set(player, ENABLE_TRIGGER | PASSABLE);
 	set(entCrosshair, PASSABLE);
 	player.trigger_range = 20;
 	player.alpha = 100;
 	player.flags &= ~TRANSLUCENT;
+}
+
+action act_engine_fx() {
+	my->flags |= BRIGHT;
+	vec_scale(my->scale_x, 14.);
+	while(1) {
+		my->x = -2.4;
+		my->y = 2.3;
+		my->z = -50;
+		vec_rotate(my->x, player->pan);
+		vec_add(my->x, player->x);
+		vec_set(my->pan, player->pan);
+		wait(1);
+	}
 }
 
 action act_player() {
@@ -94,7 +110,7 @@ action act_player() {
 			vec_set(my.pan, vCamAngle.x);
 			
 			// Shoot
-			if ((key_space) && (shootCooldown == 0)) {
+			if ((key_space) && (shootCooldown <= 0)) {
 				shootCooldown = BULLET_COOLDOWN_E;
 				player_fire();
 			}
@@ -105,34 +121,29 @@ action act_player() {
 				start_explosion(my.x, 0.5+random(3));
 			}
 	
-			if (shootCooldown > 0) shootCooldown -=1 * time_step;
+			if (shootCooldown > 0) shootCooldown -=80 * time_step;
 			
 			// Boost
 			if (boost_cooldown > 0) {
-				boost_cooldown -=1 * time_step;
+				boost_cooldown -=80 * time_step;
 			} else {
 				player_boost = 0;
 				boost_cooldown = 0;
 			}
 			
 			// Enable events
-			c_move(me, nullvector, nullvector, IGNORE_ME | IGNORE_PASSENTS | IGNORE_PASSABLE | ACTIVATE_TRIGGER | GLIDE);
+			c_scan(my.x, my.pan, vector(360, 0, 200), IGNORE_ME | IGNORE_WORLD | SCAN_ENTS);
 		}
-
-		// TODO delete
-		if(key_r && shootCooldown == 0)
-		{
-			shootCooldown = BULLET_COOLDOWN_E;
+		
+		// Smoke if ship is broken
+		if (vHudEnergy < 50) {
 			smoke(my.x, 0.25+random(0.5));
 		}
 
-		if(key_q && shootCooldown == 0)
-		{
-			shootCooldown = BULLET_COOLDOWN_E;
+		// sparks if ship is on boost
+		if (player_boost > 0) {
 			sparks(my.x, 0.25+random(0.5));
 		}
-
-		if (shootCooldown > 0) shootCooldown -=1;
 
 		wait(1);
 	}
@@ -157,10 +168,16 @@ action act_bullet() {
 void player_fire() {
 	if ((player == NULL) || (entCrosshair == NULL)) return;
 	
+	VECTOR vStartPos;
+	vec_zero(vStartPos);
+	
+	vec_set(vStartPos, player.x);
+	vec_rotate(vStartPos, player.pan);
+	vec_add(vStartPos, vector(100,0,0));
+	
 	ENTITY* bullet = ent_create(CUBE_MDL, vector(player.x + 100, player.y, player.z), act_bullet);
 	vec_set(bullet.blue, vector(0,255,0));
-	set(bullet, LIGHT);
-	set(bullet, PASSABLE);
+	set(bullet, LIGHT | PASSABLE);
 }
 
 void boost_player() {
