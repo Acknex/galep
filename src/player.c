@@ -80,8 +80,6 @@ action act_player() {
 	splineDistance = 0;
 	
 	while(me && (vHudEnergy > 0)) {
-		
-		DEBUG_VAR(splineDistance, 50);
 
 /*		var blubb = 0;
 		while(blubb < path_length(my))

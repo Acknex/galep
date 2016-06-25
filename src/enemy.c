@@ -58,7 +58,7 @@ void enemy()
 		vec_to_angle(my.pan, temp);
 		
 		// Shoot
-		if ((vec_dist(my.x, player.x) < 2000) && (cooldown <= 0)) {
+		if ((vec_dist(my.x, player.x) < 2000) && (cooldown <= 0) && pathDistance > splineDistance) {
 			VECTOR vStartPos;
 			vec_set(vStartPos, vector(100,0,0));
 			vec_rotate(vStartPos, my.pan);
