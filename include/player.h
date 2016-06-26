@@ -20,7 +20,7 @@ void boost_player();
 void player_reinit();
 void move_crosshair(VECTOR* vMoveSpeed, VECTOR* vMoveDir);
 
-BMAP* bmapCrosshair = "textures//crosshair.bmp";
+BMAP* bmapCrosshair = "crosshair.bmp";
 ENTITY* entCrosshair = NULL;
 ENTITY* entCrosshair2 = NULL;
 ENTITY* entEngineFx = NULL;

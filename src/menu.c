@@ -153,8 +153,8 @@ void startIntro() {
 	}
 	if(intro_is_finished  || stop_intro)
 		return;
-	ENTITY* ufo = ent_create("models/ufo_lotti.mdl", vector(-530, 806, 058), actMenuUFO);
-	ENTITY* entEngineFx = ent_create("models/ufo_engine_fx.mdl", vector(1000,0,0), act_engine_fx);
+	ENTITY* ufo = ent_create("ufo_lotti.mdl", vector(-530, 806, 058), actMenuUFO);
+	ENTITY* entEngineFx = ent_create("ufo_engine_fx.mdl", vector(1000,0,0), act_engine_fx);
 	entEngineFx->skill1 = ufo;
 	
 	str_cpy((menu_txt->pstring)[0], "Press button to skip");

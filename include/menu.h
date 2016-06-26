@@ -1,7 +1,7 @@
 #ifndef __INC_MENU_H
 #define __INC_MENU_H
 
-BMAP* menu_bmap_fade = "textures/black_1px.tga";
+BMAP* menu_bmap_fade = "black_1px.tga";
 PANEL* menu_pan_fade =
 {
 	pos_x = 0; pos_y = 0;

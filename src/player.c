@@ -6,9 +6,9 @@
 void spawn_player() {
 	
 	player = ent_create("ufo_lotti.mdl", vector(1000,0,0), act_player);
-	entCrosshair = ent_create("textures//crosshair.bmp", vector(1100, 0, 0), NULL);
-	entCrosshair2 = ent_create("textures//crosshair.bmp", vector(1100, 0, 0), NULL);
-	entEngineFx = ent_create("models/ufo_engine_fx.mdl", vector(1000,0,0), act_engine_fx);
+	entCrosshair = ent_create("crosshair.bmp", vector(1100, 0, 0), NULL);
+	entCrosshair2 = ent_create("crosshair.bmp", vector(1100, 0, 0), NULL);
+	entEngineFx = ent_create("ufo_engine_fx.mdl", vector(1000,0,0), act_engine_fx);
 	entEngineFx->skill1 = player;
 	
 

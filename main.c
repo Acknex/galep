@@ -7,6 +7,10 @@
 #define PRAGMA_PATH "models"
 #define PRAGMA_PATH "sounds"
 #define PRAGMA_PATH "textures"
+#define PRAGMA_PATH "textures\\cubemaps"
+
+#define PRAGMA_LEVEL "menu.wmp"
+#define PRAGMA_LEVEL "space.wmp"
 
 #include "menu.h"
 #include "level.h"
@@ -49,8 +53,8 @@ void main_resize()
 }
 
 void main() {
-	//video_mode =	12;
-	//video_screen = 1;
+	video_mode =	12;
+	video_screen = 1;
 	on_exit = main_exit;
 	on_close = main_close;
 	on_resize = main_resize;
