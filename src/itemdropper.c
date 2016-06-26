@@ -7,9 +7,9 @@
 #include "player.h"
 
 #define ITEMDROPPER_DROPDIST_MIN 2500
-#define ITEMDROPPER_DROPDIST_MAX 5000
+#define ITEMDROPPER_DROPDIST_MAX 3500
 #define ITEMDROPPER_DROPDIST_LIMIT 450000
-#define ITEMDROPPER_ACTIVE 1
+//#define ITEMDROPPER_ACTIVE 1
 
 #define ITEM_SPEED 0
 #define ITEM_BOOST 1
@@ -24,7 +24,7 @@ void drop_items__file();
 void drop_item__spawn(var id, VECTOR* vecPos);
 
 
-#define NUM_ITEM_WEIGHTS 4
+#define NUM_ITEM_WEIGHTS 22
 typedef struct
 {
 	var from;
@@ -49,18 +49,18 @@ void item_weighting_startup()
 	sItemWeigths[i].from = 5000;
 	sItemWeigths[i].to = 40000;
 	sItemWeigths[i].weight[ITEM_SPEED] = 3;
-	sItemWeigths[i].weight[ITEM_BOOST] = 50;
+	sItemWeigths[i].weight[ITEM_BOOST] = 70;
 	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
 	sItemWeigths[i].weight[ITEM_TIME] = 3;
 	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 4;
 	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 4;	
 	
 	sItemWeigths[i].from = 50000;
-	sItemWeigths[i].to = 60000;
+	sItemWeigths[i].to = 70000;
 	sItemWeigths[i].weight[ITEM_SPEED] = 3;
 	sItemWeigths[i].weight[ITEM_BOOST] = 2;
 	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
-	sItemWeigths[i].weight[ITEM_TIME] = 30;
+	sItemWeigths[i].weight[ITEM_TIME] = 70;
 	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 1;
 	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 1;	
 	
@@ -71,6 +71,168 @@ void item_weighting_startup()
 	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
 	sItemWeigths[i].weight[ITEM_TIME] = 3;
 	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 30;
+	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 1;	
+	
+	sItemWeigths[i].from = 108000;
+	sItemWeigths[i].to = 122000;
+	sItemWeigths[i].weight[ITEM_SPEED] = 3;
+	sItemWeigths[i].weight[ITEM_BOOST] = 1;
+	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
+	sItemWeigths[i].weight[ITEM_TIME] = 3;
+	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 1;
+	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 30;	
+	
+	sItemWeigths[i].from = 130000;
+	sItemWeigths[i].to = 140000;
+	sItemWeigths[i].weight[ITEM_SPEED] = 3;
+	sItemWeigths[i].weight[ITEM_BOOST] = 2;
+	sItemWeigths[i].weight[ITEM_ENERGY] = 30;
+	sItemWeigths[i].weight[ITEM_TIME] = 3;
+	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 1;
+	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 1;	
+	
+	sItemWeigths[i].from = 151000;
+	sItemWeigths[i].to = 161000;
+	sItemWeigths[i].weight[ITEM_SPEED] = 3;
+	sItemWeigths[i].weight[ITEM_BOOST] = 70;
+	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
+	sItemWeigths[i].weight[ITEM_TIME] = 3;
+	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 4;
+	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 4;	
+	
+	sItemWeigths[i].from = 161000;
+	sItemWeigths[i].to = 172000;
+	sItemWeigths[i].weight[ITEM_SPEED] = 10;
+	sItemWeigths[i].weight[ITEM_BOOST] = 1;
+	sItemWeigths[i].weight[ITEM_ENERGY] = 30;
+	sItemWeigths[i].weight[ITEM_TIME] = 3;
+	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 1;
+	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 1;	
+	
+	sItemWeigths[i].from = 172000;
+	sItemWeigths[i].to = 190000;
+	sItemWeigths[i].weight[ITEM_SPEED] = 3;
+	sItemWeigths[i].weight[ITEM_BOOST] = 2;
+	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
+	sItemWeigths[i].weight[ITEM_TIME] = 3;
+	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 1;
+	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 70;	
+	
+	sItemWeigths[i].from = 190000;
+	sItemWeigths[i].to = 200000;
+	sItemWeigths[i].weight[ITEM_SPEED] = 30;
+	sItemWeigths[i].weight[ITEM_BOOST] = 1;
+	sItemWeigths[i].weight[ITEM_ENERGY] = 30;
+	sItemWeigths[i].weight[ITEM_TIME] = 30;
+	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 1;
+	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 1;	
+	
+	sItemWeigths[i].from = 200000;
+	sItemWeigths[i].to = 220000;
+	sItemWeigths[i].weight[ITEM_SPEED] = 3;
+	sItemWeigths[i].weight[ITEM_BOOST] = 70;
+	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
+	sItemWeigths[i].weight[ITEM_TIME] = 3;
+	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 1;
+	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 15;	
+	
+	sItemWeigths[i].from = 220000;
+	sItemWeigths[i].to = 235000;
+	sItemWeigths[i].weight[ITEM_SPEED] = 3;
+	sItemWeigths[i].weight[ITEM_BOOST] = 1;
+	sItemWeigths[i].weight[ITEM_ENERGY] = 35;
+	sItemWeigths[i].weight[ITEM_TIME] = 35;
+	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 1;
+	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 1;	
+	
+	sItemWeigths[i].from = 235000;
+	sItemWeigths[i].to = 260000;
+	sItemWeigths[i].weight[ITEM_SPEED] = 3;
+	sItemWeigths[i].weight[ITEM_BOOST] = 1;
+	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
+	sItemWeigths[i].weight[ITEM_TIME] = 3;
+	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 70;
+	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 1;	
+	
+	sItemWeigths[i].from = 266000;
+	sItemWeigths[i].to = 272000;
+	sItemWeigths[i].weight[ITEM_SPEED] = 3;
+	sItemWeigths[i].weight[ITEM_BOOST] = 1;
+	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
+	sItemWeigths[i].weight[ITEM_TIME] = 30;
+	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 1;
+	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 1;	
+	
+	sItemWeigths[i].from = 272000;
+	sItemWeigths[i].to = 280000;
+	sItemWeigths[i].weight[ITEM_SPEED] = 3;
+	sItemWeigths[i].weight[ITEM_BOOST] = 1;
+	sItemWeigths[i].weight[ITEM_ENERGY] = 30;
+	sItemWeigths[i].weight[ITEM_TIME] = 3;
+	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 1;
+	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 1;	
+	
+	sItemWeigths[i].from = 290000;
+	sItemWeigths[i].to = 305000;
+	sItemWeigths[i].weight[ITEM_SPEED] = 3;
+	sItemWeigths[i].weight[ITEM_BOOST] = 70;
+	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
+	sItemWeigths[i].weight[ITEM_TIME] = 3;
+	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 1;
+	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 1;	
+	
+	sItemWeigths[i].from = 305000;
+	sItemWeigths[i].to = 350000;
+	sItemWeigths[i].weight[ITEM_SPEED] = 3;
+	sItemWeigths[i].weight[ITEM_BOOST] = 1;
+	sItemWeigths[i].weight[ITEM_ENERGY] = 50;
+	sItemWeigths[i].weight[ITEM_TIME] = 50;
+	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 1;
+	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 1;	
+	
+	sItemWeigths[i].from = 323000;
+	sItemWeigths[i].to = 350000;
+	sItemWeigths[i].weight[ITEM_SPEED] = 3;
+	sItemWeigths[i].weight[ITEM_BOOST] = 70;
+	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
+	sItemWeigths[i].weight[ITEM_TIME] = 3;
+	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 70;
+	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 1;	
+	
+	sItemWeigths[i].from = 360000;
+	sItemWeigths[i].to = 385000;
+	sItemWeigths[i].weight[ITEM_SPEED] = 3;
+	sItemWeigths[i].weight[ITEM_BOOST] = 1;
+	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
+	sItemWeigths[i].weight[ITEM_TIME] = 3;
+	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 1;
+	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 70;	
+	
+	sItemWeigths[i].from = 400000;
+	sItemWeigths[i].to = 420000;
+	sItemWeigths[i].weight[ITEM_SPEED] = 3;
+	sItemWeigths[i].weight[ITEM_BOOST] = 1;
+	sItemWeigths[i].weight[ITEM_ENERGY] = 70;
+	sItemWeigths[i].weight[ITEM_TIME] = 30;
+	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 1;
+	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 1;	
+	
+	sItemWeigths[i].from = 420001;
+	sItemWeigths[i].to = 431000;
+	sItemWeigths[i].weight[ITEM_SPEED] = 30;
+	sItemWeigths[i].weight[ITEM_BOOST] = 1;
+	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
+	sItemWeigths[i].weight[ITEM_TIME] = 3;
+	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 1;
+	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 1;	
+	
+	sItemWeigths[i].from = 432000;
+	sItemWeigths[i].to = 450000;
+	sItemWeigths[i].weight[ITEM_SPEED] = 70;
+	sItemWeigths[i].weight[ITEM_BOOST] = 1;
+	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
+	sItemWeigths[i].weight[ITEM_TIME] = 3;
+	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 1;
 	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 1;	
 	
 }

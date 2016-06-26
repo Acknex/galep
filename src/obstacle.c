@@ -20,6 +20,13 @@ var obstacle_event(var range)
 		return 0;
 	}
 	
+	if (event_type == EVENT_SHOOT)
+	{
+		my->event = NULL;
+		set (me, is_collided);
+		return 2;
+	}
+	
 	if (event_type == EVENT_SCAN && you == player)
 	{
 		if (vec_dist(&your->x, &my->x) < range)
@@ -29,13 +36,6 @@ var obstacle_event(var range)
 			return 1;
 		}
 		return 0;
-	}
-	
-	if (event_type == EVENT_SHOOT)
-	{
-		my->event = NULL;
-		set (me, is_collided);
-		return 1;
 	}
 	
 	return 0;	

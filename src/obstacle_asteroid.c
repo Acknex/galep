@@ -4,6 +4,7 @@
 #define ASTEROID_PENALTY_ENERGY 10
 #define ASTEROID_SHARD_LIFETIME 32
 #define OBSTACLE_ASTEROID_SCANRANGE 90
+#define ASTEROID_DESTROY_SPEED 2
 
 SOUND* sndCollide = "collide.ogg";
 
@@ -50,11 +51,17 @@ action obstacle_asteroid()
 
 void obstacle_asteroid__evt()
 {
-	if (obstacle_event(OBSTACLE_ASTEROID_SCANRANGE) != 0)
+	var result = obstacle_event(OBSTACLE_ASTEROID_SCANRANGE);
+	if (result == 1)
 	{
 		hud_addEnergy(-ASTEROID_PENALTY_ENERGY);	
 		hud_addSpeed(-ASTEROID_PENALTY_SPEED);	
 		ent_playsound(me, sndCollide, 1000);
+	}
+	else if (result == 2)
+	{
+		hud_addSpeed(ASTEROID_DESTROY_SPEED);	
+		snd_play(sndCollide, 100, 0);
 	}
 }
 
@@ -71,7 +78,7 @@ void obstacle_asteroid__destroy()
 	while(my->alpha > 0)
 	{
 		wait(1);
-		my->alpha -= 5* time_step;
+		my->alpha -= 15* time_step;
 	}
 	ptr_remove(me);
 }

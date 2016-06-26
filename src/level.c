@@ -47,6 +47,8 @@ void levelSounds_startup()
 }
 
 void press_enter_to_restart() {
+//TODO: STOP MOVEMENT!!!!
+my = player;
 	snd_play(sndAiaiaiai, 100, 0);
 	
 	while(!key_enter) {
