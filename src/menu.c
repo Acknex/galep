@@ -178,7 +178,9 @@ action actMenuUFO() {
 	if(intro_is_finished)
 		return;
 	if(!stop_intro)
+	{
 		media_play("media//priority_juan.ogg", NULL, 100);
+	}
 	VECTOR* vecDir = vector(20,-40, -40);
 	float time_passed = 0;
 	while(my) {
