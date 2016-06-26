@@ -89,7 +89,12 @@ void populate_space(int maxParticles, int maxSpaceJunk)
 	junkModels[1] = "asteroid1.mdl";
 	junkModels[2] = "asteroid2.mdl";
 
+	spaceJunkCount = 0;
+	spaceParticleCount = 0;
+
 	wait(1);
+	proc_kill(4);
+
 	while(player)
 	{
 		if(spaceParticleCount < maxParticles)
