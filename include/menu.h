@@ -16,7 +16,7 @@ TEXT* menu_txt =
   pos_x = 10;
   pos_y = 10;
   font = "Arial#20bi";
-  string ("Team AckCon presents");
+  string ("Team AckCon proudly presents");
   flags = CENTER_X | CENTER_Y  | TRANSLUCENT | SHOW;
   alpha = 0;
 }

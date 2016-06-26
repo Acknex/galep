@@ -87,7 +87,7 @@ void showMenu()
 	}
 	if(menu_is_closed)
 			return;
-	str_cpy((menu_txt->pstring)[0], "a \"Skeleton Crew\" production");
+	str_cpy((menu_txt->pstring)[0], "a\n Skeleton Crew / Core Team\nproduction");
 	while(aleph < 1) {
 		if(menu_is_closed)
 			return;
