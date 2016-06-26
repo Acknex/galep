@@ -7,7 +7,7 @@
 
 void spawn_enemies();
 
-SOUND* sndLaser = "BEAMER.WAV";
+SOUND* sndLaser = "pew.wav";
 SOUND* sndExplosion = "explosion.wav";
 SOUND* sndUfo = "ufoengine.wav";
 
