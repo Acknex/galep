@@ -121,7 +121,8 @@ action barrel_enemy() {
 		
 		if (cooldown <= 0) {
 			
-			ent_playsound(me, sndLaser, 100);
+			//ent_playsound(me, sndLaser, 100);
+			my.skill1 = ent_playsound2(me, sndLasertrap, 50, 10000);
 			
 			VECTOR vTemp1, vTemp2;
 			vec_for_vertex(vTemp1, me, 57);
@@ -160,6 +161,7 @@ action barrel_enemy() {
 			
 			shotsFired +=8 * time_step;
 			if (shotsFired >= 50) {
+				snd_stop(my.skill1);
 				cooldown = 100;
 				shotsFired = 0;
 			}
