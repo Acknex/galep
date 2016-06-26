@@ -50,6 +50,18 @@ void enemy()
 	var cooldown = 100;
 	var shotsFired = 0;
 
+	VECTOR argh;
+	path_spline(my, argh, pathDistance);
+	vec_set(my.x, argh);
+	vec_add(my.x, pathOffset);
+	path_spline(my, argh, pathDistance+50);
+	var dist = c_trace(argh, my.x, IGNORE_ME | USE_POLYGON);
+	if(dist > 0)
+	{
+		dist = maxv(dist-100, 0);
+		vec_normalize(pathOffset, dist);
+	}
+
 	while(my)
 	{
 		path_spline(my, my.x, pathDistance);
