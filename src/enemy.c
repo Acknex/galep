@@ -22,7 +22,7 @@ action act_enemy_bullet() {
 	vec_set(vecTarget, player.x);
 	vec_sub(vecTarget, my.x);
 	vec_normalize(vecTarget, 1);
-	vec_scale(vecTarget, time_step * BULLET_SPEED_E);
+	vec_scale(vecTarget, time_step * BULLET_SPEED_E*0.15);
 	
 	int myAge = 0;
 	while(me) {
@@ -47,7 +47,7 @@ void enemy()
 	path_set(my, "path_000");
 	my.emask |= ENABLE_SHOOT;
 	my.event = enemy_shot;
-	var cooldown = 0;
+	var cooldown = 100;
 	var shotsFired = 0;
 
 	while(my)
@@ -62,25 +62,29 @@ void enemy()
 		vec_to_angle(my.pan, temp);
 		
 		// Shoot
-		if ((vec_dist(my.x, player.x) < 2000) && (cooldown <= 0) && pathDistance > splineDistance) {
-			VECTOR vStartPos;
-			vec_set(vStartPos, vector(100,0,0));
-			vec_rotate(vStartPos, my.pan);
-			vec_add(vStartPos, my.x);
-			
-			ENTITY* bullet = ent_create(CUBE_MDL, vStartPos, act_enemy_bullet);
-			vec_set(bullet.blue, vector(0,0,255));
-			set(bullet, LIGHT);
-			shotsFired +=1;
+		if((vec_dist(my.x, player.x) < 5000))
+		{
+			if ((cooldown <= 0) && pathDistance > splineDistance+500) {
+				VECTOR vStartPos;
+				vec_set(vStartPos, vector(100,0,0));
+				vec_rotate(vStartPos, my.pan);
+				vec_add(vStartPos, my.x);
+
+				ENTITY* bullet = ent_create(CUBE_MDL, vStartPos, act_enemy_bullet);
+				vec_set(bullet.blue, vector(0,0,255));
+				set(bullet, LIGHT);
+				shotsFired +=1;
+			}
+
+			if ((shotsFired >= 5) && (cooldown <= 0)) {
+				cooldown = 100;
+			}
+
+			if (cooldown > 0) {
+				cooldown -=5 * time_step;
+			}
 		}
-		
-		if ((shotsFired >= 5) && (cooldown <= 0)) {
-			cooldown = 100;
-		}
-		
-		if (cooldown > 0) {
-			cooldown -=5 * time_step;
-		}
+
 
 		if(pathDistance < splineDistance-10000)
 		{
@@ -165,7 +169,8 @@ void spawn_enemies()
 
 	while(player)
 	{
-		wait(-(5+random(10)));
+		var blubb = (1-minv(splineDistance/350000, 1))*8;
+		wait(-(2+blubb+random(10)));
 		ent_create("ufo.mdl", nullvector, enemy);
 	}
 }

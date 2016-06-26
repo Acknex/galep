@@ -79,7 +79,7 @@ action act_player() {
 
 		// Move camera
 		path_spline(me, vSplinePos, splineDistance);
-		splineDistance +=30  * time_step + vHudSpeed / 100 + player_boost * 5 * time_step;
+		splineDistance += 50 * time_step + vHudSpeed / 100 + player_boost * 5 * time_step;
 		
 		// Turn camera towards path
 		vec_diff(vDir, vSplinePos, vLastPos);
