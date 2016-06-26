@@ -8,7 +8,8 @@
 
 #define ITEMDROPPER_DROPDIST_MIN 2500
 #define ITEMDROPPER_DROPDIST_MAX 5000
-//#define ITEMDROPPER_ACTIVE 1
+#define ITEMDROPPER_DROPDIST_LIMIT 450000
+#define ITEMDROPPER_ACTIVE 1
 
 #define ITEM_SPEED 0
 #define ITEM_BOOST 1
@@ -23,7 +24,7 @@ void drop_items__file();
 void drop_item__spawn(var id, VECTOR* vecPos);
 
 
-#define NUM_ITEM_WEIGHTS 1
+#define NUM_ITEM_WEIGHTS 4
 typedef struct
 {
 	var from;
@@ -35,14 +36,43 @@ WEIGHTING sItemWeigths[NUM_ITEM_WEIGHTS];
 
 void item_weighting_startup()
 {
-	sItemWeigths[0].from = 0;
-	sItemWeigths[0].to = 0;
-	sItemWeigths[0].weight[ITEM_SPEED] = 4;
-	sItemWeigths[0].weight[ITEM_BOOST] = 6;
-	sItemWeigths[0].weight[ITEM_ENERGY] = 3;
-	sItemWeigths[0].weight[ITEM_TIME] = 2;
-	sItemWeigths[0].weight[OBSTACLE_CLOUD] = 5;
-	sItemWeigths[0].weight[OBSTACLE_ASTEROID] = 3;	
+	var i = 0;
+	sItemWeigths[i].from = 0;
+	sItemWeigths[i].to = 0;
+	sItemWeigths[i].weight[ITEM_SPEED] = 3;
+	sItemWeigths[i].weight[ITEM_BOOST] = 2;
+	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
+	sItemWeigths[i].weight[ITEM_TIME] = 3;
+	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 4;
+	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 4;	
+	
+	sItemWeigths[i].from = 5000;
+	sItemWeigths[i].to = 40000;
+	sItemWeigths[i].weight[ITEM_SPEED] = 3;
+	sItemWeigths[i].weight[ITEM_BOOST] = 50;
+	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
+	sItemWeigths[i].weight[ITEM_TIME] = 3;
+	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 4;
+	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 4;	
+	
+	sItemWeigths[i].from = 50000;
+	sItemWeigths[i].to = 60000;
+	sItemWeigths[i].weight[ITEM_SPEED] = 3;
+	sItemWeigths[i].weight[ITEM_BOOST] = 2;
+	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
+	sItemWeigths[i].weight[ITEM_TIME] = 30;
+	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 1;
+	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 1;	
+	
+	sItemWeigths[i].from = 84000;
+	sItemWeigths[i].to = 92000;
+	sItemWeigths[i].weight[ITEM_SPEED] = 3;
+	sItemWeigths[i].weight[ITEM_BOOST] = 1;
+	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
+	sItemWeigths[i].weight[ITEM_TIME] = 3;
+	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 30;
+	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 1;	
+	
 }
 
 void drop_items()
@@ -99,7 +129,7 @@ void drop_items__new()
 	
 	entWalker = ent_create(NULL, vector(1000,0,0), NULL);
 	path_set(entWalker, "path_000");
-	var vLength = path_length(entWalker);
+	var vLength = minv(path_length(entWalker), ITEMDROPPER_DROPDIST_LIMIT);
 	//printf("%f %f", (double)vDistance, (double)vLength);
 	var vHandle = file_open_write("level.dat");
 	while (vDistance < vLength)
