@@ -10,8 +10,8 @@ var hndMusicInGame = NULL;
 
 void level_start()
 {
-	//level_load("testlevel.wmb");
-	level_load("space.wmb");
+	level_load("testlevel.wmb");
+	//level_load("space.wmb");
 	hndMusicInGame = media_loop("media\\DeathStone.ogg", NULL, 80);
 	init_star_cube();
 	init_levelSounds();

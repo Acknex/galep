@@ -56,6 +56,7 @@ void main() {
 	fps_max = 60;
 
 	showMenu();
+	//level_start();
 	
 /*	while(1) {
 		wait(1);

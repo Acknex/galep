@@ -32,8 +32,8 @@ action item_energy()
 
 void item_energy__evt()
 {
-	if (item_event() != 0)
+	if (item_evt() != 0)
 	{
-		//error("energy!");
+		hud_addEnergy(30);
 	}
 }

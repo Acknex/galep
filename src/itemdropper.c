@@ -3,16 +3,19 @@
 #include "item_boost.h"
 #include "item_energy.h"
 #include "item_speed.h"
+#include "item_checkpoint.h"
+#include "player.h"
 
 #define ITEMDROPPER_DROPDIST 1400
-//#define ITEMDROPPER_ACTIVE 1
+#define ITEMDROPPER_ACTIVE 1
 
 #define ITEM_SPEED 0
 #define ITEM_BOOST 1
 #define ITEM_ENERGY 2
-#define OBSTACLE_CLOUD 3
-#define OBSTACLE_ASTEROID 4
-#define NUM_SPAWNABLES 5
+#define ITEM_TIME 3
+#define OBSTACLE_CLOUD 4
+#define OBSTACLE_ASTEROID 5
+#define NUM_SPAWNABLES 6
 
 void drop_items__new();
 void drop_items__file();
@@ -36,6 +39,7 @@ void item_weighting_startup()
 	sItemWeigths[0].weight[ITEM_SPEED] = 4;
 	sItemWeigths[0].weight[ITEM_BOOST] = 6;
 	sItemWeigths[0].weight[ITEM_ENERGY] = 3;
+	sItemWeigths[0].weight[ITEM_TIME] = 2;
 	sItemWeigths[0].weight[OBSTACLE_CLOUD] = 5;
 	sItemWeigths[0].weight[OBSTACLE_ASTEROID] = 3;	
 }
@@ -147,6 +151,11 @@ void drop_items__new()
 		}
 	}
 	file_close(vHandle);	
+	while(1)
+	{
+		DEBUG_VAR(splineDistance, 100);
+		wait(1);
+	}
 }
 
 void drop_item__spawn(var id, VECTOR* vecPos)
@@ -168,6 +177,12 @@ void drop_item__spawn(var id, VECTOR* vecPos)
 		case ITEM_ENERGY:
 		{
 			ent_create("battery.mdl", vecPos, item_energy);
+			break;
+		}
+
+		case ITEM_TIME:
+		{
+			ent_create("flash.mdl", vecPos, item_checkpoint);
 			break;
 		}
 

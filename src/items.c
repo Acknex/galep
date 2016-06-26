@@ -11,10 +11,10 @@ void item_setup()
 //	my->emask |= ENABLE_TRIGGER; 
 //	my->trigger_range = 20;
 	set (me, PASSABLE);
-	my->event = item_event;
+	//my->event = item_event;
 }
 
-var item_event()
+var item_evt()
 {
 	if (!player || !you)
 	{

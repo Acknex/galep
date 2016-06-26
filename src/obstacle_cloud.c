@@ -91,7 +91,7 @@ void obstacle_cloud__particle(PARTICLE *particle)
 {
 	var size = particle.vel_x;
 	particle.skill_a = size;
-	vec_set(particle.blue, vector(150, 150, 255));
+	vec_set(particle.blue, vector(14, 204, 40));
 	vec_set(particle.vel_x, vector(random(2) - 1, random(2) - 1, random(2) - 1));
 	set(particle, TRANSLUCENT | LIGHT);
 	particle.alpha = 30;

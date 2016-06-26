@@ -36,7 +36,7 @@ action item_boost()
 
 void item_boost__evt()
 {
-	if (item_event() != 0)
+	if (item_evt() != 0)
 	{
 		boost_player();
 	}
