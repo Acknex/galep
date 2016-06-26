@@ -39,6 +39,9 @@ void enemy()
 	var pathDistance = splineDistance + 10000;
 
 	vec_set(pathOffset, vector(random(1000)-500, random(1000)-500, random(1000)-500));
+	
+	entEngineFx = ent_create("models/ufo_engine_fx.mdl", vector(1000,0,0), act_engine_fx);
+	entEngineFx->skill1 = my;
 
 	path_set(my, "path_000");
 	my.emask |= ENABLE_SHOOT;
