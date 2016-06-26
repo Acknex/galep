@@ -28,7 +28,7 @@ action obstacle_cloud()
 	
 	while(1)
 	{
-		if (vec_dist (player.x, my.x) < 5000)
+		if (vec_dist (player.x, my.x) < 2000)
 		{
 			vParticles += time_step;
 			if (vParticles > 10)

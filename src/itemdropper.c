@@ -6,8 +6,9 @@
 #include "item_checkpoint.h"
 #include "player.h"
 
-#define ITEMDROPPER_DROPDIST 1400
-#define ITEMDROPPER_ACTIVE 1
+#define ITEMDROPPER_DROPDIST_MIN 2500
+#define ITEMDROPPER_DROPDIST_MAX 5000
+//#define ITEMDROPPER_ACTIVE 1
 
 #define ITEM_SPEED 0
 #define ITEM_BOOST 1
@@ -105,7 +106,7 @@ void drop_items__new()
 	{
 		vec_set(&vLastPos, &vSplinePos);
 		path_spline(entWalker, vSplinePos, vDistance);
-		vDistance += ITEMDROPPER_DROPDIST;
+		vDistance += ITEMDROPPER_DROPDIST_MIN + random(ITEMDROPPER_DROPDIST_MAX - ITEMDROPPER_DROPDIST_MIN);
 		VECTOR vecTemp;
 		vec_set(&vecTemp, &vSplinePos);
 		vec_sub(&vecTemp, &vLastPos);
