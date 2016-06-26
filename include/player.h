@@ -1,7 +1,7 @@
 #ifndef PLAYER_H_
 #define PLAYER_H_
 
-#define PLAYER_SPEED_E 150//50
+#define PLAYER_SPEED_E 50
 #define LEVEL_LIMIT_Z_E 500
 #define LEVEL_LIMIT_Y_E 800
 #define BULLET_SPEED_E 400
@@ -10,7 +10,7 @@
 
 #define BOOST_COOLDOWN_E 1000
 
-#define ENEMY_DAMAGE 0//10
+#define ENEMY_DAMAGE 10
 
 void spawn_player();
 void act_player();
