@@ -22,6 +22,7 @@
 #include "environment.h"
 #include "explosion.h"
 #include "enemy.h"
+#include "item_galep.h"
 
 #include "level.c"
 #include "player.c"
@@ -29,6 +30,7 @@
 #include "environment.c"
 #include "explosion.c"
 #include "enemy.c"
+#include "item_galep.c"
 
 
 void main_exit()
