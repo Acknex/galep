@@ -10,13 +10,14 @@
 
 #define BOOST_COOLDOWN_E 1000
 
-#define ENEMY_DAMAGE 40
+#define ENEMY_DAMAGE 10
 
 void spawn_player();
 void act_player();
 void act_engine_fx();
 void player_fire();
 void boost_player();
+void player_reinit();
 void move_crosshair(VECTOR* vMoveSpeed, VECTOR* vMoveDir);
 
 BMAP* bmapCrosshair = "textures//crosshair.bmp";
@@ -46,6 +47,5 @@ var player_boost = 10;
 var boost_cooldown = 0;
 
 var player_hit_cooldown = 0;
-
 
 #endif

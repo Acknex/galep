@@ -241,4 +241,11 @@ void boost_player() {
 	player_boost = 5;
 }
 
+void player_reinit() {
+	player_speed = PLAYER_SPEED_E;
+	player_boost = 10;
+	boost_cooldown = 0;
+	player_hit_cooldown = 0;
+}
+
 #endif
