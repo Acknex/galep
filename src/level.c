@@ -57,7 +57,10 @@ void press_enter_to_restart() {
 	}
 	while(key_enter) wait(1);
 	hud_hide();
-	level_restart();
+	hud_reinit();
+	level_stop();
+	level_start();
+	//level_load("space.wmb");
 }
 
 #endif
