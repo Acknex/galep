@@ -5,13 +5,6 @@
 
 void spawn_player() {
 	
-	/*if (player != NULL) {
-		ent_remove(player);
-	}
-	if (entCrosshair != NULL) {
-		ent_remove(entCrosshair);
-		ent_remove(entCrosshair2);
-	}*/
 	player = ent_create("ufo.mdl", vector(1000,0,0), act_player);
 	entCrosshair = ent_create("textures//crosshair.bmp", vector(1100, 0, 0), NULL);
 	entCrosshair2 = ent_create("textures//crosshair.bmp", vector(1100, 0, 0), NULL);
@@ -84,14 +77,6 @@ action act_player() {
 	
 	while(me && (vHudEnergy > 0)) {
 
-/*		var blubb = 0;
-		while(blubb < path_length(my))
-		{
-			path_spline(me, vSplinePos, blubb);
-			blubb += 20;
-			draw_line3d(vSplinePos, vector(255, 200, 200), 100);
-		}*/
-
 		// Move camera
 		path_spline(me, vSplinePos, splineDistance);
 		splineDistance +=30  * time_step + vHudSpeed / 100 + player_boost * 5 * time_step;
@@ -106,8 +91,8 @@ action act_player() {
 		// Move crosshair
 		if (entCrosshair != NULL) {
 			
-			vCrosshair.x += ((key_d || key_cur) - (key_a || key_cul)) * time_step * 35;
-			vCrosshair.y += ((key_w || key_cuu) - (key_s || key_cud)) * time_step * 35;
+			vCrosshair.x += (key_d || key_cur) - (key_a || key_cul) * time_step * 35;
+			vCrosshair.y += (key_w || key_cuu) - (key_s || key_cud) * time_step * 35;
 			
 			if ((((key_d || key_cur) - (key_a || key_cul)) == 0) && (((key_w || key_cuu) - (key_s || key_cud)) == 0)) {
 				vec_lerp(vCrosshair, vCrosshair, vector(screen_size.x / 2, screen_size.y / 2, 0), 0.1 * time_step);
@@ -213,20 +198,7 @@ action act_player() {
 	}
 	
 	if (vHudEnergy <= 0) {
-		snd_play(sndAiaiaiai, 100, 0);
-		
-		// TODO SEt camera next to player
-		while(!key_enter) {
-			var textWidth = str_width("Press ENTER to restart", NULL);
-			draw_text("Press ENTER to restart", (screen_size.x / 2) - (textWidth / 2), screen_size.y / 2, COLOR_WHITE);
-			my.pan +=4 * time_step;
-			wait(1);
-	}
-		while(key_enter) wait(1);
-		hud_hide();
-		hud_reinit();
-		level_stop();
-		level_start();
+		press_enter_to_restart();
 	}
 }
 

@@ -46,4 +46,18 @@ void levelSounds_startup()
 	sndLevelSounds[4] = snd_create("space7.wav");
 }
 
+void press_enter_to_restart() {
+	snd_play(sndAiaiaiai, 100, 0);
+	
+	while(!key_enter) {
+		var textWidth = str_width("Press ENTER to restart", NULL);
+		draw_text("Press ENTER to restart", (screen_size.x / 2) - (textWidth / 2), screen_size.y / 2, COLOR_WHITE);
+		my.pan +=4 * time_step;
+		wait(1);
+	}
+	while(key_enter) wait(1);
+	hud_hide();
+	level_restart();
+}
+
 #endif
