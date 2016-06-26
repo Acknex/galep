@@ -44,6 +44,7 @@ void enemy()
 	path_set(my, "path_000");
 	my.emask |= ENABLE_SHOOT;
 	my.event = enemy_shot;
+	my.skill1 = ent_playloop2(my, sndUfo, 100, 10000);
 	var cooldown = 100;
 	var shotsFired = 0;
 
