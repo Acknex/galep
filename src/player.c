@@ -223,7 +223,7 @@ action act_bullet() {
 void player_fire() {
 	if ((player == NULL) || (entCrosshair == NULL)) return;
 	
-	snd_play(sndLaser, 10, 0);
+	snd_play(sndLaser, 20, 0);
 	
 	VECTOR vStartPos;
 	vec_set(vStartPos, vector(100,0,0));
