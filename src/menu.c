@@ -150,7 +150,7 @@ void startIntro() {
 		camera.tilt = start - (100-volume)/100.0*(start+45);
 		wait(1);
 	}
-	ENTITY* ufo = ent_create("models/ufo.mdl", vector(-530, 806, 058), actMenuUFO);
+	ENTITY* ufo = ent_create("models/ufo_lotti.mdl", vector(-530, 806, 058), actMenuUFO);
 	ENTITY* entEngineFx = ent_create("models/ufo_engine_fx.mdl", vector(1000,0,0), act_engine_fx);
 	entEngineFx->skill1 = ufo;
 	
