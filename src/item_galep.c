@@ -24,6 +24,7 @@ action act_galep() {
 			my->red = 10 + sinv(total_ticks * 20) * 50;
 			DEBUG_VAR(my->red, 60);
 		}
+		
 		wait(1);
 	}
 	item_fade();
