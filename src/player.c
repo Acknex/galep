@@ -209,13 +209,21 @@ action act_bullet() {
 	vec_sub(vecTarget, player.x);
 	vec_normalize(vecTarget, 1);
 	vec_scale(vecTarget, time_step * BULLET_SPEED_E);
+	ENTITY* glow = ent_create("playerBullet.png", my.x, NULL);
+	set(glow, PASSABLE);
+	set(glow, BRIGHT);
+	vec_scale(glow.scale_x, 3);
 	
 	int myAge = 0;
 	while(me) {
 		you = player;
 		var dist = c_move(me, vecTarget, nullvector, IGNORE_PASSABLE | IGNORE_PASSENTS | ACTIVATE_SHOOT | IGNORE_YOU);
+		vec_set(glow.x, my.x);
 		myAge +=1;
-		if (myAge > BULLET_AGE_E || dist < vec_length(vecTarget)*0.8) ptr_remove(me);
+		if (myAge > BULLET_AGE_E || dist < vec_length(vecTarget)*0.8){ 
+			ptr_remove(me);
+			ptr_remove(glow);
+		}
 		wait(1);
 	}
 }
