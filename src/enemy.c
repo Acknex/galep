@@ -24,11 +24,20 @@ action act_enemy_bullet() {
 	vec_normalize(vecTarget, 1);
 	vec_scale(vecTarget, time_step * BULLET_SPEED_E*0.25);
 	
+	ENTITY* glow = ent_create("enemyBullet.png", my.x, NULL);
+	set(glow, PASSABLE);
+	set(glow, BRIGHT);
+	vec_scale(glow.scale_x, 3);
+	
 	int myAge = 0;
 	while(me) {
-		var dist = c_move(me, vecTarget, nullvector, IGNORE_PASSABLE | IGNORE_PASSENTS | ACTIVATE_SHOOT);
+		var dist = c_move(me, vecTarget, nullvector, IGNORE_PASSABLE | IGNORE_PASSENTS | ACTIVATE_SHOOT);	
+		vec_set(glow.x, my.x);
 		myAge +=1;
-		if (myAge > BULLET_AGE_E || dist < vec_length(vecTarget)*0.8) ptr_remove(me);
+		if (myAge > BULLET_AGE_E || dist < vec_length(vecTarget)*0.8) {
+			ptr_remove(me);	
+			ptr_remove(glow);
+		}
 		wait(1);
 	}
 }
