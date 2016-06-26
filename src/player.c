@@ -20,6 +20,7 @@ void spawn_player() {
 	player.trigger_range = 20;
 	player.alpha = 100;
 	player.flags &= ~TRANSLUCENT;
+	//player.skill1 = ent_playloop2(player, sndUfo, 100, 2000);
 }
 
 action act_engine_fx() {

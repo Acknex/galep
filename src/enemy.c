@@ -22,7 +22,7 @@ action act_enemy_bullet() {
 	vec_set(vecTarget, player.x);
 	vec_sub(vecTarget, my.x);
 	vec_normalize(vecTarget, 1);
-	vec_scale(vecTarget, time_step * BULLET_SPEED_E*0.15);
+	vec_scale(vecTarget, time_step * BULLET_SPEED_E*0.25);
 	
 	int myAge = 0;
 	while(me) {
@@ -44,6 +44,7 @@ void enemy()
 	path_set(my, "path_000");
 	my.emask |= ENABLE_SHOOT;
 	my.event = enemy_shot;
+	my.skill1 = ent_playloop2(my, sndUfo, 100, 10000);
 	var cooldown = 100;
 	var shotsFired = 0;
 
@@ -116,11 +117,12 @@ action barrel_enemy() {
 
 	while(my)
 	{		
-		my.tilt +=time_step * 4;
+//		my.tilt +=time_step * 4;
 		
 		if (cooldown <= 0) {
 			
-			ent_playsound(me, sndLaser, 100);
+			//ent_playsound(me, sndLaser, 100);
+			my.skill1 = ent_playsound2(me, sndLasertrap, 50, 10000);
 			
 			VECTOR vTemp1, vTemp2;
 			vec_for_vertex(vTemp1, me, 57);
@@ -159,6 +161,7 @@ action barrel_enemy() {
 			
 			shotsFired +=8 * time_step;
 			if (shotsFired >= 50) {
+				snd_stop(my.skill1);
 				cooldown = 100;
 				shotsFired = 0;
 			}
@@ -176,9 +179,35 @@ void spawn_enemies()
 	wait(1);
 	proc_kill(4);
 
+
+	ENTITY *entWalker = ent_create(NULL, vector(1000,0,0), NULL);
+	path_set(entWalker, "path_000");
+	var vLength = minv(path_length(entWalker), ITEMDROPPER_DROPDIST_LIMIT);
+	var vDistance = 80000;
+	VECTOR vLastPos, vSplinePos, vAngle;
+	while(vDistance < vLength)
+	{
+		vec_set(&vLastPos, &vSplinePos);
+		path_spline(entWalker, vSplinePos, vDistance);
+		vDistance += 10000-(vDistance/vLength)*500;
+		VECTOR vecTemp;
+		vec_set(&vecTemp, &vSplinePos);
+		vec_sub(&vecTemp, &vLastPos);
+		vec_to_angle(vAngle, vecTemp);
+		vecTemp.x = 0;
+		vecTemp.y = random(400) - 200;
+		vecTemp.z = random(400) - 200;
+		vec_rotate(vecTemp, vAngle);
+		vec_add(vecTemp, vSplinePos);
+
+		ENTITY *blubb = ent_create("laserenemies.mdl", vecTemp, barrel_enemy);
+		vec_set(blubb.pan, vector(0, random(360), 0));
+		ang_rotate(blubb.pan, vAngle);
+	}
+
 	while(player)
 	{
-		var blubb = (1-minv(splineDistance/350000, 1))*8;
+		var blubb = (1-minv(splineDistance/250000, 1))*8;
 		wait(-(2+blubb+random(10)));
 		ent_create("ufo.mdl", nullvector, enemy);
 	}

@@ -28,7 +28,7 @@ ENTITY* entEngineFx = NULL;
 SOUND* sndAiaiaiai = "aiaiaiai.ogg";
 SOUND* sndInfinity = "infinity.wav";
 SOUND* sndDie = "die.wav";
-SOUND* sndLaser = "hit.wav";
+SOUND* sndLaser = "pew.wav";
 
 int shootCooldown;
 var smokeCooldown;

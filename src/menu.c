@@ -43,6 +43,7 @@ void menu_magic_startup() {
 		wait(1);
 	}
 	menu_pan_fade->flags &= ~SHOW;
+	str_cpy((menu_txt->pstring)[0], "");
 	menu_txt->flags &= ~SHOW;
 	media_stop(volume);
 	uninit_star_cube();
@@ -71,7 +72,7 @@ void showMenu()
 	
 	float aleph = 0;	
 	while(aleph < 1) {
-		if(menu_is_closed)
+		if(menu_is_closed || stop_intro)
 			return;
 		aleph = clamp(aleph+time_step*.05, 0, 1);
 		menu_txt.alpha = aleph*100;
@@ -79,7 +80,7 @@ void showMenu()
 	}
 	wait(-2);
 	while(aleph > 0) {
-		if(menu_is_closed)
+		if(menu_is_closed || stop_intro)
 			return;
 		aleph = clamp(aleph-time_step*.05, 0, 1);
 		menu_txt.alpha = aleph*100;
@@ -89,7 +90,7 @@ void showMenu()
 			return;
 	str_cpy((menu_txt->pstring)[0], "a\n Skeleton Crew / Core Team\nproduction");
 	while(aleph < 1) {
-		if(menu_is_closed)
+		if(menu_is_closed || stop_intro)
 			return;
 		aleph = clamp(aleph+time_step*.05, 0, 1);
 		menu_txt.alpha = aleph*100;
@@ -97,14 +98,14 @@ void showMenu()
 	}
 	wait(-2);
 	while(aleph > 0) {
-		if(menu_is_closed)
+		if(menu_is_closed || stop_intro)
 			return;
 		aleph = clamp(aleph-time_step*.05, 0, 1);
 		menu_txt.alpha = aleph*100;
 		wait(1);
 	}
 	wait(-2);
-	if(menu_is_closed)
+	if(menu_is_closed || stop_intro)
 			return;
 	str_cpy((menu_txt->pstring)[0], "Press button to start");
 	menu_show_button = true;
@@ -150,6 +151,8 @@ void startIntro() {
 		camera.tilt = start - (100-volume)/100.0*(start+45);
 		wait(1);
 	}
+	if(intro_is_finished  || stop_intro)
+		return;
 	ENTITY* ufo = ent_create("models/ufo_lotti.mdl", vector(-530, 806, 058), actMenuUFO);
 	ENTITY* entEngineFx = ent_create("models/ufo_engine_fx.mdl", vector(1000,0,0), act_engine_fx);
 	entEngineFx->skill1 = ufo;
@@ -162,6 +165,8 @@ void startIntro() {
 	menu_txt->alpha = 0;
 	menu_txt->flags |= SHOW;
 	while(volume < 1) {
+		if(intro_is_finished)
+			return;
 		volume = clamp(volume+time_step*.05, 0, 1);
 		menu_txt->alpha = volume*100;
 	}
@@ -173,7 +178,9 @@ action actMenuUFO() {
 	if(intro_is_finished)
 		return;
 	if(!stop_intro)
+	{
 		media_play("media//priority_juan.ogg", NULL, 100);
+	}
 	VECTOR* vecDir = vector(20,-40, -40);
 	float time_passed = 0;
 	while(my) {
