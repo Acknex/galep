@@ -222,7 +222,8 @@ void hud__update()
 	
 	if (/*vOldTime > 0 &&*/ vHudTimeInt == 0)
 	{
-		draw_text("timeout",screen_size.x * 0.45,screen_size.y * 0.5, COLOR_WHITE);
+		//draw_text("timeout",screen_size.x * 0.45,screen_size.y * 0.5, COLOR_WHITE);
+		press_enter_to_restart();
 		pause_timer();
 	}
 }
