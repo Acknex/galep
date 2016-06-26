@@ -156,6 +156,9 @@ action barrel_enemy() {
 
 void spawn_enemies()
 {
+	wait(1);
+	proc_kill(4);
+
 	while(player)
 	{
 		wait(-(5+random(10)));

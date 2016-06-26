@@ -108,6 +108,7 @@ void hud_reinit()
 	vHudMaxEnergy = HUD_MAX_ENERGY;
 	vHudMaxSpeed = HUD_MAX_SPEED;
 	vHudMaxTime = HUD_MAX_TIME;
+	vec_set (vHudTimeColor, COLOR_WHITE);
 }
 
 void hud_close()
@@ -137,10 +138,11 @@ void hud_addTime(var value)
 		wait(-0.5);		
 		while (vCnt < 1)
 		{
-			vCnt = minv(1, vCnt + 0.5 * time_step);
 			vHudTime = (1 - vCnt) * vHudTime + vCnt * vHudTimeTarget;	
+			vCnt = vCnt + 0.5 * time_step;
 			wait(1);
 		}
+		vHudTime = vHudTimeTarget;
 		wait(-1);		
 		pan_setcolor(hud_pan, 1, 1, &vHudTimeColor);
 	}
@@ -150,12 +152,18 @@ void hud_addTime(var value)
 		wait(-0.5);		
 		while (vCnt < 1)
 		{
-			vCnt = minv(1, vCnt + 0.5 * time_step);
 			vHudTime = (1 - vCnt) * vHudTime + vCnt * vHudTimeTarget;	
+			vCnt = vCnt + 0.5 * time_step;
 			wait(1);
 		}
-		wait(-1);		
+		vHudTime = vHudTimeTarget;
+		//wait(-1);		//geht net, WTF!?
 		pan_setcolor(hud_pan, 1, 1, &vHudTimeColor);
+		return;
+	}
+	else
+	{
+		vHudTime = vHudTimeTarget;
 	}
 	
 }

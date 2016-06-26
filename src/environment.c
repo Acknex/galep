@@ -43,6 +43,23 @@ void space_junk()
 {
 	vec_set(my.x, player.x);
 	vec_add(my.x, vector(random(8000) - 4000, random(8000) - 4000, random(8000) - 4000));
+
+	path_set(my, "path_000");
+	var pathDist = splineDistance-4000;
+	while(pathDist < splineDistance+4000)
+	{
+		VECTOR temp;
+		path_spline(my, temp, pathDist);
+		pathDist += 100;
+		if(vec_dist(temp, my.x) < 2000)
+		{
+			spaceJunkCount -= 1;
+			ptr_remove(my);
+			my = NULL;
+			return;
+		}
+	}
+
 	vec_scale(my.scale_x, 3+random(5));
 	vec_set(my.pan, vector(random(360), random(360), random(360)));
 	set(my, TRANSLUCENT);
@@ -72,7 +89,12 @@ void populate_space(int maxParticles, int maxSpaceJunk)
 	junkModels[1] = "asteroid1.mdl";
 	junkModels[2] = "asteroid2.mdl";
 
+	spaceJunkCount = 0;
+	spaceParticleCount = 0;
+
 	wait(1);
+	proc_kill(4);
+
 	while(player)
 	{
 		if(spaceParticleCount < maxParticles)

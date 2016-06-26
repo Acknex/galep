@@ -68,7 +68,7 @@ void obstacle_cloud__evt()
 		hud_addTime(-CLOUD_PENALTY_TIME);	
 		my->lockTimer = CLOUD_PENALTY_TICK;
 		set (me, is_locked);
-		ent_playsound(me, sndSlowdown, 1000);
+		ent_playsound(me, sndSlowdown, 500);
 	}
 }
 
@@ -91,10 +91,10 @@ void obstacle_cloud__particle(PARTICLE *particle)
 {
 	var size = particle.vel_x;
 	particle.skill_a = size;
-	vec_set(particle.blue, vector(50, 50, 255));
+	vec_set(particle.blue, vector(150, 150, 255));
 	vec_set(particle.vel_x, vector(random(2) - 1, random(2) - 1, random(2) - 1));
 	set(particle, TRANSLUCENT | LIGHT);
-	particle.alpha = 50;
+	particle.alpha = 30;
 	particle.size = 150*size;
 	particle.event = obstacle_cloud__particle_event;
 }
