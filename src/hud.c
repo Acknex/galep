@@ -215,7 +215,7 @@ void hud__update()
 		vec_set (&vHudTimeColor, COLOR_WHITE);
 	}
 
-	if (vOldTime > vHudTimeInt && vHudTimeInt <= 5)
+	if (vOldTime > vHudTimeInt && vHudTimeInt <= 5 && vHudTimeInt > 0)
 	{
 		snd_play(HUD__sndTimeout, 100, 0);
 	}

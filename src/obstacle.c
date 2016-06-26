@@ -1,7 +1,6 @@
 #include "explosion.h"
 
 #define OBSTACLE_PARTICLE_COLOR vector(0, 0, 255)
-#define OBSTACLE_ASTEROID_SCANRANGE 90
 
 void obstacle__particleFader(PARTICLE *p);
 

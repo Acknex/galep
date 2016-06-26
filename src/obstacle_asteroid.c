@@ -1,9 +1,10 @@
 #include "obstacle.h"
+#include "explosion.h"
 
 #define ASTEROID_PENALTY_SPEED 2
 #define ASTEROID_PENALTY_ENERGY 10
 #define ASTEROID_SHARD_LIFETIME 32
-#define OBSTACLE_ASTEROID_SCANRANGE 90
+#define OBSTACLE_ASTEROID_SCANRANGE 150
 #define ASTEROID_DESTROY_SPEED 2
 
 SOUND* sndCollide = "collide.ogg";
@@ -51,14 +52,17 @@ action obstacle_asteroid()
 
 void obstacle_asteroid__evt()
 {
-	var result = obstacle_event(OBSTACLE_ASTEROID_SCANRANGE);
-	if (result == 1)
+	var vResult = obstacle_event(OBSTACLE_ASTEROID_SCANRANGE);
+	//error(str_for_num(NULL, vResult));
+	if (vResult == 1)
 	{
 		hud_addEnergy(-ASTEROID_PENALTY_ENERGY);	
 		hud_addSpeed(-ASTEROID_PENALTY_SPEED);	
 		ent_playsound(me, sndCollide, 1000);
+//		snd_play(sndCollide, 100, 0);
+		start_explosion(my.x, 1);
 	}
-	else if (result == 2)
+	else if (vResult == 2)
 	{
 		hud_addSpeed(ASTEROID_DESTROY_SPEED);	
 		snd_play(sndCollide, 100, 0);
@@ -68,7 +72,7 @@ void obstacle_asteroid__evt()
 void obstacle_asteroid__destroy()
 {
 	var i;
-	for (i = 0; i < 10; i++)
+	for (i = 0; i < 20; i++)
 	{
 		ent_create("asteroid_shard.mdl", &my->x, obstacle_asteroid__shard);
 	}
@@ -78,8 +82,10 @@ void obstacle_asteroid__destroy()
 	while(my->alpha > 0)
 	{
 		wait(1);
-		my->alpha -= 15* time_step;
+		my->alpha -= 20* time_step;
 	}
+	my->alpha = 0;
+	wait (-0.5);
 	ptr_remove(me);
 }
 
@@ -93,7 +99,7 @@ void obstacle_asteroid__shard()
 	my->alpha = 100;
 	set (my, PASSABLE);
 	vec_randomize(&vecTemp, 1000);
-	vec_normalize(&vecTemp, 80);
+	vec_normalize(&vecTemp, 300);
 	vec_set(&vecPos, &my->x);
 	vec_add(&vecTemp, &vecPos);
 	

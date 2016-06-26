@@ -29,6 +29,7 @@ typedef struct
 {
 	var from;
 	var to;
+	var density;
 	var weight[NUM_SPAWNABLES];
 }WEIGHTING;
 
@@ -39,6 +40,7 @@ void item_weighting_startup()
 	var i = 0;
 	sItemWeigths[i].from = 0;
 	sItemWeigths[i].to = 0;
+	sItemWeigths[i].density = 1;
 	sItemWeigths[i].weight[ITEM_SPEED] = 3;
 	sItemWeigths[i].weight[ITEM_BOOST] = 2;
 	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
@@ -48,6 +50,7 @@ void item_weighting_startup()
 	
 	sItemWeigths[i].from = 5000;
 	sItemWeigths[i].to = 40000;
+	sItemWeigths[i].density = 2;
 	sItemWeigths[i].weight[ITEM_SPEED] = 3;
 	sItemWeigths[i].weight[ITEM_BOOST] = 70;
 	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
@@ -57,6 +60,7 @@ void item_weighting_startup()
 	
 	sItemWeigths[i].from = 50000;
 	sItemWeigths[i].to = 70000;
+	sItemWeigths[i].density = 1;
 	sItemWeigths[i].weight[ITEM_SPEED] = 3;
 	sItemWeigths[i].weight[ITEM_BOOST] = 2;
 	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
@@ -66,6 +70,7 @@ void item_weighting_startup()
 	
 	sItemWeigths[i].from = 84000;
 	sItemWeigths[i].to = 92000;
+	sItemWeigths[i].density = 3;
 	sItemWeigths[i].weight[ITEM_SPEED] = 3;
 	sItemWeigths[i].weight[ITEM_BOOST] = 1;
 	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
@@ -75,6 +80,7 @@ void item_weighting_startup()
 	
 	sItemWeigths[i].from = 108000;
 	sItemWeigths[i].to = 122000;
+	sItemWeigths[i].density = 2;
 	sItemWeigths[i].weight[ITEM_SPEED] = 3;
 	sItemWeigths[i].weight[ITEM_BOOST] = 1;
 	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
@@ -84,6 +90,7 @@ void item_weighting_startup()
 	
 	sItemWeigths[i].from = 130000;
 	sItemWeigths[i].to = 140000;
+	sItemWeigths[i].density = 1;
 	sItemWeigths[i].weight[ITEM_SPEED] = 3;
 	sItemWeigths[i].weight[ITEM_BOOST] = 2;
 	sItemWeigths[i].weight[ITEM_ENERGY] = 30;
@@ -93,6 +100,7 @@ void item_weighting_startup()
 	
 	sItemWeigths[i].from = 151000;
 	sItemWeigths[i].to = 161000;
+	sItemWeigths[i].density = 1.3;
 	sItemWeigths[i].weight[ITEM_SPEED] = 3;
 	sItemWeigths[i].weight[ITEM_BOOST] = 70;
 	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
@@ -102,6 +110,7 @@ void item_weighting_startup()
 	
 	sItemWeigths[i].from = 161000;
 	sItemWeigths[i].to = 172000;
+	sItemWeigths[i].density = 1;
 	sItemWeigths[i].weight[ITEM_SPEED] = 10;
 	sItemWeigths[i].weight[ITEM_BOOST] = 1;
 	sItemWeigths[i].weight[ITEM_ENERGY] = 30;
@@ -111,6 +120,7 @@ void item_weighting_startup()
 	
 	sItemWeigths[i].from = 172000;
 	sItemWeigths[i].to = 190000;
+	sItemWeigths[i].density = 3;
 	sItemWeigths[i].weight[ITEM_SPEED] = 3;
 	sItemWeigths[i].weight[ITEM_BOOST] = 2;
 	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
@@ -120,6 +130,7 @@ void item_weighting_startup()
 	
 	sItemWeigths[i].from = 190000;
 	sItemWeigths[i].to = 200000;
+	sItemWeigths[i].density = 1;
 	sItemWeigths[i].weight[ITEM_SPEED] = 30;
 	sItemWeigths[i].weight[ITEM_BOOST] = 1;
 	sItemWeigths[i].weight[ITEM_ENERGY] = 30;
@@ -129,15 +140,17 @@ void item_weighting_startup()
 	
 	sItemWeigths[i].from = 200000;
 	sItemWeigths[i].to = 220000;
+	sItemWeigths[i].density = 1.5;
 	sItemWeigths[i].weight[ITEM_SPEED] = 3;
-	sItemWeigths[i].weight[ITEM_BOOST] = 70;
+	sItemWeigths[i].weight[ITEM_BOOST] = 50;
 	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
 	sItemWeigths[i].weight[ITEM_TIME] = 3;
 	sItemWeigths[i].weight[OBSTACLE_CLOUD] = 1;
-	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 15;	
+	sItemWeigths[i++].weight[OBSTACLE_ASTEROID] = 35;	
 	
 	sItemWeigths[i].from = 220000;
 	sItemWeigths[i].to = 235000;
+	sItemWeigths[i].density = 1;
 	sItemWeigths[i].weight[ITEM_SPEED] = 3;
 	sItemWeigths[i].weight[ITEM_BOOST] = 1;
 	sItemWeigths[i].weight[ITEM_ENERGY] = 35;
@@ -147,6 +160,7 @@ void item_weighting_startup()
 	
 	sItemWeigths[i].from = 235000;
 	sItemWeigths[i].to = 260000;
+	sItemWeigths[i].density = 2;
 	sItemWeigths[i].weight[ITEM_SPEED] = 3;
 	sItemWeigths[i].weight[ITEM_BOOST] = 1;
 	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
@@ -156,6 +170,7 @@ void item_weighting_startup()
 	
 	sItemWeigths[i].from = 266000;
 	sItemWeigths[i].to = 272000;
+	sItemWeigths[i].density = 1;
 	sItemWeigths[i].weight[ITEM_SPEED] = 3;
 	sItemWeigths[i].weight[ITEM_BOOST] = 1;
 	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
@@ -165,6 +180,7 @@ void item_weighting_startup()
 	
 	sItemWeigths[i].from = 272000;
 	sItemWeigths[i].to = 280000;
+	sItemWeigths[i].density = 1;
 	sItemWeigths[i].weight[ITEM_SPEED] = 3;
 	sItemWeigths[i].weight[ITEM_BOOST] = 1;
 	sItemWeigths[i].weight[ITEM_ENERGY] = 30;
@@ -174,6 +190,7 @@ void item_weighting_startup()
 	
 	sItemWeigths[i].from = 290000;
 	sItemWeigths[i].to = 305000;
+	sItemWeigths[i].density = 1.3;
 	sItemWeigths[i].weight[ITEM_SPEED] = 3;
 	sItemWeigths[i].weight[ITEM_BOOST] = 70;
 	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
@@ -183,6 +200,7 @@ void item_weighting_startup()
 	
 	sItemWeigths[i].from = 305000;
 	sItemWeigths[i].to = 350000;
+	sItemWeigths[i].density = 1;
 	sItemWeigths[i].weight[ITEM_SPEED] = 3;
 	sItemWeigths[i].weight[ITEM_BOOST] = 1;
 	sItemWeigths[i].weight[ITEM_ENERGY] = 50;
@@ -192,6 +210,7 @@ void item_weighting_startup()
 	
 	sItemWeigths[i].from = 323000;
 	sItemWeigths[i].to = 350000;
+	sItemWeigths[i].density = 1.7;
 	sItemWeigths[i].weight[ITEM_SPEED] = 3;
 	sItemWeigths[i].weight[ITEM_BOOST] = 70;
 	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
@@ -201,6 +220,7 @@ void item_weighting_startup()
 	
 	sItemWeigths[i].from = 360000;
 	sItemWeigths[i].to = 385000;
+	sItemWeigths[i].density = 4;
 	sItemWeigths[i].weight[ITEM_SPEED] = 3;
 	sItemWeigths[i].weight[ITEM_BOOST] = 1;
 	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
@@ -210,6 +230,7 @@ void item_weighting_startup()
 	
 	sItemWeigths[i].from = 400000;
 	sItemWeigths[i].to = 420000;
+	sItemWeigths[i].density = 1;
 	sItemWeigths[i].weight[ITEM_SPEED] = 3;
 	sItemWeigths[i].weight[ITEM_BOOST] = 1;
 	sItemWeigths[i].weight[ITEM_ENERGY] = 70;
@@ -219,6 +240,7 @@ void item_weighting_startup()
 	
 	sItemWeigths[i].from = 420001;
 	sItemWeigths[i].to = 431000;
+	sItemWeigths[i].density = 1;
 	sItemWeigths[i].weight[ITEM_SPEED] = 30;
 	sItemWeigths[i].weight[ITEM_BOOST] = 1;
 	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
@@ -228,6 +250,7 @@ void item_weighting_startup()
 	
 	sItemWeigths[i].from = 432000;
 	sItemWeigths[i].to = 450000;
+	sItemWeigths[i].density = 1;
 	sItemWeigths[i].weight[ITEM_SPEED] = 70;
 	sItemWeigths[i].weight[ITEM_BOOST] = 1;
 	sItemWeigths[i].weight[ITEM_ENERGY] = 3;
@@ -296,19 +319,6 @@ void drop_items__new()
 	var vHandle = file_open_write("level.dat");
 	while (vDistance < vLength)
 	{
-		vec_set(&vLastPos, &vSplinePos);
-		path_spline(entWalker, vSplinePos, vDistance);
-		vDistance += ITEMDROPPER_DROPDIST_MIN + random(ITEMDROPPER_DROPDIST_MAX - ITEMDROPPER_DROPDIST_MIN);
-		VECTOR vecTemp;
-		vec_set(&vecTemp, &vSplinePos);
-		vec_sub(&vecTemp, &vLastPos);
-		vec_to_angle(vAngle, vecTemp);
-		vecTemp.x = 0;
-		vecTemp.y = random(900) - 450;
-		vecTemp.z = random(700) - 350;
-		vec_rotate(vecTemp, vAngle);
-		vec_add(vecTemp, vSplinePos);
-		
 		var vRange = 0;
 		var i;
 
@@ -320,6 +330,19 @@ void drop_items__new()
 				break;
 			}
 		}
+		
+		vec_set(&vLastPos, &vSplinePos);
+		path_spline(entWalker, vSplinePos, vDistance);
+		vDistance += (ITEMDROPPER_DROPDIST_MIN + random(ITEMDROPPER_DROPDIST_MAX - ITEMDROPPER_DROPDIST_MIN)) / sItemWeigths[vRange].density;
+		VECTOR vecTemp;
+		vec_set(&vecTemp, &vSplinePos);
+		vec_sub(&vecTemp, &vLastPos);
+		vec_to_angle(vAngle, vecTemp);
+		vecTemp.x = 0;
+		vecTemp.y = random(900) - 450;
+		vecTemp.z = random(700) - 350;
+		vec_rotate(vecTemp, vAngle);
+		vec_add(vecTemp, vSplinePos);
 		
 		var vNum = 0;
 		for (i = 0; i < NUM_SPAWNABLES; i++)

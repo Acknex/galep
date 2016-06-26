@@ -5,7 +5,7 @@
 #define CLOUD_PENALTY_TICK 8
 #define is_locked FLAG8
 #define lockTimer skill42
-#define OBSTACLE_CLOUD_SCANRANGE 150
+#define OBSTACLE_CLOUD_SCANRANGE 200
 
 void obstacle_cloud__particle_event(PARTICLE *particle);
 void obstacle_cloud__particle(PARTICLE *particle);
@@ -28,7 +28,7 @@ action obstacle_cloud()
 	
 	while(1)
 	{
-		if (vec_dist (player.x, my.x) < 2000)
+		if (vec_dist (player.x, my.x) < 4000)
 		{
 			vParticles += time_step;
 			if (vParticles > 10)

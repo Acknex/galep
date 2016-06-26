@@ -13,11 +13,11 @@ action item_speed()
 	//my->material = mtl_specBump;
 	my->pan = random(360);
 	my->roll = random(360);
-	//while(!player) wait(1);
+	while(!player) wait(1);
 	
 	while(!is(me, is_collected))
 	{
-		//if (vec_dist(player.x, my.x) < 5000)
+		if (vec_dist(player.x, my.x) < 5000)
 		{
 			vParticles += time_step;
 			if (vParticles > 10)
@@ -38,7 +38,7 @@ void item_speed__evt()
 {
 	if (item_evt() != 0)
 	{
-		hud_addSpeed(1);
+		hud_addSpeed(4);
 	}
 }
 

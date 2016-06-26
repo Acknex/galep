@@ -34,6 +34,6 @@ void item_energy__evt()
 {
 	if (item_evt() != 0)
 	{
-		hud_addEnergy(30);
+		hud_addEnergy(20);
 	}
 }
