@@ -22,7 +22,7 @@ action act_galep() {
 			my->z = vZ + 10 * sinv(total_ticks * 20 + vOffset);
 			my->tilt += 2 * time_step;
 			my->red = 10 + sinv(total_ticks * 20) * 50;
-			DEBUG_VAR(my->red, 60);
+			//DEBUG_VAR(my->red, 60);
 		}
 		
 		wait(1);

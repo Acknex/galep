@@ -13,7 +13,9 @@ void enemy_shot()
 	snd_play(sndExplosion, 100, 0);
 	hud_addTime(2);
 	start_explosion(my.x, 2);
-	wait(1);
+	set(my, INVISIBLE | PASSABLE);
+	wait(-2); //stupid HUD fix. don't ask.
+	//wait(1);
 	ptr_remove(my);
 }
 

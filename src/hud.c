@@ -3,11 +3,12 @@
 #include "timer.h"
 
 #define HUD_FONT_SIZE 100
+#define HUD_FONT_SMALL_SIZE 50
 #define HUD_MAX_ENERGY 100
 #define HUD_MAX_SPEED 16
 #define HUD_MAX_TIME 999
 #define HUD_DEF_ENERGY 100
-#define HUD_DEF_SPEED 0
+#define HUD_DEF_SPEED 2
 #define HUD_DEF_TIME 60
 
 
@@ -19,6 +20,7 @@ void HUD__resize();
 BMAP* left_gauge_bmap = "gauge_blue.tga";
 BMAP* right_gauge_bmap = "gauge_yellow.tga";
 FONT* HUD__font = "Digital-7#30";
+FONT* HUD__fontSmall = "Digital-7#30";
 SOUND* HUD__sndTimeout = "timeout.wav";
 
 PANEL* hud_pan = 
@@ -47,6 +49,21 @@ PANEL* hud_right_gauge_pan =
 	alpha = 70;
 	flags = /*LIGHT |*/ FILTER | TRANSLUCENT;
 }
+TEXT* hud_left_gauge_txt = 
+{
+	layer = 4;
+	alpha = 90;
+	flags = TRANSLUCENT | SHADOW;
+	string ("Energy");
+}
+
+TEXT* hud_right_gauge_txt = 
+{
+	layer = 4;
+	alpha = 90;
+	flags = TRANSLUCENT | ARIGHT | SHADOW;
+	string ("Speed");
+}
 
 var vHudInitialized = 0;
 var vHudEnergy;
@@ -65,7 +82,10 @@ void hud_show()
 		set(hud_left_gauge_pan, SHOW);
 		set(hud_right_gauge_pan, SHOW);
 		set(hud_pan, SHOW);
-		while(is(hud_left_gauge_pan, SHOW) || is(hud_left_gauge_pan, SHOW) || is(hud_pan, SHOW))
+		set(hud_left_gauge_txt, SHOW);
+		set(hud_right_gauge_txt, SHOW);
+		while(is(hud_left_gauge_pan, SHOW) || is(hud_left_gauge_pan, SHOW) || is(hud_pan, SHOW)
+		|| is(hud_left_gauge_txt, SHOW) || is(hud_right_gauge_txt, SHOW))
 		{
 			hud__update();
 			wait(1);
@@ -80,6 +100,8 @@ void hud_hide()
 		reset(hud_left_gauge_pan, SHOW);
 		reset(hud_right_gauge_pan, SHOW);
 		reset(hud_pan, SHOW);
+		reset(hud_left_gauge_txt, SHOW);
+		reset(hud_right_gauge_txt, SHOW);
 	}
 }
 
@@ -133,6 +155,8 @@ void hud_addTime(var value)
 	var vOldTime = vHudTime;
 	var vHudTimeTarget = clamp (vHudTime + value, 0, vHudMaxTime);
 
+	//this is not good - function might not finish when called from entity func
+	//won't fix this anymore
 	if (vHudTimeTarget < vOldTime)
 	{
 		pan_setcolor(hud_pan, 1, 1, COLOR_RED);
@@ -149,15 +173,15 @@ void hud_addTime(var value)
 	}
 	else if (vHudTimeTarget > vOldTime)
 	{
-		//pan_setcolor(hud_pan, 1, 1, COLOR_GREEN);
+		pan_setcolor(hud_pan, 1, 1, COLOR_GREEN);
+		vHudTime = vHudTimeTarget;
 		wait(-0.5);		
-		while (vCnt < 1)
+		/*while (vCnt < 1)
 		{
 			vHudTime = (1 - vCnt) * vHudTime + vCnt * vHudTimeTarget;	
 			vCnt = vCnt + 0.5 * time_step;
 			wait(1);
-		}
-		vHudTime = vHudTimeTarget;
+		}*/
 		//wait(-1);		//geht net, WTF!?
 		pan_setcolor(hud_pan, 1, 1, &vHudTimeColor);
 		return;
@@ -236,6 +260,9 @@ void HUD__resize()
 	str_printf(strTemp, "Digital-7#%i", (int)(HUD_FONT_SIZE * scale));
 	ptr_remove(HUD__font);
 	HUD__font = font_create(strTemp);
+	str_printf(strTemp, "Digital-7#%i", (int)(HUD_FONT_SMALL_SIZE * scale));
+	ptr_remove(HUD__fontSmall);
+	HUD__fontSmall = font_create(strTemp);
 
 	draw_textmode("Digital-7", 0, 70, 90);
 	hud_pan->size_x = screen_size.x * 0.1;
@@ -243,6 +270,13 @@ void HUD__resize()
 	hud_pan->pos_x = screen_size.x * 0.45;
 	hud_pan->pos_y = 0;//screen_size.y * 0.01;
 	pan_setdigits(hud_pan, 1, hud_pan->size_x * 0.5, 0, "%03.0f", HUD__font, 1, &vHudTimeInt);
+
+	hud_left_gauge_txt->font = HUD__fontSmall;
+	hud_left_gauge_txt->pos_x = screen_size.x * 0.013;
+	hud_left_gauge_txt->pos_y = screen_size.y * 0.1;
+	hud_right_gauge_txt->font = HUD__fontSmall;
+	hud_right_gauge_txt->pos_x = screen_size.x * 0.987;
+	hud_right_gauge_txt->pos_y = screen_size.y * 0.1;
 
 	//trigger any chained resize event
 	if (HUD__resizeEv != NULL)

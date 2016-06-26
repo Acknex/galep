@@ -78,7 +78,7 @@ action act_player() {
 	
 	while(me && (vHudEnergy > 0) && (vHudTimeInt > 0)) {
 		
-		DEBUG_VAR(vHudTimeInt, 70);
+		//DEBUG_VAR(vHudTimeInt, 70);
 
 		// Move camera
 		path_spline(me, vSplinePos, splineDistance);

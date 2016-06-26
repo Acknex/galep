@@ -33,7 +33,7 @@ action obstacle_cloud()
 			vParticles += time_step;
 			if (vParticles > 10)
 			{
-				effect(obstacle_cloud__particle, 10, &my->x, vector(1,0,0));
+				effect(obstacle_cloud__particle, 10, &my->x, vector(1.2,0,0));
 				vParticles -= 10;
 			}
 		}
