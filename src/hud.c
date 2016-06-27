@@ -84,6 +84,7 @@ void hud_show()
 		set(hud_pan, SHOW);
 		set(hud_left_gauge_txt, SHOW);
 		set(hud_right_gauge_txt, SHOW);
+		unpause_timer();
 		while(is(hud_left_gauge_pan, SHOW) || is(hud_left_gauge_pan, SHOW) || is(hud_pan, SHOW)
 		|| is(hud_left_gauge_txt, SHOW) || is(hud_right_gauge_txt, SHOW))
 		{
@@ -102,6 +103,7 @@ void hud_hide()
 		reset(hud_pan, SHOW);
 		reset(hud_left_gauge_txt, SHOW);
 		reset(hud_right_gauge_txt, SHOW);
+		pause_timer();
 	}
 }
 

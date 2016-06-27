@@ -43,7 +43,8 @@ void playerEvent() {
 	if (event_type == EVENT_SHOOT) {
 		if (player_hit_cooldown <= 0) {
 			snd_play(sndDie, 100, 0);
-			vHudEnergy -=ENEMY_DAMAGE;
+			//vHudEnergy -=ENEMY_DAMAGE;
+			hud_addEnergy(ENEMY_DAMAGE);
 			player_hit_cooldown = 100;
 		}
 	}
@@ -74,7 +75,7 @@ action act_player() {
 	vec_set(vCrosshair, vector(screen_size.x / 2, screen_size.y / 2, 0));
 	
 	path_set(me, "path_000");
-	splineDistance = 0;
+	splineDistance = /*470000;*/0;
 	
 	while(me && (vHudEnergy > 0) && (vHudTimeInt > 0)) {
 		
