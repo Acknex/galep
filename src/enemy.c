@@ -221,6 +221,6 @@ void spawn_enemies()
 	{
 		var blubb = (1-minv(splineDistance/250000, 1))*8;
 		wait(-(2+blubb+random(10)));
-		ent_create("ufo.mdl", nullvector, enemy);
+		ent_create("ufo_alien.mdl", nullvector, enemy);
 	}
 }
