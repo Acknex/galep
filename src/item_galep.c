@@ -35,10 +35,28 @@ void galep_fade()
 
 void galep_found()
 {
-	snd_play(sndVictory, 100,0);
 	hud_hide();
 	player.event = NULL;
-	while(splineDistance < 530000)
+	var vol = 80;
+	while (vol > 0)
+	{
+		vol = maxv(vol - 5*time_step, 0);
+		media_tune(hndMusicInGame, vol, 0, 0);
+		wait(1);
+	}
+	media_stop(hndMusicInGame);
+	snd_play(sndVictory, 100,0);
+	wait(-0.3);
+ 	media_play("media\\Victory.ogg", NULL, 100);	
+	wait(-20);
+	hndMusicInGame = media_play("media\\theme.mp3", NULL, 0);
+	while (vol < 80)
+	{
+		vol = minv(vol + 5*time_step, 80);
+		media_tune(hndMusicInGame, vol, 0, 0);
+		wait(1);
+	}
+	while(splineDistance < 536000)
 	{
 		wait(1);
 	}
