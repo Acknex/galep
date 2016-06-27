@@ -111,11 +111,11 @@ void hud_init()
 {
 	if (!vHudInitialized)
 	{
-		hud_reinit();
 		HUD__resizeEv = on_resize;
 		on_resize = HUD__resize;
 		AddFontResource("media//digital-7.ttf");
 		pan_setdigits(hud_pan, 0, 0, 0, "%1.0f", "*", 1, &vHudTimeInt);
+		hud_reinit();
 		HUD__resize();
 		vHudInitialized = 1;
 	}
@@ -134,6 +134,7 @@ void hud_reinit()
 	vHudMaxTime = HUD_MAX_TIME;
 	vHudTimeInt = integer(vHudTime);
 	vec_set (vHudTimeColor, COLOR_WHITE);
+	pan_setcolor(hud_pan, 1, 1, vHudTimeColor);
 }
 
 void hud_close()
