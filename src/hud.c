@@ -173,9 +173,9 @@ void hud_addTime(var value)
 	}
 	else if (vHudTimeTarget > vOldTime)
 	{
-		pan_setcolor(hud_pan, 1, 1, COLOR_GREEN);
+		//pan_setcolor(hud_pan, 1, 1, COLOR_GREEN);
 		vHudTime = vHudTimeTarget;
-		wait(-0.5);		
+		//wait(-0.5);		
 		/*while (vCnt < 1)
 		{
 			vHudTime = (1 - vCnt) * vHudTime + vCnt * vHudTimeTarget;	
@@ -183,7 +183,7 @@ void hud_addTime(var value)
 			wait(1);
 		}*/
 		//wait(-1);		//geht net, WTF!?
-		pan_setcolor(hud_pan, 1, 1, &vHudTimeColor);
+		//pan_setcolor(hud_pan, 1, 1, &vHudTimeColor);
 		return;
 	}
 	else
